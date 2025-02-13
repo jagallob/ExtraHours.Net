@@ -1,0 +1,68 @@
+﻿## Ignorar archivos generados por Visual Studio
+*.user
+*.userosscache
+*.suo
+*.lock.json
+.vs/
+.vscode/
+bin/
+obj/
+!.gitkeep
+
+## Ignorar archivos generados por JetBrains Rider
+.idea/
+*.DotSettings.user
+
+## Ignorar archivos de NuGet
+packages/
+**/packages/*.nupkg
+*.nuget.props
+*.nuget.targets
+
+## Ignorar archivos de compilación
+*.dll
+*.exe
+*.pdb
+*.mdb
+*.cache
+*.log
+*.tmp
+
+
+## Ignorar archivos de configuración local
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+*.env
+.env.*
+
+## Ignorar archivos de pruebas
+TestResults/
+coverage/
+
+## Ignorar archivos de herramientas globales
+.dotnet/
+.tools/
+
+## Ignorar archivos de Docker
+Dockerfile*
+.dockerignore
+docker-compose.override.yml
+docker-compose.yml
+
+## Ignorar archivos de Node.js (si aplican)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+## Ignorar archivos de macOS
+.DS_Store
+
+## Ignorar archivos de Linux
+*.swp
+*~
+
+## Ignorar archivos específicos del sistema operativo
+Thumbs.db
+ehthumbs.db
+Desktop.ini
