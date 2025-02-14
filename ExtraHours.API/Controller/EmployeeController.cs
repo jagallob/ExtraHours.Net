@@ -64,7 +64,7 @@ namespace ExtraHours.API.Controllers
 
             await _employeeService.AddEmployeeAsync(employee);
 
-            var user = new Users
+            var user = new User
             {
                 Id = dto.Id,
                 Email = dto.Name.ToLower().Replace(" ", ".") + "@empresa.com",
