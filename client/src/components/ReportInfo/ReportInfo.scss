@@ -1,0 +1,29 @@
+.ReportInfo {
+  .filters-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .search-container {
+    width: 200px;
+    padding-left: 10px;
+    padding: 20px;
+  }
+
+  .range-picker-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .error-message {
+    color: red;
+    margin-top: 10px;
+  }
+
+  .extra-hours-info {
+    margin-top: 20px;
+  }
+}

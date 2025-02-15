@@ -1,0 +1,117 @@
+body {
+  background-image: url("../assets/images/background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 130vh;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  margin-top: 0px;
+}
+
+h1 {
+  font-size: 30px;
+  margin-bottom: 100px;
+  color: #ebf3ff;
+  text-align: center;
+  font-family: sans-serif;
+  margin-left: 10px;
+  margin-top: 150px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  width: 40%;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.menu-item {
+  text-align: center;
+  cursor: pointer;
+  background-color: #3a8bff;
+  width: 100%;
+  height: 150px;
+  perspective: 1000px;
+  border-radius: 5%;
+  transition: transform 0.3s ease;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.menu-item:hover {
+  transform: translateY(-10px);
+  background-color: #96bdf8;
+  box-shadow: 0 0 4px 4px rgba($color: hsl(245, 63%, 32%), $alpha: 1);
+}
+
+.menu-item img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+}
+
+.menu-item p {
+  color: rgb(14, 26, 99);
+  padding: 10px 0;
+  margin: 0;
+  font-family: sans-serif;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  width: 40%;
+  margin: 20px auto;
+}
+
+.logout-button,
+.change-password-button {
+  padding: 8px 18px;
+  background-color: #ebf3ff;
+  color: #050505;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover,
+.change-password-button:hover {
+  background-color: #1677ff;
+  color: #ebf3ff;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: auto auto; // Dos columnas: una para la imagen y otra para el texto
+  gap: 1rem; // Espacio entre elementos
+  margin-right: 10px;
+}
+
+.change-password-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0;
+  background-color: #ebf3ff;
+  border: 2px solid #0c66e1;
+  color: #0c66e1;
+}
+
+.logout-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0;
+  background-color: #ebf3ff;
+  border: 2px solid #0c66e1;
+  color: #0c66e1;
+}

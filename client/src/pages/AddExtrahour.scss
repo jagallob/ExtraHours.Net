@@ -1,0 +1,31 @@
+.h2addextra {
+  color: whitesmoke;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 0px;
+}
+
+.page__header {
+  padding-block: 0.5rem;
+  display: flex;
+  align-items: center;
+  width: 0;
+  justify-content: right;
+  margin-top: 10px;
+
+
+  a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .logoamadeus {
+      width: 11rem;
+      padding: 0;
+      margin: 0;
+      display: inline;
+      position: relative;
+      border: 1px;
+    }
+  }
+}

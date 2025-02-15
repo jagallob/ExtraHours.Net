@@ -1,0 +1,52 @@
+h3 {
+  color: aliceblue;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.search-container {
+  width: 200px;
+  padding-left: 10px;
+}
+
+.ant-modal {
+  h2 {
+    padding: 0 10px 5px;
+    color: #000835;
+  }
+  .ant-modal-content {
+    width: 500px;
+    max-width: 120vw;
+    padding: 20px;
+    background-color: #c5d5f9
+  }
+
+  .ant-form-item {
+    background-color: rgb(14, 26, 99);
+    margin-top: 2px;
+    margin-bottom: 5px;
+    height: 45px;
+    padding: 8px;
+    border-radius: 10px;
+
+    label {
+      color: #f8f2f2;
+    }
+    .ant-input-number {
+      width: 50px;
+      height: 30px;
+      padding: 1px;
+    }
+  }
+
+  .button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0;
+    background-color: #ebf3ff;
+    border: 2px solid #0c66e1;
+    color: #0c66e1;
+  }
+}

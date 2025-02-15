@@ -1,0 +1,54 @@
+.regresar {
+  width: 3rem;
+  padding: 1;
+  margin: 0;
+  display: inline;
+  position: relative;
+  border: 1px;
+  cursor: pointer;
+}
+
+#extra-hours-settings {
+  text-align: center;
+  cursor: pointer;
+  background-color: rgb(14, 26, 99);
+  width: 100%;
+  height: 150px;
+  perspective: 1000px;
+  border-radius: 2%;
+  transition: transform 0.3s ease;
+  padding: 10px;
+  box-sizing: border-box;
+}
+#extra-hours-settings * {
+  color: #c5d5f9;
+}
+
+h2 {
+  color: rgb(14, 26, 99);
+  padding: 2rem; /* Espaciado interno */
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-top: 0;
+  margin-bottom: -10px;
+}
+
+p {
+  color: whitesmoke;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .logoamadeus {
+    width: 11rem;
+    padding: 0;
+    margin: 0;
+    display: inline;
+    position: relative;
+    border: 1px;
+  }
+}
