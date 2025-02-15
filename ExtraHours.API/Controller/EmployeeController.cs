@@ -5,8 +5,7 @@ using ExtraHours.API.Service.Interface;
 using ExtraHours.API.Dto;
 using ExtraHours.API.Repositories.Interfaces;
 using System.Threading.Tasks;
-
-
+using ExtraHours.API.Repositories.Implementations;
 
 
 namespace ExtraHours.API.Controllers
@@ -16,13 +15,13 @@ namespace ExtraHours.API.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
-        private readonly IUsersRepository _usersRepo;
+        private readonly IUserRepository _userRepository;
         private readonly IManagerRepository _managerRepository;
 
-        public EmployeeController(IEmployeeService employeeService, IUsersRepository usersRepo, IManagerRepository managerRepository)
+        public EmployeeController(IEmployeeService employeeService, IUserRepository usersRepo, IManagerRepository managerRepository)
         {
             _employeeService = employeeService;
-            _usersRepo = usersRepo;
+            _userRepository = usersRepo;
             _managerRepository = managerRepository;
         }
 
@@ -35,7 +34,7 @@ namespace ExtraHours.API.Controllers
             return NotFound(new { error = "Empleado no encontrado" });
         }
 
-        [Authorize(Roles = "manager, empleado, superusuario")]
+        //[Authorize(Roles = "manager, empleado, superusuario")]
         [HttpGet]
         public async Task<IActionResult> GetAllEmployees()
         {
@@ -69,12 +68,12 @@ namespace ExtraHours.API.Controllers
                 Id = dto.Id,
                 Email = dto.Name.ToLower().Replace(" ", ".") + "@empresa.com",
                 Name = dto.Name,
-                Password = "password123", // En producción, encriptar
+                PasswordHash = "password123", // En producción, encriptar
                 Role = dto.Role ?? "empleado",
                 Username = dto.Name.ToLower().Replace(" ", ".")
             };
 
-            await _usersRepo.SaveAsync(user);
+            await _userRepository.SaveAsync(user);
             return Created("", new { message = "Empleado y usuario agregados exitosamente" });
         }
 
@@ -91,8 +90,8 @@ namespace ExtraHours.API.Controllers
             return Ok(new
             {
                 message = "Empleado actualizado correctamente",
-                manager_id = updatedEmployee.Manager.Id,
-                manager_name = updatedEmployee.Manager.Name
+                manager_id = updatedEmployee.Manager?.Id,
+                manager_name = updatedEmployee.Manager?.Name
             });
         }
 

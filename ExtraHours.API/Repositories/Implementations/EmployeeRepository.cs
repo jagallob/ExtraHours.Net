@@ -17,17 +17,24 @@ namespace ExtraHours.API.Repositories.Implementations
 
         public async Task<List<Employee>> GetEmployeesByManagerIdAsync(long managerId)
         {
-            return await _context.Employees.Where(e => e.Manager != null && e.Manager.Id == managerId).ToListAsync();
+            return await _context.Employees
+                .Include(e => e.Manager)
+                .Where(e => e.Manager != null && e.Manager.Id == managerId)
+                .ToListAsync();
         }
 
         public async Task<Employee?> GetByIdAsync(long id)
         {
-            return await _context.Employees.FirstOrDefaultAsync(e => e.Id == id);
+            return await _context.Employees
+                .Include(e => e.Manager)
+                .FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public async Task<List<Employee>> GetAllAsync()
         {
-            return await _context.Employees.ToListAsync();
+            return await _context.Employees
+                .Include(e => e.Manager)
+                .ToListAsync();
         }
 
         public async Task<Employee> AddAsync(Employee employee)

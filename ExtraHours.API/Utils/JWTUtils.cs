@@ -6,11 +6,11 @@ using ExtraHours.API.Model;
 
 namespace ExtraHours.API.Utils
 {
-    public class JWTUtils
+    public class JWTUtils : IJWTUtils
     {
         private readonly SymmetricSecurityKey _key;
         private const long ACCESS_TOKEN_EXPIRATION = 1814400000; // 21 días
-        private const long REFRESH_TOKEN_EXPIRATION = 1814400000; // 21 
+        private const long REFRESH_TOKEN_EXPIRATION = 1814400000; // 21 días
 
         public JWTUtils()
         {
@@ -23,10 +23,10 @@ namespace ExtraHours.API.Utils
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.Role, user.Role),
-                new Claim("id", user.Id.ToString())
+                new Claim("role", user.Role),
+                new Claim("id", user.Id
+                .ToString())
             };
-
             return CreateToken(claims, ACCESS_TOKEN_EXPIRATION);
         }
 
@@ -37,7 +37,6 @@ namespace ExtraHours.API.Utils
                 new Claim(ClaimTypes.Name, user.Email),
                 new Claim("id", user.Id.ToString())
             };
-
             return CreateToken(claims, REFRESH_TOKEN_EXPIRATION);
         }
 
@@ -49,7 +48,6 @@ namespace ExtraHours.API.Utils
                 Expires = DateTime.UtcNow.AddMilliseconds(expiration),
                 SigningCredentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256Signature)
             };
-
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
@@ -66,7 +64,6 @@ namespace ExtraHours.API.Utils
                 ValidateAudience = false,
                 ClockSkew = TimeSpan.Zero
             };
-
             return tokenHandler.ValidateToken(token, validationParameters, out _);
         }
 
@@ -77,7 +74,6 @@ namespace ExtraHours.API.Utils
                 var principal = ExtractClaims(token);
                 var username = principal.Identity?.Name;
                 var userId = principal.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
-
                 return username == user.Email && userId == user.Id.ToString();
             }
             catch
@@ -85,6 +81,5 @@ namespace ExtraHours.API.Utils
                 return false;
             }
         }
-
     }
 }

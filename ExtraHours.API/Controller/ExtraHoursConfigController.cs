@@ -16,7 +16,7 @@ namespace ExtraHours.API.Controller
         }
 
         [HttpGet]
-        [Authorize(Roles = "superuser")]
+        [Authorize(Roles = "superusuario")]
         public async Task<IActionResult> UpdateConfig([FromBody] ExtraHoursConfig config)
         {
             if (config == null)
