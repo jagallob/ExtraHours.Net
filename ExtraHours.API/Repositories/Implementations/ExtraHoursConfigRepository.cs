@@ -14,14 +14,14 @@ namespace ExtraHours.API.Repositories.Implementations
             _context = context;
         }
 
-        public async Task<ExtraHoursConfig?> GetByIdAsync(long id)
+        public async Task<ExtraHoursConfig?> GetConfigAsync()
         {
-            return await _context.ExtraHoursConfigs.FirstOrDefaultAsync(c => c.Id == id);
+            return await _context.extraHoursConfigs.FirstOrDefaultAsync();
         }
 
-        public async Task<ExtraHoursConfig> SaveAsync(ExtraHoursConfig config)
+        public async Task<ExtraHoursConfig> UpdateConfigAsync(ExtraHoursConfig config)
         {
-            _context.ExtraHoursConfigs.Update(config);
+            _context.extraHoursConfigs.Update(config);
             await _context.SaveChangesAsync();
             return config;
         }

@@ -16,23 +16,23 @@ namespace ExtraHours.API.Repositories.Implementations
 
         public async Task<User> GetUserByEmailAsync(string email)
         {
-            return await _context.Users
+            return await _context.users
                 .AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Email == email)
+                .FirstOrDefaultAsync(u => u.email == email)
                 ?? throw new InvalidOperationException("User not found");
         }
 
         public async Task SaveAsync(User user)
         {
-            _context.Users.Add(user);
+            _context.users.Add(user);
             await _context.SaveChangesAsync();
         }
 
         public async Task<User?> FindByEmailAsync(string email)
         {
-            return await _context.Users
+            return await _context.users
                 .AsNoTracking()
-                .FirstOrDefaultAsync(u => EF.Functions.Like(u.Email, email));
+                .FirstOrDefaultAsync(u => EF.Functions.Like(u.email, email));
         }
     }
 }

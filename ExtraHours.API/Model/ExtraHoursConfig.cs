@@ -7,14 +7,35 @@ namespace ExtraHours.API.Model
     public class ExtraHoursConfig
     {
         [Key]
-        public long Id { get; set; } = 1;
+        [Column("id")]
+        public long id { get; set; }
 
-        public double WeeklyExtraHoursLimit { get; set; } = 12;
-        public double DiurnalMultiplier { get; set; } = 1.25;
-        public double NocturnalMultiplier { get; set; } = 1.5;
-        public double DiurnalHolidayMultiplier { get; set; } = 2;
-        public double NocturnalHolidayMultiplier { get; set; } = 2.5;
-        public TimeSpan DiurnalStart { get; set; } = new TimeSpan(6, 0, 0);
-        public TimeSpan DiurnalEnd { get; set; } = new TimeSpan(22, 0, 0);
+        [Required]
+        [Column("weeklyExtraHoursLimit")]
+        public double weeklyExtraHoursLimit { get; set; }
+
+        [Required]
+        [Column("diurnalMultiplier")]
+        public double diurnalMultiplier { get; set; }
+
+        [Required]
+        [Column("nocturnalMultiplier")]
+        public double nocturnalMultiplier { get; set; }
+
+        [Required]
+        [Column("diurnalHolidayMultiplier")]
+        public double diurnalHolidayMultiplier { get; set; }
+
+        [Required]
+        [Column("nocturnalHolidayMultiplier")]
+        public double nocturnalHolidayMultiplier { get; set; }
+
+        [Required]
+        [Column("diurnalStart", TypeName = "time")]
+        public TimeSpan diurnalStart { get; set; }
+
+        [Required]
+        [Column("diurnalEnd", TypeName = "time")]
+        public TimeSpan diurnalEnd { get; set; }
     }
 }

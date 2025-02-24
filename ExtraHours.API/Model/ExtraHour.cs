@@ -9,23 +9,23 @@ namespace ExtraHours.API.Model
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Registry { get; set; }
+        public int registry { get; set; }
 
-        public long Id { get; set; }
-        public DateTime Date { get; set; }
-        public TimeSpan StartTime { get; set; }
-        public TimeSpan EndTime { get; set; }
-        public double Diurnal { get; set; }
-        public double Nocturnal { get; set; }
-        public double DiurnalHoliday { get; set; }
-        public double NocturnalHoliday { get; set; }
-        public double ExtraHours { get; set; }
-        public string? Observations { get; set; }
+        public long id { get; set; }
+        public DateTime date { get; set; }
+        public TimeSpan startTime { get; set; }
+        public TimeSpan endTime { get; set; }
+        public double diurnal { get; set; }
+        public double nocturnal { get; set; }
+        public double diurnalHoliday { get; set; }
+        public double nocturnalHoliday { get; set; }
+        public double extraHours { get; set; }
+        public string? observations { get; set; }
 
         [Required]
-        public bool Approved { get; set; } = false;
+        public bool approved { get; set; } = false;
 
-        [ForeignKey("Id")]
-        public Employee? Employee { get; set; }
+        [ForeignKey("id")]
+        public Employee? employee { get; set; }
     }
 }

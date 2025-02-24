@@ -28,7 +28,17 @@ export const ConfigProvider = ({ children }) => {
         });
         if (response.ok) {
           const data = await response.json();
-          setConfig(data);
+          const transformedData = {
+            weeklyExtraHoursLimit: data.weeklyExtraHoursLimit,
+            diurnalMultiplier: data.diurnalMultiplier,
+            nocturnalMultiplier: data.nocturnalMultiplier,
+            diurnalHolidayMultiplier: data.diurnalHolidayMultiplier,
+            nocturnalHolidayMultiplier: data.nocturnalHolidayMultiplier,
+            diurnalStart: data.diurnalStart,
+            diurnalEnd: data.diurnalEnd,
+          };
+          console.log("Datos transformados:", transformedData);
+          setConfig(transformedData);
         } else {
           console.error("Error fetching configuration:", response.statusText);
         }

@@ -4,7 +4,7 @@ namespace ExtraHours.API.Repositories.Interfaces
 {
     public interface IExtraHoursConfigRepository
     {
-        Task<ExtraHoursConfig?> GetByIdAsync(long id);
-        Task<ExtraHoursConfig> SaveAsync(ExtraHoursConfig config);
+        Task<ExtraHoursConfig?> GetConfigAsync();
+        Task<ExtraHoursConfig> UpdateConfigAsync(ExtraHoursConfig config);
     }
 }

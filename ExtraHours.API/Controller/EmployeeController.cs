@@ -54,23 +54,23 @@ namespace ExtraHours.API.Controllers
 
             var employee = new Employee
             {
-                Id = dto.Id,
-                Name = dto.Name,
-                Position = dto.Position,
-                Salary = dto.Salary,
-                Manager = manager
+                id = dto.Id,
+                name = dto.Name,
+                position = dto.Position,
+                salary = dto.Salary,
+                manager = manager
             };
 
             await _employeeService.AddEmployeeAsync(employee);
 
             var user = new User
             {
-                Id = dto.Id,
-                Email = dto.Name.ToLower().Replace(" ", ".") + "@empresa.com",
-                Name = dto.Name,
-                PasswordHash = "password123", // En producción, encriptar
-                Role = dto.Role ?? "empleado",
-                Username = dto.Name.ToLower().Replace(" ", ".")
+                id = dto.Id,
+                email = dto.Name.ToLower().Replace(" ", ".") + "@empresa.com",
+                name = dto.Name,
+                passwordHash = "password123", // En producción, encriptar
+                role = dto.Role ?? "empleado",
+                username = dto.Name.ToLower().Replace(" ", ".")
             };
 
             await _userRepository.SaveAsync(user);
@@ -90,8 +90,8 @@ namespace ExtraHours.API.Controllers
             return Ok(new
             {
                 message = "Empleado actualizado correctamente",
-                manager_id = updatedEmployee.Manager?.Id,
-                manager_name = updatedEmployee.Manager?.Name
+                manager_id = updatedEmployee.manager?.id,
+                manager_name = updatedEmployee.manager?.name
             });
         }
 

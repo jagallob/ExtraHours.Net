@@ -9,8 +9,8 @@ namespace ExtraHours.API.Utils
     public class JWTUtils : IJWTUtils
     {
         private readonly SymmetricSecurityKey _key;
-        private const long ACCESS_TOKEN_EXPIRATION = 1814400000; // 21 días
-        private const long REFRESH_TOKEN_EXPIRATION = 1814400000; // 21 días
+        private const long ACCESS_TOKEN_EXPIRATION = 3600000; // 1 hora
+        private const long REFRESH_TOKEN_EXPIRATION = 604800000; // 7 días
 
         public JWTUtils()
         {
@@ -22,9 +22,9 @@ namespace ExtraHours.API.Utils
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.Email),
-                new Claim("role", user.Role),
-                new Claim("id", user.Id
+                new Claim(ClaimTypes.Surname, user.email.Trim()),
+                new Claim("role", user.role),
+                new Claim("id", user.id
                 .ToString())
             };
             return CreateToken(claims, ACCESS_TOKEN_EXPIRATION);
@@ -34,8 +34,8 @@ namespace ExtraHours.API.Utils
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.Email),
-                new Claim("id", user.Id.ToString())
+                new Claim(ClaimTypes.Surname, user.email.Trim()),
+                new Claim("id", user.id.ToString())
             };
             return CreateToken(claims, REFRESH_TOKEN_EXPIRATION);
         }
@@ -46,6 +46,8 @@ namespace ExtraHours.API.Utils
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddMilliseconds(expiration),
+                Issuer = "ExtraHoursAPI",
+                Audience = "ExtraHoursClient",
                 SigningCredentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256Signature)
             };
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -74,7 +76,7 @@ namespace ExtraHours.API.Utils
                 var principal = ExtractClaims(token);
                 var username = principal.Identity?.Name;
                 var userId = principal.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
-                return username == user.Email && userId == user.Id.ToString();
+                return username == user.email && userId == user.id.ToString();
             }
             catch
             {

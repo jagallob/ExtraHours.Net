@@ -9,21 +9,21 @@ namespace ExtraHours.API.Data
         {
         }
 
-        public DbSet<Employee> Employees { get; set; }
-        public DbSet<ExtraHour> ExtraHours { get; set; }
-        public DbSet<ExtraHoursConfig> ExtraHoursConfigs { get; set; }
-        public DbSet<Manager> Managers { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<Employee> employees { get; set; }
+        public DbSet<ExtraHour> extraHours { get; set; }
+        public DbSet<ExtraHoursConfig> extraHoursConfigs { get; set; }
+        public DbSet<Manager> managers { get; set; }
+        public DbSet<User> users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Employee>()
-                .HasOne(e => e.Manager)
+                .HasOne(e => e.manager)
                 .WithMany()
-                .HasForeignKey(e => e.ManagerId)
+                .HasForeignKey(e => e.managerId)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            modelBuilder.Entity<ExtraHoursConfig>().HasData(new ExtraHoursConfig { Id = 1 });
+            modelBuilder.Entity<ExtraHoursConfig>().HasData(new ExtraHoursConfig { id = 1 });
 
             base.OnModelCreating(modelBuilder);
         }

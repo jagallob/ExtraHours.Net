@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ExtraHours.API.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
+
 namespace ExtraHours.API.Controller
 {
     [Route("api/config")]
@@ -16,6 +17,17 @@ namespace ExtraHours.API.Controller
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetConfig()
+        {
+            var config = await _configService.GetConfigAsync();
+            if (config == null)
+            {
+                return NotFound(new { error = "Configuración no encontrada" });
+            }
+            return Ok(config);
+        }
+
+        [HttpPut]
         [Authorize(Roles = "superusuario")]
         public async Task<IActionResult> UpdateConfig([FromBody] ExtraHoursConfig config)
         {

@@ -19,7 +19,7 @@ namespace ExtraHours.API.Service.Implementations
         {
             // Buscar al usuario por correo electrónico
             var user = await _userRepository.GetUserByEmailAsync(email);
-            if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+            if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.passwordHash))
             {
                 throw new UnauthorizedAccessException("Invalid credentials");
             }

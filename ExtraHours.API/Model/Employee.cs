@@ -8,21 +8,21 @@ namespace ExtraHours.API.Model
     {
         [Key]
         [Column("id")]
-        public long Id { get; set; }
+        public long id { get; set; }
 
         [Required]
         [MaxLength(100)]
-        public string Name { get; set; } = string.Empty;
+        public string name { get; set; } = string.Empty;
 
         [MaxLength(50)]
-        public string? Position { get; set; }
+        public string? position { get; set; }
 
         [Range(0, double.MaxValue, ErrorMessage = "El salario debe ser un valor positivo.")]
-        public double? Salary { get; set; }
+        public double? salary { get; set; }
 
-        [ForeignKey("Manager")]
+        [ForeignKey("manager")]
         [Column("manager_id")]
-        public long? ManagerId { get; set; }
-        public Manager? Manager { get; set; }
+        public long? managerId { get; set; }
+        public Manager? manager { get; set; }
     }
 }

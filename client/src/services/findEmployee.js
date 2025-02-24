@@ -1,16 +1,13 @@
-export const findEmployee = async (employeeId) => {
+export const findEmployee = async (id) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await fetch(
-      `https://localhost:7086/api/employee/${employeeId}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch(`https://localhost:7086/api/employee/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
     if (!response.ok) {
       throw new Error("Error al obtener la información del empleado");

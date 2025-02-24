@@ -15,17 +15,19 @@ namespace ExtraHours.API.Service.Implementations
 
         public async Task<ExtraHoursConfig> GetConfigAsync()
         {
-            var config = await _configRepository.GetByIdAsync(1L);
+            var config = await _configRepository.GetConfigAsync();
             if (config == null)
                 throw new KeyNotFoundException("Configuración no encontrada");
+            config.diurnalStart = TimeSpan.ParseExact(config.diurnalStart.ToString(@"hh\:mm"), @"hh\:mm", null);
+            config.diurnalEnd = TimeSpan.ParseExact(config.diurnalEnd.ToString(@"hh\:mm"), @"hh\:mm", null);
 
             return config;
         }
 
         public async Task<ExtraHoursConfig> UpdateConfigAsync(ExtraHoursConfig config)
         {
-            config.Id = 1L; // Asegurarse de que solo existe un registro
-            return await _configRepository.SaveAsync(config);
+            config.id = 1L; // Asegurarse de que solo existe un registro
+            return await _configRepository.UpdateConfigAsync(config);
         }
     }
 }

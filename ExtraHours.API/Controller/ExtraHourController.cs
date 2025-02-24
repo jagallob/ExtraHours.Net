@@ -83,7 +83,7 @@ namespace ExtraHours.API.Controller
             if (extraHour == null)
                 return NotFound(new { error = "Registro de horas extra no encontrado" });
 
-            extraHour.Approved = true;
+            extraHour.approved = true;
             await _extraHourService.UpdateExtraHourAsync(extraHour);
             return Ok(extraHour);
         }
@@ -96,16 +96,16 @@ namespace ExtraHours.API.Controller
             if (existingExtraHour == null)
                 return NotFound(new { error = "Registro de horas extra no encontrado" });
 
-            existingExtraHour.Diurnal = extraHourDetails.Diurnal;
-            existingExtraHour.Nocturnal = extraHourDetails.Nocturnal;
-            existingExtraHour.DiurnalHoliday = extraHourDetails.DiurnalHoliday;
-            existingExtraHour.NocturnalHoliday = extraHourDetails.NocturnalHoliday;
-            existingExtraHour.ExtraHours = extraHourDetails.Diurnal +
-                                           extraHourDetails.Nocturnal +
-                                           extraHourDetails.DiurnalHoliday +
-                                           extraHourDetails.NocturnalHoliday;
-            existingExtraHour.Date = extraHourDetails.Date;
-            existingExtraHour.Observations = extraHourDetails.Observations;
+            existingExtraHour.diurnal = extraHourDetails.diurnal;
+            existingExtraHour.nocturnal = extraHourDetails.nocturnal;
+            existingExtraHour.diurnalHoliday = extraHourDetails.diurnalHoliday;
+            existingExtraHour.nocturnalHoliday = extraHourDetails.nocturnalHoliday;
+            existingExtraHour.extraHours = extraHourDetails.diurnal +
+                                           extraHourDetails.nocturnal +
+                                           extraHourDetails.diurnalHoliday +
+                                           extraHourDetails.nocturnalHoliday;
+            existingExtraHour.date = extraHourDetails.date;
+            existingExtraHour.observations = extraHourDetails.observations;
 
             await _extraHourService.UpdateExtraHourAsync(existingExtraHour);
             return Ok(existingExtraHour);

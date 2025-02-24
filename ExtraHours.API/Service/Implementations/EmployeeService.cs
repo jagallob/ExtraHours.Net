@@ -47,9 +47,9 @@ namespace ExtraHours.API.Service.Implementations
                 throw new KeyNotFoundException("Empleado no encontrado");
             }
 
-            employee.Name = dto.Name ?? employee.Name;
-            employee.Position = dto.Position ?? employee.Position;
-            employee.Salary = dto.Salary ?? employee.Salary;
+            employee.name = dto.Name ?? employee.name;
+            employee.position = dto.Position ?? employee.position;
+            employee.salary = dto.Salary ?? employee.salary;
 
             if (dto.ManagerId.HasValue)
             {
@@ -58,7 +58,7 @@ namespace ExtraHours.API.Service.Implementations
                 {
                     throw new KeyNotFoundException("Manager no encontrado");
                 }
-                employee.Manager = manager;
+                employee.manager = manager;
             }
 
             await _employeeRepository.UpdateAsync(employee);

@@ -9,18 +9,15 @@ export const EmployeeInfo = ({ onIdChange, reset, setReset }) => {
   const [employee, setEmployee] = useState({});
   const [notFound, setNotFound] = useState();
 
-  const onSearch = async (employeeId, event) => {
+  const onSearch = async (id, event) => {
     if (event) event.preventDefault();
 
-    console.log("onSearch called with employeeId:", employeeId);
-
     try {
-      const data = await findEmployee(employeeId);
+      const data = await findEmployee(id);
 
       setEmployee(data);
       setNotFound(false);
-      console.log("Calling onIdChange with employeeId:", employeeId);
-      onIdChange(employeeId);
+      onIdChange(id);
     } catch (error) {
       console.error(error);
       setNotFound(true);
@@ -51,22 +48,24 @@ export const EmployeeInfo = ({ onIdChange, reset, setReset }) => {
         <div className="detailsInfo">
           <div className="description-item">
             <div className="title">Empleado</div>
-            <div className="description">{employee.name}</div>
+            <div className="description">{employee.Name}</div>
           </div>
           <div className="description-item">
             <div className="title">Salario</div>
-            <div className="description">{employee.salary}</div>
+            <div className="description">{employee.Salary}</div>
           </div>
           <div className="description-item">
             <div className="title">Cargo</div>
-            <div className="description">{employee.position}</div>
+            <div className="description">{employee.Position}</div>
           </div>
           <div className="description-item">
             <div className="title">
               <br />
               Manager
             </div>
-            <div className="description">{employee.manager.manager_name}</div>
+            <div className="description">
+              {employee.Manager?.Name ?? "Sin manager asignado"}
+            </div>
           </div>
         </div>
       )}

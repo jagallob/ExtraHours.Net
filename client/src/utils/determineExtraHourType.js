@@ -14,12 +14,12 @@ export const determineExtraHourType = (
   setExtraHours,
   config
 ) => {
-  if (!config || !config.diurnal_start || !config.diurnal_end) {
+  if (!config || !config.DiurnalStart || !config.DiurnalEnd) {
     console.error("La configuración aún no está completamente cargada.");
     return;
   }
 
-  const { diurnal_start, diurnal_end } = config;
+  const { DiurnalStart, DiurnalEnd } = config;
 
   const startDateTime = dayjs(`${date}T${startTime}`);
   const endDateTime = dayjs(`${date}T${endTime}`);
@@ -66,13 +66,13 @@ export const determineExtraHourType = (
 
     // Calcular horas diurnas
     if (
-      hour >= parseInt(diurnal_start.split(":")[0], 10) &&
-      hour < parseInt(diurnal_end.split(":")[0], 10)
+      hour >= parseInt(DiurnalStart.split(":")[0], 10) &&
+      hour < parseInt(DiurnalEnd.split(":")[0], 10)
     ) {
-      if (hour === parseInt(diurnal_end.split(":")[0], 10) - 1) {
+      if (hour === parseInt(DiurnalEnd.split(":")[0], 10) - 1) {
         // Si estamos en la última hora antes de que comience la franja nocturna
         const remainingMinutes =
-          parseInt(diurnal_end.split(":")[0], 10) * 60 - (hour * 60 + minutes); // Minutos restantes hasta el final de la franja diurna
+          parseInt(DiurnalEnd.split(":")[0], 10) * 60 - (hour * 60 + minutes); // Minutos restantes hasta el final de la franja diurna
         const remainingHours = remainingMinutes / 60;
 
         handleExtraHours(isHoliday, remainingHours, false); // Sumar a diurna o festiva diurna
@@ -84,12 +84,12 @@ export const determineExtraHourType = (
         handleExtraHours(isHoliday, hoursDiff, false); // Sumar horas diurnas
       }
     } else if (
-      hour >= parseInt(diurnal_end.split(":")[0], 10) ||
-      hour < parseInt(diurnal_start.split(":")[0], 10)
+      hour >= parseInt(DiurnalEnd.split(":")[0], 10) ||
+      hour < parseInt(DiurnalStart.split(":")[0], 10)
     ) {
-      if (hour < parseInt(diurnal_start.split(":")[0], 10) && hour === 5) {
+      if (hour < parseInt(DiurnalStart.split(":")[0], 10) && hour === 5) {
         const remainingMinutes =
-          diurnal_start.split(":")[0] * 60 - (hour * 60 + minutes);
+          DiurnalStart.split(":")[0] * 60 - (hour * 60 + minutes);
         const remainingHours = remainingMinutes / 60;
 
         handleExtraHours(isHoliday, remainingHours, true); // Sumar a nocturna o festiva nocturna

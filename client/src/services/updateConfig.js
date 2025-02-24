@@ -1,24 +1,31 @@
-export const updateConfig = async (newConfig) => {
+import axios from "axios";
+
+export const updateConfig = async (configData) => {
   try {
-    const options = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(newConfig),
-    };
+    const token = localStorage.getItem("token"); // Obtiene el token del almacenamiento local
 
-    const response = await fetch(`https://localhost:7086/api/config`, options);
-
-    if (!response.ok) {
-      throw new Error("Error actualizando la configuración");
+    if (!token) {
+      throw new Error("No se encontró un token en el almacenamiento local.");
     }
 
-    const data = await response.json();
-    return data;
+    const response = await axios.put(
+      "https://localhost:7086/api/config",
+      configData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Agrega el token en la cabecera
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return response.data;
   } catch (error) {
-    console.error("Error al actualizar configuración:", error);
-    throw error;
+    console.error("Error en updateConfig:", error);
+    throw new Error(
+      `Error actualizando la configuración: ${
+        error.response?.status || "Desconocido"
+      }`
+    );
   }
 };

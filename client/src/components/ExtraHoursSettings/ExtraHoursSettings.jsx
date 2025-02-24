@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { InputNumber, TimePicker, Form, Button, message } from "antd";
 import { useConfig } from "../../utils/ConfigProvider";
 import { updateConfig } from "../../services/updateConfig";
+import { useAuth } from "../../utils/AuthContext";
 import dayjs from "dayjs";
 import "dayjs/locale/es";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -13,17 +14,45 @@ const ExtraHoursSettings = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const { config, setConfig } = useConfig();
+  const { auth } = useAuth();
+
+  useEffect(() => {
+    if (config) {
+      form.setFieldsValue({
+        weeklyExtraHoursLimit: config.weeklyExtraHoursLimit,
+        diurnalMultiplier: config.diurnalMultiplier,
+        nocturnalMultiplier: config.nocturnalMultiplier,
+        diurnalHolidayMultiplier: config.diurnalHolidayMultiplier,
+        nocturnalHolidayMultiplier: config.nocturnalHolidayMultiplier,
+        diurnalStart: dayjs(config.diurnalStart, "HH:mm"),
+        diurnalEnd: dayjs(config.diurnalEnd, "HH:mm"),
+      });
+    }
+  }, [config, form]);
 
   const handleSubmit = async (values) => {
     setLoading(true);
+
     try {
       const updatedValues = {
-        ...values,
-        diurnal_start: values.diurnal_start.format("HH:mm"),
-        diurnal_end: values.diurnal_end.format("HH:mm"),
+        weeklyExtraHoursLimit: values.weeklyExtraHoursLimit,
+        diurnalMultiplier: values.diurnalMultiplier,
+        nocturnalMultiplier: values.nocturnalMultiplier,
+        diurnalHolidayMultiplier: values.diurnalHolidayMultiplier,
+        nocturnalHolidayMultiplier: values.nocturnalHolidayMultiplier,
+        diurnalStart: values.diurnalStart.format("HH:mm"),
+        diurnalEnd: values.diurnalEnd.format("HH:mm"),
       };
 
-      const updatedConfig = await updateConfig(updatedValues); // Llama a la función updateConfig y Pasa el token como argumento
+      if (!auth?.token) {
+        message.error("No tienes autorización para realizar esta acción.");
+        setLoading(false);
+        return;
+      }
+
+      console.log("Token enviado:", auth.token);
+
+      const updatedConfig = await updateConfig(updatedValues, auth.token);
       setConfig(updatedConfig);
       message.success("Configuración actualizada correctamente");
     } catch (error) {
@@ -44,20 +73,10 @@ const ExtraHoursSettings = () => {
   return (
     <div className="config-extra-hours">
       <h3>Configuración de Horas Extra</h3>
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={handleSubmit}
-        initialValues={{
-          ...config,
-          diurnal_start: dayjs(config.diurnal_start, "HH:mm"),
-          diurnal_end: dayjs(config.diurnal_end, "HH:mm"),
-          weekly_extra_hours_limit: config.weekly_extra_hours_limit,
-        }}
-      >
+      <Form form={form} layout="vertical" onFinish={handleSubmit}>
         <Form.Item
           label="Límite de horas extra semanales"
-          name="weekly_extra_hours_limit"
+          name="weeklyExtraHoursLimit"
           rules={[
             { required: true, message: "Por favor, ingresa un límite válido." },
           ]}
@@ -67,48 +86,48 @@ const ExtraHoursSettings = () => {
 
         <Form.Item
           label="Multiplicador Hora Diurna"
-          name="diurnal_multiplier"
-          initialValue={config.diurnal_multiplier}
+          name="diurnalMultiplier"
+          rules={[{ required: true, message: "Este campo es requerido" }]}
         >
           <InputNumber min={1} step={0.1} />
         </Form.Item>
 
         <Form.Item
           label="Multiplicador Hora Nocturna"
-          name="nocturnal_multiplier"
-          initialValue={config.nocturnal_multiplier}
+          name="nocturnalMultiplier"
+          rules={[{ required: true, message: "Este campo es requerido" }]}
         >
           <InputNumber min={1} step={0.1} />
         </Form.Item>
 
         <Form.Item
           label="Multiplicador Hora Festiva Diurna"
-          name="diurnal_holiday_multiplier"
-          initialValue={config.diurnal_holiday_multiplier}
+          name="diurnalHolidayMultiplier"
+          rules={[{ required: true, message: "Este campo es requerido" }]}
         >
           <InputNumber min={1} step={0.1} />
         </Form.Item>
 
         <Form.Item
           label="Multiplicador Hora Festiva Nocturna"
-          name="nocturnal_holiday_multiplier"
-          initialValue={config.nocturnal_holiday_multiplier}
+          name="nocturnalHolidayMultiplier"
+          rules={[{ required: true, message: "Este campo es requerido" }]}
         >
           <InputNumber min={1} step={0.1} />
         </Form.Item>
 
         <Form.Item
           label="Inicio Hora Diurna (24h)"
-          name="diurnal_start"
-          initialValue={dayjs(config.diurnal_start, "HH:mm")}
+          name="diurnalStart"
+          rules={[{ required: true, message: "Este campo es requerido" }]}
         >
           <TimePicker format="HH:mm" />
         </Form.Item>
 
         <Form.Item
           label="Fin Hora Diurna (24h)"
-          name="diurnal_end"
-          initialValue={dayjs(config.diurnal_end, "HH:mm")}
+          name="diurnalEnd"
+          rules={[{ required: true, message: "Este campo es requerido" }]}
         >
           <TimePicker format="HH:mm" />
         </Form.Item>

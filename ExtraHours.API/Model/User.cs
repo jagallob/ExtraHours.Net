@@ -8,26 +8,26 @@ namespace ExtraHours.API.Model
     {
         [Key]
         [Column("id")]
-        public long Id { get; set; }
+        public long id { get; set; }
 
         [Required, EmailAddress]
         [Column("email")]
-        public string Email { get; set; } = string.Empty;
+        public string email { get; set; } = string.Empty;
 
         [Required]
         [Column("name")]
-        public string Name { get; set; } = string.Empty;
+        public string name { get; set; } = string.Empty;
 
         [Required]
         [Column("password")]
-        public string PasswordHash { get; set; } = string.Empty;
+        public string passwordHash { get; set; } = string.Empty;
 
         [Required]
         [Column("role")]
-        public string Role { get; set; } = string.Empty;
+        public string role { get; set; } = string.Empty;
 
         [Required]
         [Column("username")]
-        public string Username { get; set; } = string.Empty;
+        public string username { get; set; } = string.Empty;
     }
 }
