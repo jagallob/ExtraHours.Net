@@ -3,7 +3,7 @@ import { addExtraHour } from "@services/addExtraHour";
 import { EmployeeInfo } from "../EmployeeInfo/EmployeeInfo";
 import "./FormExtraHour.scss";
 import { determineExtraHourType } from "@utils/determineExtraHourType";
-import { useConfig } from "../../utils/ConfigProvider";
+import { useConfig } from "../../utils/useConfig";
 
 export const FormExtraHour = () => {
   const [extraHours, setExtraHours] = useState({
@@ -42,18 +42,25 @@ export const FormExtraHour = () => {
 
   // useEffect para calcular horas extra automáticamente cuando se cambian los tiempos o la configuración
   useEffect(() => {
-    if (!isLoading && config) {
+    if (
+      !isLoading &&
+      config &&
+      extraHours.date &&
+      extraHours.startTime &&
+      extraHours.endTime
+    ) {
       console.log("Configuración obtenida:", config);
-      if (extraHours.date && extraHours.startTime && extraHours.endTime) {
-        determineExtraHourType(
-          extraHours.date,
-          extraHours.startTime,
-          extraHours.endTime,
-          setError,
-          setExtraHours,
-          config
-        );
-      }
+
+      determineExtraHourType(
+        extraHours.date,
+        extraHours.startTime,
+        extraHours.endTime,
+        setError,
+        setExtraHours,
+        config
+      );
+    } else {
+      console.warn("La configuración aún no está completamente cargada.");
     }
   }, [
     extraHours.date,

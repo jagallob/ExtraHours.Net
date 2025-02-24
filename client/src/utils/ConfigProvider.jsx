@@ -1,17 +1,7 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-
-/**
- * ConfigContext proporciona el estado de configuración para el cálculo de horas extra
- * en la aplicación. Incluye multiplicadores y horarios de trabajo.
- */
-
-const ConfigContext = createContext();
-
-/**
- * ConfigProvider es un componente que envuelve a su hijo y proporciona acceso
- * al contexto de configuración a través de su valor.
- */
+import axios from "axios";
+import ConfigContext from "./ConfigContext";
 
 export const ConfigProvider = ({ children }) => {
   const [config, setConfig] = useState(null);
@@ -20,34 +10,38 @@ export const ConfigProvider = ({ children }) => {
   useEffect(() => {
     const fetchConfig = async () => {
       try {
-        const response = await fetch("https://localhost:7086/api/config", {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          throw new Error("No token found in localStorage.");
+        }
+
+        const response = await axios.get("https://localhost:7086/api/config", {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });
-        if (response.ok) {
-          const data = await response.json();
-          const transformedData = {
-            weeklyExtraHoursLimit: data.weeklyExtraHoursLimit,
-            diurnalMultiplier: data.diurnalMultiplier,
-            nocturnalMultiplier: data.nocturnalMultiplier,
-            diurnalHolidayMultiplier: data.diurnalHolidayMultiplier,
-            nocturnalHolidayMultiplier: data.nocturnalHolidayMultiplier,
-            diurnalStart: data.diurnalStart,
-            diurnalEnd: data.diurnalEnd,
-          };
-          console.log("Datos transformados:", transformedData);
-          setConfig(transformedData);
-        } else {
-          console.error("Error fetching configuration:", response.statusText);
-        }
+
+        const data = response.data;
+        const transformedData = {
+          weeklyExtraHoursLimit: data.weeklyExtraHoursLimit,
+          diurnalMultiplier: data.diurnalMultiplier,
+          nocturnalMultiplier: data.nocturnalMultiplier,
+          diurnalHolidayMultiplier: data.diurnalHolidayMultiplier,
+          nocturnalHolidayMultiplier: data.nocturnalHolidayMultiplier,
+          diurnalStart: data.diurnalStart,
+          diurnalEnd: data.diurnalEnd,
+        };
+
+        console.log("Datos transformados:", transformedData);
+        setConfig(transformedData);
       } catch (error) {
         console.error("Error fetching configuration:", error);
       } finally {
         setIsLoading(false);
       }
     };
+
     fetchConfig();
   }, []);
 
@@ -65,5 +59,3 @@ export const ConfigProvider = ({ children }) => {
 ConfigProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
-
-export const useConfig = () => useContext(ConfigContext);

@@ -48,15 +48,15 @@ export const EmployeeInfo = ({ onIdChange, reset, setReset }) => {
         <div className="detailsInfo">
           <div className="description-item">
             <div className="title">Empleado</div>
-            <div className="description">{employee.Name}</div>
+            <div className="description">{employee.name}</div>
           </div>
           <div className="description-item">
             <div className="title">Salario</div>
-            <div className="description">{employee.Salary}</div>
+            <div className="description">{employee.salary}</div>
           </div>
           <div className="description-item">
             <div className="title">Cargo</div>
-            <div className="description">{employee.Position}</div>
+            <div className="description">{employee.position}</div>
           </div>
           <div className="description-item">
             <div className="title">
@@ -64,7 +64,7 @@ export const EmployeeInfo = ({ onIdChange, reset, setReset }) => {
               Manager
             </div>
             <div className="description">
-              {employee.Manager?.Name ?? "Sin manager asignado"}
+              {employee.manager?.name ?? "Sin manager asignado"}
             </div>
           </div>
         </div>
