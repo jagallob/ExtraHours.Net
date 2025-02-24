@@ -1,30 +1,26 @@
+import axios from "axios";
+
 export const addExtraHour = async (extraHour) => {
   try {
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(extraHour),
-    };
+    const token = localStorage.getItem("token");
 
-    // console.log("Enviando datos:", body);
-
-    const response = await fetch(
-      `https://localhost:7086/api/extra-hour`,
-      options
+    const response = await axios.post(
+      "https://localhost:7086/api/extra-hour",
+      extraHour,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
 
-    if (!response.ok) {
-      throw new Error("Error en la solicitud");
-    }
-
-    const data = await response.json();
-
-    return data;
+    return response.data;
   } catch (error) {
-    console.error("Error al agregar horas extra:", error);
+    console.error(
+      "Error al agregar horas extra:",
+      error.response?.data || error.message
+    );
 
     throw error;
   }

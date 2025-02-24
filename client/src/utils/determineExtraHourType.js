@@ -1,61 +1,125 @@
-import { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import axios from "axios";
-import { ConfigContext } from "../../utils/ConfigContext";
+import Holiday from "date-holidays";
+import dayjs from "dayjs";
+import isBetween from "dayjs/plugin/isBetween";
 
-export const ConfigProvider = ({ children }) => {
-  const [config, setConfig] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+dayjs.extend(isBetween);
 
-  useEffect(() => {
-    const fetchConfig = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          throw new Error("No token found in localStorage.");
-        }
+const hd = new Holiday("CO");
 
-        const response = await axios.get("https://localhost:7086/api/config", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-
-        const data = response.data;
-        const transformedData = {
-          weeklyExtraHoursLimit: data.weeklyExtraHoursLimit,
-          diurnalMultiplier: data.diurnalMultiplier,
-          nocturnalMultiplier: data.nocturnalMultiplier,
-          diurnalHolidayMultiplier: data.diurnalHolidayMultiplier,
-          nocturnalHolidayMultiplier: data.nocturnalHolidayMultiplier,
-          diurnalStart: data.diurnalStart,
-          diurnalEnd: data.diurnalEnd,
-        };
-
-        console.log("Datos transformados:", transformedData);
-        setConfig(transformedData);
-      } catch (error) {
-        console.error("Error fetching configuration:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchConfig();
-  }, []);
-
-  if (isLoading) {
-    return <div>Loading configuration...</div>;
+export const determineExtraHourType = (
+  date,
+  startTime,
+  endTime,
+  setError,
+  setExtraHours,
+  config
+) => {
+  if (
+    !config ||
+    !config.diurnalStart ||
+    !config.diurnalEnd ||
+    typeof config.diurnalStart !== "string" ||
+    typeof config.diurnalEnd !== "string"
+  ) {
+    console.error("La configuración aún no está completamente cargada.");
+    return;
   }
 
-  return (
-    <ConfigContext.Provider value={{ config, setConfig }}>
-      {children}
-    </ConfigContext.Provider>
-  );
-};
+  const { diurnalStart, diurnalEnd } = config;
 
-ConfigProvider.propTypes = {
-  children: PropTypes.node.isRequired,
+  const startDateTime = dayjs(`${date}T${startTime}`);
+  const endDateTime = dayjs(`${date}T${endTime}`);
+
+  // Verificación para evitar que la hora de fin sea anterior a la de inicio
+  if (endDateTime.isBefore(startDateTime)) {
+    setError("La hora de fin debe ser posterior a la hora de inicio.");
+    return;
+  }
+
+  let current = startDateTime;
+  let diurnal = 0,
+    nocturnal = 0,
+    diurnalHoliday = 0,
+    nocturnalHoliday = 0;
+
+  // Función para manejar horas extras según su tipo
+  const handleExtraHours = (isHoliday, hoursDiff, isNight) => {
+    if (isHoliday) {
+      if (isNight) {
+        nocturnalHoliday += hoursDiff; // Sumar a nocturnalHoliday
+      } else {
+        diurnalHoliday += hoursDiff; // Sumar a diurnalHoliday
+      }
+    } else {
+      if (isNight) {
+        nocturnal += hoursDiff; // Sumar a nocturnal
+      } else {
+        diurnal += hoursDiff; // Sumar a diurnal
+      }
+    }
+  };
+
+  while (current.isBefore(endDateTime)) {
+    const isHoliday = hd.isHoliday(current.toDate()) || current.day() === 0; // Verificar si la hora actual es festiva
+    const hour = current.hour();
+    const minutes = current.minute();
+    const nextHour = current.add(1, "hour");
+    // nextHour.setHours(current.getHours() + 1);
+    const actualEnd = nextHour.isAfter(endDateTime) ? endDateTime : nextHour;
+
+    // Calcular la diferencia directamente en horas
+    const hoursDiff = actualEnd.diff(current, "minutes") / 60;
+
+    // Calcular horas diurnas
+    if (
+      hour >= parseInt(diurnalStart.split(":")[0], 10) &&
+      hour < parseInt(diurnalEnd.split(":")[0], 10)
+    ) {
+      if (hour === parseInt(diurnalEnd.split(":")[0], 10) - 1) {
+        // Si estamos en la última hora antes de que comience la franja nocturna
+        const remainingMinutes =
+          parseInt(diurnalEnd.split(":")[0], 10) * 60 - (hour * 60 + minutes); // Minutos restantes hasta el final de la franja diurna
+        const remainingHours = remainingMinutes / 60;
+
+        handleExtraHours(isHoliday, remainingHours, false); // Sumar a diurna o festiva diurna
+        const nocturnalHours = hoursDiff - remainingHours;
+        if (nocturnalHours > 0) {
+          handleExtraHours(isHoliday, nocturnalHours, true); // Sumar a nocturna o festiva nocturna
+        }
+      } else {
+        handleExtraHours(isHoliday, hoursDiff, false); // Sumar horas diurnas
+      }
+    } else if (
+      hour >= parseInt(diurnalEnd.split(":")[0], 10) ||
+      hour < parseInt(diurnalStart.split(":")[0], 10)
+    ) {
+      if (hour < parseInt(diurnalStart.split(":")[0], 10) && hour === 5) {
+        const remainingMinutes =
+          diurnalStart.split(":")[0] * 60 - (hour * 60 + minutes);
+        const remainingHours = remainingMinutes / 60;
+
+        handleExtraHours(isHoliday, remainingHours, true); // Sumar a nocturna o festiva nocturna
+        const diurnalHours = hoursDiff - remainingHours;
+        if (diurnalHours > 0) {
+          handleExtraHours(isHoliday, diurnalHours, false); // Sumar a diurna o festiva diurna
+        }
+      } else {
+        handleExtraHours(isHoliday, hoursDiff, true); // Sumar horas nocturnas
+      }
+    }
+
+    current = nextHour; // Avanzar a la siguiente hora
+  }
+
+  const extrasHours = diurnal + nocturnal + diurnalHoliday + nocturnalHoliday;
+
+  // Actualiza el estado con el valor redondeado a 2 decimales
+  setExtraHours((prevData) => ({
+    ...prevData,
+    diurnal: diurnal.toFixed(2),
+    nocturnal: nocturnal.toFixed(2),
+    diurnalHoliday: diurnalHoliday.toFixed(2),
+    nocturnalHoliday: nocturnalHoliday.toFixed(2),
+    extrasHours: extrasHours.toFixed(2),
+  }));
 };

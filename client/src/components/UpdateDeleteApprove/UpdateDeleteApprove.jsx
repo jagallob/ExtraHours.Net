@@ -6,7 +6,7 @@ import { updateExtraHour } from "@services/updateExtraHour";
 import { deleteExtraHour } from "../../services/deleteExtraHour";
 import { approveExtraHour } from "@services/approveExtraHour";
 import { columns as staticColumns } from "@utils/tableColumns";
-import { useConfig } from "../../utils/ConfigProvider";
+import { useConfig } from "../../utils/useConfig";
 import "./UpdateDeleteApprove.scss";
 import dayjs from "dayjs";
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { addExtraHour } from "@services/addExtraHour";
 import { EmployeeInfo } from "../EmployeeInfo/EmployeeInfo";
 import "./FormExtraHour.scss";
-import { determineExtraHourType } from "@utils/determineExtraHourType";
+import { determineExtraHourType } from "../../utils/determineExtraHourType";
 import { useConfig } from "../../utils/useConfig";
 
 export const FormExtraHour = () => {

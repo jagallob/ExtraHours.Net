@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { InputNumber, TimePicker, Form, Button, message } from "antd";
-import { useConfig } from "../../utils/ConfigProvider";
+import { useConfig } from "../../utils/useConfig";
 import { updateConfig } from "../../services/updateConfig";
 import { useAuth } from "../../utils/AuthContext";
 import dayjs from "dayjs";
