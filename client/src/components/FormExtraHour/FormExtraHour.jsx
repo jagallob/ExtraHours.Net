@@ -4,6 +4,7 @@ import { EmployeeInfo } from "../EmployeeInfo/EmployeeInfo";
 import "./FormExtraHour.scss";
 import { determineExtraHourType } from "../../utils/determineExtraHourType";
 import { useConfig } from "../../utils/useConfig";
+import dayjs from "dayjs";
 
 export const FormExtraHour = () => {
   const [extraHours, setExtraHours] = useState({
@@ -76,7 +77,30 @@ export const FormExtraHour = () => {
     setError(null);
 
     try {
-      await addExtraHour(extraHours);
+      const formattedStartTime = dayjs(extraHours.startTime, "HH:mm").format(
+        "HH:mm:ss"
+      );
+      const formattedEndTime = dayjs(extraHours.endTime, "HH:mm").format(
+        "HH:mm:ss"
+      );
+
+      const formattedData = {
+        id: parseInt(extraHours.id, 10),
+        date: extraHours.date,
+        startTime: formattedStartTime,
+        endTime: formattedEndTime,
+        diurnal: parseFloat(extraHours.diurnal),
+        nocturnal: parseFloat(extraHours.nocturnal),
+        diurnalHoliday: parseFloat(extraHours.diurnalHoliday),
+        nocturnalHoliday: parseFloat(extraHours.nocturnalHoliday),
+        extraHours: parseFloat(extraHours.extrasHours),
+        observations: extraHours.observations,
+        approved: false, // Valor predeterminado
+      };
+
+      console.log("Datos enviados:", formattedData);
+
+      await addExtraHour(formattedData);
       alert("Horas extras agregadas exitosamente");
 
       setExtraHours({

@@ -25,6 +25,13 @@ namespace ExtraHours.API.Data
 
             modelBuilder.Entity<ExtraHoursConfig>().HasData(new ExtraHoursConfig { id = 1 });
 
+            modelBuilder.Entity<ExtraHour>()
+               .Property(e => e.date)
+               .HasConversion(
+            v => v.ToUniversalTime(),  // Convierte a UTC al guardar
+            v => DateTime.SpecifyKind(v, DateTimeKind.Utc) // Convierte a UTC al leer
+        );
+
             base.OnModelCreating(modelBuilder);
         }
 

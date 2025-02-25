@@ -4,6 +4,8 @@ export const addExtraHour = async (extraHour) => {
   try {
     const token = localStorage.getItem("token");
 
+    console.log("Enviando a API:", extraHour); // Verificar antes de enviar
+
     const response = await axios.post(
       "https://localhost:7086/api/extra-hour",
       extraHour,

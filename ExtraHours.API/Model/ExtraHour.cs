@@ -15,6 +15,8 @@ namespace ExtraHours.API.Model
         public DateTime date { get; set; }
         public TimeSpan startTime { get; set; }
         public TimeSpan endTime { get; set; }
+
+   
         public double diurnal { get; set; }
         public double nocturnal { get; set; }
         public double diurnalHoliday { get; set; }

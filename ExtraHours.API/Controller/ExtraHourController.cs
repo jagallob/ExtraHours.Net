@@ -65,8 +65,25 @@ namespace ExtraHours.API.Controller
             if (extraHour == null)
                 return BadRequest(new { error = "Datos de horas extra no pueden ser nulos" });
 
-            var savedExtraHour = await _extraHourService.AddExtraHourAsync(extraHour);
-            return Created("", savedExtraHour);
+            if (extraHour.startTime == TimeSpan.Zero)
+                return BadRequest(new { error = "Formato de startTime inválido" });
+
+            if (extraHour.endTime == TimeSpan.Zero)
+                return BadRequest(new { error = "Formato de endTime inválido" });
+
+            Console.WriteLine($"Recibido: {System.Text.Json.JsonSerializer.Serialize(extraHour)}");
+
+
+            try
+            {
+                var savedExtraHour = await _extraHourService.AddExtraHourAsync(extraHour);
+                return Created("", savedExtraHour);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al guardar horas extra: {ex.Message}");
+                return StatusCode(500, new { error = "Error interno del servidor" });
+            }
         }
 
         [HttpGet]
