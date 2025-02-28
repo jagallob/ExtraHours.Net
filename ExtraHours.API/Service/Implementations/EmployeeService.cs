@@ -4,6 +4,7 @@ using ExtraHours.API.Service.Interface;
 using ExtraHours.API.Dto;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExtraHours.API.Service.Implementations
 {
@@ -69,5 +70,6 @@ namespace ExtraHours.API.Service.Implementations
         {
             await _employeeRepository.DeleteAsync(id);
         }
+
     }
 }

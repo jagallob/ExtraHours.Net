@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { InputNumber, TimePicker, Form, Button, message } from "antd";
 import { useConfig } from "../../utils/useConfig";
 import { updateConfig } from "../../services/updateConfig";
-import { useAuth } from "../../utils/AuthContext";
+import { useAuth } from "../../utils/useAuth";
 import dayjs from "dayjs";
 import "dayjs/locale/es";
 import customParseFormat from "dayjs/plugin/customParseFormat";

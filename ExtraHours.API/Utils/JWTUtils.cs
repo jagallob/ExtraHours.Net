@@ -22,7 +22,7 @@ namespace ExtraHours.API.Utils
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Surname, user.email.Trim()),
+                new Claim(ClaimTypes.Name, user.email.Trim()),
                 new Claim("role", user.role),
                 new Claim("id", user.id
                 .ToString())
@@ -34,7 +34,7 @@ namespace ExtraHours.API.Utils
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Surname, user.email.Trim()),
+                new Claim(ClaimTypes.Name, user.email.Trim()),
                 new Claim("id", user.id.ToString())
             };
             return CreateToken(claims, REFRESH_TOKEN_EXPIRATION);

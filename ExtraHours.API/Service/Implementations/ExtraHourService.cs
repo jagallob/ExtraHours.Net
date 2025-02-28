@@ -1,6 +1,7 @@
 ﻿using ExtraHours.API.Model;
 using ExtraHours.API.Repositories.Interfaces;
 using ExtraHours.API.Service.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExtraHours.API.Service.Implementations
 {
@@ -47,6 +48,6 @@ namespace ExtraHours.API.Service.Implementations
         {
             return await _extraHourRepository.FindAllAsync();
         }
-
+              
     }
 }

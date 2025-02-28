@@ -11,5 +11,6 @@ namespace ExtraHours.API.Service.Interface
         Task<ExtraHour> AddExtraHourAsync(ExtraHour extraHour);
         Task UpdateExtraHourAsync(ExtraHour extraHour);
         Task<List<ExtraHour>> GetAllAsync();
+        
     }
 }

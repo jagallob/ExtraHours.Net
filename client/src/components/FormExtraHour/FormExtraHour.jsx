@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 import { addExtraHour } from "@services/addExtraHour";
-import { EmployeeInfo } from "../EmployeeInfo/EmployeeInfo";
 import "./FormExtraHour.scss";
 import { determineExtraHourType } from "../../utils/determineExtraHourType";
 import { useConfig } from "../../utils/useConfig";
 import dayjs from "dayjs";
+import { useAuth } from "../../utils/useAuth";
 
 export const FormExtraHour = () => {
+  const { getEmployeeIdFromToken } = useAuth();
   const [extraHours, setExtraHours] = useState({
     registry: "",
-    id: "",
     date: "",
     startTime: "",
     endTime: "",
@@ -23,15 +23,18 @@ export const FormExtraHour = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [resetEmployeeInfo, setResetEmployeeInfo] = useState(false);
   const { config, isLoading } = useConfig();
 
-  const handleIdChange = (id) => {
-    setExtraHours((prevData) => ({
-      ...prevData,
-      id: parseInt(id, 10),
-    }));
-  };
+  // Establecer el ID del empleado automáticamente
+  useEffect(() => {
+    const employeeId = getEmployeeIdFromToken();
+    if (employeeId) {
+      setExtraHours((prevData) => ({
+        ...prevData,
+        id: parseInt(employeeId, 10),
+      }));
+    }
+  }, [getEmployeeIdFromToken]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -85,7 +88,7 @@ export const FormExtraHour = () => {
       );
 
       const formattedData = {
-        id: parseInt(extraHours.id, 10),
+        id: extraHours.id,
         date: extraHours.date,
         startTime: formattedStartTime,
         endTime: formattedEndTime,
@@ -105,7 +108,6 @@ export const FormExtraHour = () => {
 
       setExtraHours({
         registry: "",
-        id: "",
         date: "",
         startTime: "",
         endTime: "",
@@ -116,8 +118,6 @@ export const FormExtraHour = () => {
         extrasHours: 0,
         observations: "",
       });
-
-      setResetEmployeeInfo(true);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -131,11 +131,6 @@ export const FormExtraHour = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <EmployeeInfo
-        onIdChange={handleIdChange}
-        reset={resetEmployeeInfo}
-        setReset={setResetEmployeeInfo}
-      />
       <div className="form-group-date-time">
         <div>
           <label htmlFor="date">Fecha</label>
@@ -145,6 +140,7 @@ export const FormExtraHour = () => {
             name="date"
             value={extraHours.date}
             onChange={handleChange}
+            required
           />
         </div>
         <div>
@@ -155,6 +151,7 @@ export const FormExtraHour = () => {
             name="startTime"
             value={extraHours.startTime}
             onChange={handleChange}
+            required
           />
         </div>
         <div>
@@ -169,6 +166,7 @@ export const FormExtraHour = () => {
             name="endTime"
             value={extraHours.endTime}
             onChange={handleChange}
+            required
           />
         </div>
       </div>

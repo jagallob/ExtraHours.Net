@@ -62,6 +62,25 @@ namespace ExtraHours.API.Controller
         [HttpPost]
         public async Task<IActionResult> CreateExtraHour([FromBody] ExtraHour extraHour)
         {
+
+            // Obtener ID del empleado desde el token
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(new { error = "No se pudo obtener el ID del usuario logueado." });
+            }
+
+            long employeeId = long.Parse(userId);
+
+            // Asignar el ID del empleado automáticamente
+            extraHour.id = employeeId;
+
+            if (extraHour == null)
+            {
+                return BadRequest(new { error = "Datos de horas extra no pueden ser nulos" });
+            }
+
+
             if (extraHour == null)
                 return BadRequest(new { error = "Datos de horas extra no pueden ser nulos" });
 
@@ -138,6 +157,7 @@ namespace ExtraHours.API.Controller
 
             return Ok(new { message = "Registro eliminado exitosamente" });
         }
+                       
 
     }
 }

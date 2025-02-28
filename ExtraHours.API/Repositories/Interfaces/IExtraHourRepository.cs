@@ -12,5 +12,6 @@ namespace ExtraHours.API.Repositories.Interfaces
         Task<ExtraHour> AddAsync(ExtraHour extraHour);
         Task UpdateAsync(ExtraHour extraHour);
         Task<List<ExtraHour>> FindAllAsync();
+       
     }
 }

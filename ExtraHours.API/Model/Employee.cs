@@ -24,5 +24,6 @@ namespace ExtraHours.API.Model
         [Column("manager_id")]
         public long? managerId { get; set; }
         public Manager? manager { get; set; }
+
     }
 }

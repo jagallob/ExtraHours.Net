@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Input, Button, message } from "antd";
-import { useAuth } from "../utils/AuthContext";
+import { useAuth } from "../utils/useAuth";
 import { UserService } from "../services/UserService";
 import "./LoginPage.scss";
 import Logo from "../../../client/src/assets/images/Logo.png";

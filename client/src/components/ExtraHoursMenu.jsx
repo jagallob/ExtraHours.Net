@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../utils/AuthContext";
+import { useAuth } from "../utils/useAuth";
 import ChangePasswordModal from "../components/ChangePasswordModal/ChangePasswordModal";
 import "./ExtraHoursMenu.scss";
 import Agregar from "../assets/images/Agregar.png";

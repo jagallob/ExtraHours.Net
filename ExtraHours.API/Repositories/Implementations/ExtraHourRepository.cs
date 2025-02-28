@@ -12,7 +12,7 @@ namespace ExtraHours.API.Repositories.Implementations
         {
             _context = context;
         }
-
+            
         public async Task<List<ExtraHour>> FindExtraHoursByIdAsync(long id)
         {
             return await _context.extraHours.Where(e => e.id == id).ToListAsync();
@@ -63,5 +63,6 @@ namespace ExtraHours.API.Repositories.Implementations
         {
             return await _context.extraHours.ToListAsync();
         }
+               
     }
 }

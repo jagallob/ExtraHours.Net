@@ -1,15 +1,24 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
+
   const [auth, setAuth] = useState(() => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
-    return token && role ? { token, role } : null;
+
+    if (token && role) {
+      const decodedToken = jwtDecode(token); // Decodificar el token
+      console.log("Token decodificado:", decodedToken);
+
+      return { token, role };
+    }
+    return null;
   });
 
   const login = ({ token, role }) => {
@@ -36,9 +45,4 @@ export const AuthProvider = ({ children }) => {
 
 AuthProvider.propTypes = {
   children: PropTypes.node.isRequired,
-};
-
-// Hook para usar el contexto de autenticación
-export const useAuth = () => {
-  return useContext(AuthContext);
 };
