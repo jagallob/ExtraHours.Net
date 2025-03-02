@@ -3,7 +3,13 @@ import { jwtDecode } from "jwt-decode";
 import { AuthContext } from "./AuthContext";
 
 export const useAuth = () => {
-  const auth = useContext(AuthContext);
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useAuth debe ser usado dentro de un AuthProvider");
+  }
+
+  const { auth, login, logout } = context;
 
   const getEmployeeIdFromToken = () => {
     if (auth?.token) {
@@ -41,5 +47,5 @@ export const useAuth = () => {
     return null;
   };
 
-  return { ...auth, getEmployeeIdFromToken };
+  return { auth, login, logout, getEmployeeIdFromToken };
 };

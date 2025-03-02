@@ -1,0 +1,35 @@
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #3a8bff;
+  border-bottom: px solid #e2e8f0;
+  font-family: sans-serif;
+  color: rgb(251, 253, 253);
+
+  .logo {
+    font-weight: bold;
+    font-size: 1.2rem;
+
+    a {
+      text-decoration: none;
+      color: #3182ce;
+    }
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .user-name {
+      font-weight: 600;
+    }
+
+    .user-role {
+      color: #3d4044;
+      font-size: 0.9rem;
+    }
+  }
+}

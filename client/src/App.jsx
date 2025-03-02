@@ -13,6 +13,7 @@ import { AuthProvider } from "./utils/AuthProvider";
 import { ConfigProvider } from "./utils/ConfigProvider";
 import ProtectedRoute from "./components/ProtectedRoute";
 import SettingsPage from "./pages/Settings/SettingsPage";
+import Layout from "./components/Layout/Layout";
 
 function App() {
   return (
@@ -21,13 +22,24 @@ function App() {
         <ConfigProvider>
           <Routes>
             <Route path="/" element={<LoginPage />} />
-            <Route path="/menu" element={<ExtraHoursMenu />} />
+            <Route
+              path="/menu"
+              element={
+                <Layout>
+                  <ExtraHoursMenu />
+                </Layout>
+              }
+            />
             <Route
               path="/add"
               element={
                 <ProtectedRoute
                   allowedRoles={["empleado", "manager", "superusuario"]}
-                  element={<AddExtrahour />}
+                  element={
+                    <Layout>
+                      <AddExtrahour />
+                    </Layout>
+                  }
                 />
               }
             />
@@ -36,7 +48,11 @@ function App() {
               element={
                 <ProtectedRoute
                   allowedRoles={["manager", "superusuario", "empleado"]}
-                  element={<ReportsPage />}
+                  element={
+                    <Layout>
+                      <ReportsPage />
+                    </Layout>
+                  }
                 />
               }
             />
@@ -45,7 +61,11 @@ function App() {
               element={
                 <ProtectedRoute
                   allowedRoles={["manager", "superusuario"]}
-                  element={<UpdateDeleteApprovePage />}
+                  element={
+                    <Layout>
+                      <UpdateDeleteApprovePage />
+                    </Layout>
+                  }
                 />
               }
             />
@@ -54,18 +74,37 @@ function App() {
               element={
                 <ProtectedRoute
                   allowedRoles={["superusuario"]}
-                  element={<SettingsPage />}
+                  element={
+                    <Layout>
+                      <SettingsPage />
+                    </Layout>
+                  }
                 />
               }
             >
               <Route
                 path="ExtraHoursSettings"
-                element={<ExtraHoursSettingsPage />}
+                element={
+                  <Layout>
+                    <ExtraHoursSettingsPage />
+                  </Layout>
+                }
               />
-              <Route path="PersonalSettings" element={<PersonalSettings />} />
+              <Route
+                path="PersonalSettings"
+                element={
+                  <Layout>
+                    <PersonalSettings />
+                  </Layout>
+                }
+              />
               <Route
                 path="UpdateDeletePersonal"
-                element={<UpdateDeletePersonal />}
+                element={
+                  <Layout>
+                    <UpdateDeletePersonal />
+                  </Layout>
+                }
               />
             </Route>
           </Routes>

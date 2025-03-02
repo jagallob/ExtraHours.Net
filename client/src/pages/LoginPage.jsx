@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Input, Button, message } from "antd";
 import { useAuth } from "../utils/useAuth";
@@ -10,14 +10,7 @@ import { jwtDecode } from "jwt-decode";
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { auth, login } = useAuth();
-
-  useEffect(() => {
-    console.log(auth);
-    if (auth?.role) {
-      navigate("/menu");
-    }
-  }, [auth, navigate]);
+  const { login } = useAuth();
 
   const handleLogin = async (values) => {
     setLoading(true);
@@ -32,7 +25,7 @@ const Login = () => {
       if (decodedToken.role) {
         login({ token, role: decodedToken.role });
         navigate("/menu");
-        message.success(`Bienvenido ${values.email}`);
+        message.success(`Bienvenido ${decodedToken.unique_name}`);
       } else {
         message.error("No se pudo determinar el rol del usuario");
       }

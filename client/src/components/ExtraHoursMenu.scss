@@ -18,7 +18,7 @@ h1 {
   text-align: center;
   font-family: sans-serif;
   margin-left: 10px;
-  margin-top: 150px;
+  margin-top: 80px;
 }
 
 .grid {
@@ -45,7 +45,7 @@ h1 {
 
 .menu-item:hover {
   transform: translateY(-10px);
-  background-color: #96bdf8;
+  background-color: #ffff;
   box-shadow: 0 0 4px 4px rgba($color: hsl(245, 63%, 32%), $alpha: 1);
 }
 

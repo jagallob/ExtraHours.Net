@@ -7,7 +7,7 @@ import Agregar from "../assets/images/Agregar.png";
 import Configuracion from "../assets/images/Configuracion.png";
 import Gestion from "../assets/images/Gestion.png";
 import Informes from "../assets/images/Informes.png";
-import Logo from "../assets/images/Logo.png";
+// import Logo from "../assets/images/Logo.png";
 import NominaAprobar from "../assets/images/NominaAprobar.png";
 
 const ExtraHoursMenu = () => {
@@ -94,9 +94,9 @@ const ExtraHoursMenu = () => {
   return (
     <div>
       <div className="menu">
-        <div className="container">
+        {/* <div className="container">
           <img className="Logo" src={Logo} alt="Logo Amadeus" />
-        </div>
+        </div> */}
         <h1>Sistema de Gestión de Horas Extra</h1>
         <div className="grid">{renderMenuItems()}</div>
         <div className="button-container">

@@ -10,6 +10,7 @@ export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(() => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
+    const uniqueName = localStorage.getItem("unique_name");
 
     if (token && role) {
       const decodedToken = jwtDecode(token); // Decodificar el token
@@ -20,7 +21,15 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("id", decodedToken.id);
       }
 
-      return { token, role };
+      if (decodedToken.unique_name && !uniqueName) {
+        localStorage.setItem("unique_name", decodedToken.unique_name);
+      }
+
+      return {
+        token,
+        role,
+        uniqueName: uniqueName || decodedToken.unique_name,
+      };
     }
     return null;
   });
@@ -34,7 +43,15 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("role", formattedRole);
     localStorage.setItem("id", decodedToken.id);
 
-    setAuth({ token, role: formattedRole });
+    if (decodedToken.unique_name) {
+      localStorage.setItem("unique_name", decodedToken.unique_name);
+    }
+
+    setAuth({
+      token,
+      role: formattedRole,
+      uniqueName: decodedToken.unique_name,
+    });
     navigate("/menu");
   };
 
@@ -42,7 +59,8 @@ export const AuthProvider = ({ children }) => {
     setAuth(null);
     localStorage.removeItem("token");
     localStorage.removeItem("role");
-    localStorage.removeItem("id"); // Eliminar el ID del usuario al cerrar sesión
+    localStorage.removeItem("id");
+    localStorage.removeItem("unique_name");
     navigate("/");
   };
 
