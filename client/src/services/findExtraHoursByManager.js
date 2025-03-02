@@ -9,20 +9,23 @@ export const findExtraHoursByManager = async () => {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
       }
     );
 
     // Verificar si la respuesta no es exitosa
     if (!response.ok) {
-      throw new Error("Error al obtener los registros de horas extra.");
+      const errorData = await response.json();
+      throw new Error(
+        errorData.error || "Error al obtener los registros de horas extra."
+      );
     }
 
-    // Parsear y retornar los datos obtenidos
     const data = await response.json();
     return data;
   } catch (error) {
     console.error("Error en la solicitud:", error);
-    throw error; // Propagar el error para manejarlo en el componente
+    throw error;
   }
 };

@@ -1,7 +1,15 @@
-import { useState } from "react";
-import { Input, Table, Button, Modal, Form, InputNumber, message } from "antd";
-import { findEmployee } from "@services/findEmployee";
-import { findExtraHour } from "@services/findExtraHour";
+import { useState, useEffect } from "react";
+import {
+  Input,
+  Table,
+  Button,
+  Modal,
+  Form,
+  InputNumber,
+  message,
+  Spin,
+} from "antd";
+import { findExtraHoursByManager } from "../../services/findExtraHoursByManager";
 import { updateExtraHour } from "@services/updateExtraHour";
 import { deleteExtraHour } from "../../services/deleteExtraHour";
 import { approveExtraHour } from "@services/approveExtraHour";
@@ -12,7 +20,7 @@ import dayjs from "dayjs";
 
 export const UpdateDeleteApprove = () => {
   const [employeeData, setEmployeeData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
@@ -32,58 +40,44 @@ export const UpdateDeleteApprove = () => {
     );
   };
 
-  const handleSearch = async (idOrRegistry) => {
-    const numericIdOrRegistry = parseInt(idOrRegistry, 10);
+  useEffect(() => {
+    loadEmployeeData();
+  }, []);
+
+  const loadEmployeeData = async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const employee = await findEmployee(numericIdOrRegistry);
-      const extraHours = await findExtraHour(numericIdOrRegistry, "id");
+      const data = await findExtraHoursByManager();
+      setEmployeeData(data);
 
-      let combinedData = [];
-      if (extraHours.length > 0) {
-        combinedData = extraHours.map((extraHour) => ({
-          ...extraHour,
-          ...employee,
-        }));
-      } else {
-        const extraHourByRegistry = await findExtraHour(
-          numericIdOrRegistry,
-          "registry"
-        );
-        combinedData = extraHourByRegistry.map((extraHour) => ({
-          ...extraHour,
-          ...employee,
-        }));
-      }
+      const employeeIds = [...new Set(data.map((item) => item.id))];
 
-      setEmployeeData(combinedData);
+      employeeIds.forEach((id) => {
+        const employeeRecords = data.filter((item) => item.id === id);
+        const employeeName = employeeRecords[0]?.name || "Empleado";
+        const weeklyTotal = calculateWeeklyExtraHours(employeeRecords);
 
-      // Calcular horas semanales
-      const weeklyTotal = calculateWeeklyExtraHours(combinedData);
-
-      // Mostrar mensaje según el total de horas
-      if (weeklyTotal > weeklyLimit) {
-        message.error(
-          `⚠️ El empleado ${
-            employee.name
-          } ha superado el límite semanal con un total de ${weeklyTotal.toFixed(
-            2
-          )} horas extras.`
-        );
-      } else if (weeklyTotal >= weeklyLimit * 0.9) {
-        message.warning(
-          `El empleado ${
-            employee.name
-          } está cerca del límite semanal con un total de ${weeklyTotal.toFixed(
-            2
-          )} horas extras.`
-        );
-      }
+        if (weeklyTotal > weeklyLimit) {
+          message.error(
+            `⚠️ El empleado ${employeeName} ha superado el límite semanal con un total de ${weeklyTotal.toFixed(
+              2
+            )} horas extras.`
+          );
+        } else if (weeklyTotal >= weeklyLimit * 0.9) {
+          message.warning(
+            `El empleado ${employeeName} está cerca del límite semanal con un total de ${weeklyTotal.toFixed(
+              2
+            )} horas extras.`
+          );
+        }
+      });
     } catch (error) {
-      setError("No se encontraron datos para el ID ingresado.");
-      setEmployeeData([]);
+      console.error("Error al cargar datos:", error);
+      setError(
+        "Error al cargar los datos de horas extras. Por favor, intente nuevamente."
+      );
     } finally {
       setLoading(false);
     }
@@ -220,6 +214,10 @@ export const UpdateDeleteApprove = () => {
     }));
   };
 
+  const handleRefresh = () => {
+    loadEmployeeData();
+  };
+
   const actionColumn = {
     title: "Acciones",
     key: "actions",
@@ -241,7 +239,7 @@ export const UpdateDeleteApprove = () => {
           disabled={record.approved}
           style={{ marginRight: 8 }}
         >
-          Aprobar
+          {record.approved ? "Aprobado" : "Aprobar"}
         </Button>
       </span>
     ),
@@ -252,29 +250,45 @@ export const UpdateDeleteApprove = () => {
   return (
     <div className="ReportInfo">
       <div className="search-container">
-        <Input.Search
-          placeholder="Ingrese ID del empleado"
-          onSearch={handleSearch}
-        />
-        {error && <p className="error-message">{error}</p>}
+        <Button
+          type="primary"
+          onClick={handleRefresh}
+          style={{ marginBottom: 16 }}
+        >
+          Actualizar Datos
+        </Button>
       </div>
 
-      {loading && <p>Cargando datos...</p>}
+      {error && <p className="error-message">{error}</p>}
 
-      {employeeData.length > 0 && (
-        <div className="extra-hours-info">
-          <h3>Registros de Horas Extras</h3>
-          <Table
-            columns={columns}
-            dataSource={employeeData}
-            rowKey="registry"
-            pagination={false}
-            scroll={{
-              x: 900,
-              y: 500,
-            }}
-          />
+      {loading ? (
+        <div className="loading-container">
+          <Spin size="large" />
+          <p>Cargando datos de empleados...</p>
         </div>
+      ) : (
+        <>
+          {employeeData.length > 0 ? (
+            <div className="extra-hours-info">
+              <Table
+                columns={columns}
+                dataSource={employeeData}
+                rowKey="registry"
+                pagination={false}
+                scroll={{
+                  x: 900,
+                  y: 500,
+                }}
+              />
+            </div>
+          ) : (
+            <div className="empty-data">
+              <p>
+                No hay registros de horas extras para los empleados a su cargo.
+              </p>
+            </div>
+          )}
+        </>
       )}
 
       {isEditModalOpen && (
