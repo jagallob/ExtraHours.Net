@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export const columns = [
   {
     title: "ID",
@@ -29,6 +31,7 @@ export const columns = [
     title: "Fecha",
     dataIndex: "date",
     key: "date",
+    render: (date) => dayjs(date).format("YYYY-MM-DD"),
   },
   {
     title: "Diurnas",
