@@ -9,12 +9,35 @@ export const useAuth = () => {
     if (auth?.token) {
       try {
         const decodedToken = jwtDecode(auth.token);
-        return decodedToken.id;
+        if (decodedToken.id) {
+          return decodedToken.id;
+        }
       } catch (error) {
         console.error("Error al decodificar el token:", error);
-        return null;
       }
     }
+
+    try {
+      // Intentar obtener directamente desde localStorage si está almacenado
+      const storedId = localStorage.getItem("id");
+      if (storedId) {
+        return storedId;
+      }
+
+      // Si no hay ID almacenado, intentar decodificar el token del localStorage
+      const token = localStorage.getItem("token");
+      if (token) {
+        const decodedToken = jwtDecode(token);
+        if (decodedToken.id) {
+          // Guardar para futuros usos
+          localStorage.setItem("id", decodedToken.id);
+          return decodedToken.id;
+        }
+      }
+    } catch (error) {
+      console.error("Error al obtener ID del localStorage:", error);
+    }
+
     return null;
   };
 

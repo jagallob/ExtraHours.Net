@@ -16,17 +16,54 @@ export const ReportInfo = () => {
   const [selectedRange, setSelectedRange] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [role, setRole] = useState(null);
+  const [loggedInEmployeeId, setLoggedInEmployeeId] = useState(null);
 
   useEffect(() => {
     const userRole = localStorage.getItem("role");
     if (userRole) {
-      const roleWithoutBrackets = userRole.replace(/[[\]]/g, "");
-      console.log("Rol del usuario almacenado:", roleWithoutBrackets);
-      setRole(roleWithoutBrackets.trim()); // Asegúrate de eliminar espacios adicionales
+      const cleanedRole = userRole.trim().replace(/[[\]]/g, "");
+      console.log("Rol del usuario almacenado:", cleanedRole);
+
+      if (cleanedRole === "empleado" || cleanedRole === "superusuario") {
+        setRole(cleanedRole);
+      } else {
+        console.error("Rol inválido almacenado en localStorage:", cleanedRole);
+      }
     } else {
       console.log("No se encontró el rol del usuario en localStorage.");
     }
+
+    const userId = localStorage.getItem("id");
+    if (userId) {
+      const numericUserId = parseInt(userId, 10);
+      if (!isNaN(numericUserId)) {
+        setLoggedInEmployeeId(numericUserId);
+      } else {
+        console.error(
+          "ID de usuario inválido almacenado en localStorage:",
+          userId
+        );
+      }
+    } else {
+      console.log("No se encontró el ID del usuario en localStorage.");
+    }
   }, []);
+
+  useEffect(() => {
+    // Si el usuario es un empleado, cargar automáticamente sus informes
+    if (role === "empleado" && loggedInEmployeeId) {
+      handleSearch();
+    }
+  }, [role, loggedInEmployeeId]);
+
+  const calculateTotalExtraHours = (extraHour) => {
+    return (
+      parseFloat(extraHour.diurnal || 0) +
+      parseFloat(extraHour.nocturnal || 0) +
+      parseFloat(extraHour.diurnalHoliday || 0) +
+      parseFloat(extraHour.nocturnalHoliday || 0)
+    );
+  };
 
   const handleSearch = async () => {
     if (role === "empleado" && selectedRange.length === 2) {
@@ -40,7 +77,14 @@ export const ReportInfo = () => {
       let employee = {};
       let extraHours = [];
 
-      if (searchValue) {
+      if (role === "empleado") {
+        // Si el usuario es un empleado, usar su ID almacenado en loggedInEmployeeId
+        if (!loggedInEmployeeId) {
+          throw new Error("No se encontró el ID del empleado logueado.");
+        }
+        employee = await findEmployee(loggedInEmployeeId);
+        extraHours = await findExtraHour(loggedInEmployeeId, "id");
+      } else if (searchValue) {
         const numericIdOrRegistry = parseInt(searchValue, 10);
         employee = await findEmployee(numericIdOrRegistry);
 
@@ -48,7 +92,8 @@ export const ReportInfo = () => {
         if (!extraHours.length) {
           extraHours = await findExtraHour(numericIdOrRegistry, "registry");
         }
-      } else if (selectedRange.length === 2 && role !== "empleado") {
+      } else if (selectedRange.length === 2) {
+        // Búsqueda por rango de fechas para roles diferentes a "empleado"
         const [startDate, endDate] = selectedRange;
         extraHours = await findExtraHourByDateRange(
           startDate.format("YYYY-MM-DD"),
@@ -63,7 +108,11 @@ export const ReportInfo = () => {
 
       if (extraHours.length > 0) {
         setEmployeeData(
-          extraHours.map((extraHour) => ({ ...employee, ...extraHour }))
+          extraHours.map((extraHour) => ({
+            ...employee,
+            ...extraHour,
+            extrasHours: calculateTotalExtraHours(extraHour),
+          }))
         );
       } else {
         setError(
@@ -121,7 +170,6 @@ export const ReportInfo = () => {
       data.forEach((task) => {
         worksheet.addRow({
           ...task,
-          manager_name: task.manager.manager_name,
           approved: task.approved ? "Sí" : "No",
         });
       });
@@ -139,12 +187,14 @@ export const ReportInfo = () => {
     <div className="ReportInfo">
       <div className="filters-container">
         <div className="search-container">
-          <Input.Search
-            placeholder="Ingrese ID del empelado"
-            onSearch={handleSearch}
-            onChange={(e) => setSearchValue(e.target.value)}
-            value={searchValue}
-          />
+          {role !== "empleado" && (
+            <Input.Search
+              placeholder="Ingrese ID del empleado"
+              onSearch={handleSearch}
+              onChange={(e) => setSearchValue(e.target.value)}
+              value={searchValue}
+            />
+          )}
         </div>
         <div className="range-picker-container">
           {role !== "empleado" && (
@@ -159,7 +209,6 @@ export const ReportInfo = () => {
       </div>
 
       {error && <p className="error-message">{error}</p>}
-
       {loading && <p>Cargando datos...</p>}
 
       {employeeData.length > 0 && (

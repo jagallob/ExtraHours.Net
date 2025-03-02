@@ -9,7 +9,7 @@ import { useAuth } from "../../utils/useAuth";
 export const FormExtraHour = () => {
   const { getEmployeeIdFromToken } = useAuth();
   const [extraHours, setExtraHours] = useState({
-    registry: "",
+    id: null,
     date: "",
     startTime: "",
     endTime: "",
@@ -27,14 +27,14 @@ export const FormExtraHour = () => {
 
   // Establecer el ID del empleado automáticamente
   useEffect(() => {
-    const employeeId = getEmployeeIdFromToken();
-    if (employeeId) {
+    const employeeId = getEmployeeIdFromToken() || localStorage.getItem("id");
+    if (employeeId && !extraHours.id) {
       setExtraHours((prevData) => ({
         ...prevData,
         id: parseInt(employeeId, 10),
       }));
-    }
-  }, [getEmployeeIdFromToken]);
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,8 +63,6 @@ export const FormExtraHour = () => {
         setExtraHours,
         config
       );
-    } else {
-      console.warn("La configuración aún no está completamente cargada.");
     }
   }, [
     extraHours.date,
@@ -79,6 +77,20 @@ export const FormExtraHour = () => {
     setLoading(true);
     setError(null);
 
+    let formData = { ...extraHours };
+
+    const currentEmployeeId =
+      getEmployeeIdFromToken() || localStorage.getItem("id");
+    if (!currentEmployeeId) {
+      setError(
+        "No se pudo obtener el ID del empleado. Por favor, inicia sesión de nuevo."
+      );
+      setLoading(false);
+      return;
+    }
+
+    formData.id = parseInt(currentEmployeeId, 10);
+
     try {
       const formattedStartTime = dayjs(extraHours.startTime, "HH:mm").format(
         "HH:mm:ss"
@@ -88,16 +100,16 @@ export const FormExtraHour = () => {
       );
 
       const formattedData = {
-        id: extraHours.id,
-        date: extraHours.date,
+        id: formData.id,
+        date: formData.date,
         startTime: formattedStartTime,
         endTime: formattedEndTime,
-        diurnal: parseFloat(extraHours.diurnal),
-        nocturnal: parseFloat(extraHours.nocturnal),
-        diurnalHoliday: parseFloat(extraHours.diurnalHoliday),
-        nocturnalHoliday: parseFloat(extraHours.nocturnalHoliday),
-        extraHours: parseFloat(extraHours.extrasHours),
-        observations: extraHours.observations,
+        diurnal: parseFloat(formData.diurnal),
+        nocturnal: parseFloat(formData.nocturnal),
+        diurnalHoliday: parseFloat(formData.diurnalHoliday),
+        nocturnalHoliday: parseFloat(formData.nocturnalHoliday),
+        extraHours: parseFloat(formData.extrasHours),
+        observations: formData.observations,
         approved: false, // Valor predeterminado
       };
 
@@ -106,8 +118,9 @@ export const FormExtraHour = () => {
       await addExtraHour(formattedData);
       alert("Horas extras agregadas exitosamente");
 
+      const currentId = formData.id;
       setExtraHours({
-        registry: "",
+        id: currentId,
         date: "",
         startTime: "",
         endTime: "",
@@ -119,7 +132,11 @@ export const FormExtraHour = () => {
         observations: "",
       });
     } catch (error) {
-      setError(error.message);
+      setError(
+        error.response?.data?.title ||
+          error.message ||
+          "Error al agregar horas extra."
+      );
     } finally {
       setLoading(false);
     }

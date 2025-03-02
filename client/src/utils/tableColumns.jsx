@@ -21,8 +21,9 @@ export const columns = [
   // },
   {
     title: "Manager",
-    dataIndex: ["manager", "manager_name"],
+    dataIndex: ["manager", "name"],
     key: "manager",
+    render: (name) => name,
   },
   {
     title: "Fecha",
