@@ -127,21 +127,6 @@ namespace ExtraHours.API.Controller
 
         }
 
-        [HttpGet("date-range")]
-        public async Task<IActionResult> GetExtraHoursByDateRange([FromQuery] string starDate, [FromQuery] string endDate )
-        {
-            if (string.IsNullOrEmpty(starDate) || string.IsNullOrEmpty(endDate))
-                return BadRequest(new { error = "startDate y endDate son requeridos" });
-
-            if (!DateTime.TryParse(starDate, out var start) || !DateTime.TryParse(endDate, out var end))
-                return BadRequest(new { error = "Formato de fecha inválido" });
-
-            var extraHours = await _extraHourService.FindByDateRangeAsync(start, end);
-            if (extraHours == null || !extraHours.Any())
-                return NotFound(new { error = "No se encontraron horas extra en el rango de fechas" });
-
-            return Ok(extraHours);
-        }
 
         [HttpGet("date-range-with-employee")]
         public async Task<IActionResult> GetExtraHoursByDateRangeWithEmployee(
@@ -158,7 +143,36 @@ namespace ExtraHours.API.Controller
             if (extraHours == null || !extraHours.Any())
                 return NotFound(new { error = "No se encontraron horas extra en el rango de fechas" });
 
-            return Ok(extraHours);
+            var result = new List<object>();
+
+            foreach (var extraHour in extraHours)
+            {
+                var employee = await _employeeService.GetByIdAsync(extraHour.id); // Obtener el empleado por ID
+                if (employee == null)
+                    continue;
+
+                result.Add(new
+                {
+                    id = employee.id,
+                    name = employee.name,
+                    position = employee.position,
+                    salary = employee.salary,
+                    manager = new { name = employee.manager?.name ?? "Sin asignar" },
+                    registry = extraHour.registry,
+                    diurnal = extraHour.diurnal,
+                    nocturnal = extraHour.nocturnal,
+                    diurnalHoliday = extraHour.diurnalHoliday,
+                    nocturnalHoliday = extraHour.nocturnalHoliday,
+                    extraHours = extraHour.extraHours,
+                    date = extraHour.date.ToString("yyyy-MM-dd"),
+                    startTime = extraHour.startTime,
+                    endTime = extraHour.endTime,
+                    approved = extraHour.approved,
+                    observations = extraHour.observations
+                });
+            }
+
+            return Ok(result);
         }
 
         [HttpPost]
