@@ -3,6 +3,7 @@ import { Input, Table, DatePicker } from "antd";
 import { findEmployee } from "@services/findEmployee";
 import { findExtraHour } from "@services/findExtraHour";
 import { findExtraHourByDateRange } from "@services/findExtraHourByDateRange";
+import { findManagerEmployeesExtraHours } from "@services/findManagerEmployeesExtraHours";
 import ExcelJS from "exceljs";
 import { columns } from "@utils/tableColumns.jsx";
 import "./ReportInfo.scss";
@@ -24,7 +25,11 @@ export const ReportInfo = () => {
       const cleanedRole = userRole.trim().replace(/[[\]]/g, "");
       console.log("Rol del usuario almacenado:", cleanedRole);
 
-      if (cleanedRole === "empleado" || cleanedRole === "superusuario") {
+      if (
+        cleanedRole === "empleado" ||
+        cleanedRole === "superusuario" ||
+        cleanedRole === "manager"
+      ) {
         setRole(cleanedRole);
       } else {
         console.error("Rol inválido almacenado en localStorage:", cleanedRole);
@@ -84,6 +89,12 @@ export const ReportInfo = () => {
         }
         employee = await findEmployee(loggedInEmployeeId);
         extraHours = await findExtraHour(loggedInEmployeeId, "id");
+      } else if (role === "manager" && selectedRange.length === 2) {
+        const [startDate, endDate] = selectedRange;
+        extraHours = await findManagerEmployeesExtraHours(
+          startDate.format("YYYY-MM-DD"),
+          endDate.format("YYYY-MM-DD")
+        );
       } else if (searchValue) {
         const numericIdOrRegistry = parseInt(searchValue, 10);
         employee = await findEmployee(numericIdOrRegistry);
@@ -93,7 +104,7 @@ export const ReportInfo = () => {
           extraHours = await findExtraHour(numericIdOrRegistry, "registry");
         }
       } else if (selectedRange.length === 2) {
-        // Búsqueda por rango de fechas para roles diferentes a "empleado"
+        // Búsqueda por rango de fechas para superusuario
         const [startDate, endDate] = selectedRange;
         extraHours = await findExtraHourByDateRange(
           startDate.format("YYYY-MM-DD"),
@@ -107,13 +118,25 @@ export const ReportInfo = () => {
       }
 
       if (extraHours.length > 0) {
-        setEmployeeData(
-          extraHours.map((extraHour) => ({
-            ...employee,
-            ...extraHour,
-            extrasHours: calculateTotalExtraHours(extraHour),
-          }))
-        );
+        if (
+          role === "manager" ||
+          (role === "superusuario" && selectedRange.length === 2)
+        ) {
+          setEmployeeData(
+            extraHours.map((extraHour) => ({
+              ...extraHour,
+              extrasHours: calculateTotalExtraHours(extraHour),
+            }))
+          );
+        } else {
+          setEmployeeData(
+            extraHours.map((extraHour) => ({
+              ...employee,
+              ...extraHour,
+              extrasHours: calculateTotalExtraHours(extraHour),
+            }))
+          );
+        }
       } else {
         setError(
           "No se encontraron datos para los criterios de búsqueda proporcionados."

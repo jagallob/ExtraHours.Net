@@ -24,6 +24,11 @@ namespace ExtraHours.API.Service.Implementations
             return await _extraHourRepository.FindByDateRangeAsync(startDate, endDate);
         }
 
+        public async Task<IEnumerable<ExtraHour>> FindExtraHoursByIdAndDateRangeAsync(long employeeId, DateTime startDate, DateTime endDate)
+        {
+            return await _extraHourRepository.FindExtraHoursByIdAndDateRangeAsync(employeeId, startDate, endDate);
+        }
+
         public async Task<ExtraHour?> FindByRegistryAsync(long registry)
         {
             return await _extraHourRepository.FindByRegistryAsync(registry);

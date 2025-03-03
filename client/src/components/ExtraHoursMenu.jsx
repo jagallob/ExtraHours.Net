@@ -54,8 +54,8 @@ const ExtraHoursMenu = () => {
               className="menu-item"
               onClick={() => navigate("/ManagementExtraHour")}
             >
-              <img src={NominaAprobar} alt="Nómina - Aprobar" />
-              <p>Nómina - Aprobar</p>
+              <img src={NominaAprobar} alt="Gestionar Horas Extra" />
+              <p>Gestionar Horas Extra</p>
             </div>
           </>
         );

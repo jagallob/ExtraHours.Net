@@ -4,7 +4,7 @@ import { Form, Input, Button, message } from "antd";
 import { useAuth } from "../utils/useAuth";
 import { UserService } from "../services/UserService";
 import "./LoginPage.scss";
-import Logo from "../../../client/src/assets/images/Logo.png";
+// import Logo from "../../../client/src/assets/images/Logo.png";
 import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
@@ -42,7 +42,7 @@ const Login = () => {
       <div className="login-container">
         <h2>Iniciar sesión</h2>
 
-        <img className="Logo" src={Logo} alt="Logo Amadeus" />
+        {/* <img className="Logo" src={Logo} alt="Logo Amadeus" /> */}
         <Form
           name="login-form"
           onFinish={handleLogin}

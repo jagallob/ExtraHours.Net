@@ -18,11 +18,113 @@ namespace ExtraHours.API.Controller
             _employeeService = employeeService;
         }
 
+        [HttpGet("manager/employees-extra-hours")]
+        [Authorize(Roles = "manager")]
+        public async Task<IActionResult> GetEmployeesExtraHoursByManager([FromQuery] string startDate = null, [FromQuery] string endDate = null)
+        {
+
+            var managerId = User.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
+            if (string.IsNullOrEmpty(managerId))
+            {
+                return Unauthorized(new { error = "No se pudo obtener el ID del manager logueado." });
+            }
+
+            long managerIdLong = long.Parse(managerId);
+
+            var employees = await _employeeService.GetEmployeesByManagerIdAsync(managerIdLong);
+            if (employees == null || !employees.Any())
+            {
+                return Ok(new List<object>());
+            }
+
+            var result = new List<object>();
+
+            foreach (var employee in employees)
+            {
+                IEnumerable<ExtraHour> extraHours;
+
+                // Si se proporcionan fechas, filtrar por rango de fechas
+                if (!string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate) &&
+                    DateTime.TryParse(startDate, out var start) && DateTime.TryParse(endDate, out var end))
+                {
+                    // Obtener horas extras dentro del rango de fechas para este empleado
+                    extraHours = await _extraHourService.FindExtraHoursByIdAndDateRangeAsync(employee.id, start, end);
+                }
+                else
+                {
+                    // Si no hay fechas, obtener todas las horas extras de este empleado
+                    extraHours = await _extraHourService.FindExtraHoursByIdAsync(employee.id);
+                }
+
+                if (extraHours != null && extraHours.Any())
+                {
+                    foreach (var extraHour in extraHours)
+                    {
+                        result.Add(new
+                        {
+                            id = employee.id,
+                            name = employee.name,
+                            position = employee.position,
+                            salary = employee.salary,
+                            manager = new { name = employee.manager?.name ?? "Sin asignar" },
+                            registry = extraHour.registry,
+                            diurnal = extraHour.diurnal,
+                            nocturnal = extraHour.nocturnal,
+                            diurnalHoliday = extraHour.diurnalHoliday,
+                            nocturnalHoliday = extraHour.nocturnalHoliday,
+                            extrasHours = extraHour.extraHours,
+                            date = extraHour.date.ToString("yyyy-MM-dd"),
+                            startTime = extraHour.startTime,
+                            endTime = extraHour.endTime,
+                            approved = extraHour.approved,
+                            observations = extraHour.observations
+                        });
+                    }
+                }
+            }
+            return Ok(result);
+
+        }
+
         [HttpGet("id/{id}")]
         public async Task<IActionResult> GetExtraHoursById(long id)
         {
             var extraHours = await _extraHourService.FindExtraHoursByIdAsync(id);
-            return Ok(extraHours ?? new List<ExtraHour>());
+            if (extraHours == null || !extraHours.Any())
+                return Ok(new List<ExtraHour>());
+
+            // Obtener la información del empleado
+            var employee = await _employeeService.GetByIdAsync(id);
+            if (employee == null)
+                return NotFound(new { error = "Empleado no encontrado" });
+
+            var result = new List<object>();
+
+            foreach (var extraHour in extraHours)
+            {
+                result.Add(new
+                {
+                    id = employee.id,
+                    name = employee.name,
+                    position = employee.position,
+                    salary = employee.salary,
+                    manager = new { name = employee.manager?.name ?? "Sin asignar" },
+                    registry = extraHour.registry,
+                    diurnal = extraHour.diurnal,
+                    nocturnal = extraHour.nocturnal,
+                    diurnalHoliday = extraHour.diurnalHoliday,
+                    nocturnalHoliday = extraHour.nocturnalHoliday,
+                    extraHours = extraHour.extraHours,
+                    date = extraHour.date.ToString("yyyy-MM-dd"),
+                    startTime = extraHour.startTime,
+                    endTime = extraHour.endTime,
+                    approved = extraHour.approved,
+                    observations = extraHour.observations
+                });
+            }
+
+            return Ok(result);
+
         }
 
         [HttpGet("date-range")]
@@ -156,8 +258,6 @@ namespace ExtraHours.API.Controller
                 return NotFound(new { error = "Registro de horas extra no encontrado" });
 
             return Ok(new { message = "Registro eliminado exitosamente" });
-        }
-                       
-
+        }            
     }
 }

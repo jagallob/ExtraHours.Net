@@ -23,10 +23,16 @@ export const findExtraHourByDateRange = async (startDate, endDate) => {
 
     const data = await response.json();
 
-    return data.map((record) => ({
-      ...record.extraHour,
-      ...record.employee,
-    }));
+    return data.map((record) => {
+      if (record.extraHour && record.employee) {
+        return {
+          ...record.extraHour,
+          ...record.employee,
+        };
+      }
+
+      return record;
+    });
   } catch (error) {
     console.error("Error al buscar fecha:", error);
 
