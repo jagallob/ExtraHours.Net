@@ -30,14 +30,15 @@ export const UserService = {
   changePassword: async (currentPassword, newPassword) => {
     try {
       const token = localStorage.getItem("token");
-      const id = localStorage.getItem("id");
 
-      if (!id) {
-        throw new Error("ID del usuario no encontrado");
+      if (!token) {
+        throw new Error("Token no encontrado, inicie sesión nuevamente");
       }
 
+      console.log("Token presente:", !!token);
+
       const response = await fetch(
-        `https://localhost:7086/auth/change-password?id=${id}`,
+        `https://localhost:7086/auth/change-password`,
         {
           method: "PUT",
           headers: {
@@ -49,6 +50,8 @@ export const UserService = {
       );
 
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Respuesta completa:", errorText);
         throw new Error(`Error ${response.status}: ${response.statusText}`);
       }
 
