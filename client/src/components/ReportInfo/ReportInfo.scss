@@ -1,9 +1,49 @@
 .ReportInfo {
+  &.report-component {
+    background-color: #fffdf5;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 24, 0.1);
+    padding: 24px;
+    margin: 20px;
+  }
+
+  .component-header {
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #722ed1;
+
+    h2 {
+      color: #531dab;
+      font-family: Arial, Helvetica, sans-serif;
+      margin-bottom: 8px;
+    }
+  }
+
+  .actions-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    .export-button {
+      background-color: #1890ff;
+      border-color: #1890ff;
+    }
+
+    .search-button {
+      background-color: #1890ff;
+      border-color: #1890ff;
+    }
+  }
+
   .filters-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    flex-wrap: wrap;
+    gap: 16px;
   }
 
   .search-container {
@@ -19,11 +59,23 @@
   }
 
   .error-message {
-    color: red;
-    margin-top: 10px;
+    color: #ff4d4f;
+    background-color: #fff1f0;
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ffa39e;
+    margin: 16px 0;
   }
 
   .extra-hours-info {
     margin-top: 20px;
+  }
+
+  .table-row-light {
+    background-color: #f8f8ff;
+  }
+
+  .table-row-dark {
+    background-color: #f0f0f8;
   }
 }

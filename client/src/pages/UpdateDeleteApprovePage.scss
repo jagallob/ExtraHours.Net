@@ -1,7 +1,20 @@
+.page-container {
+  max-width: 1350px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
 .h2Update {
   color: aliceblue;
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.h2Update {
+  color: aliceblue;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-bottom: 20px;
 }
 
 .page__header {
@@ -9,7 +22,7 @@
   padding: 10px;
   display: flex;
   align-items: center;
-  width: 0;
+  width: 100%;
   justify-content: left;
 
   a {

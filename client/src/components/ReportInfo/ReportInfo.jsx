@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Input, Table, DatePicker } from "antd";
+import { Input, Table, DatePicker, Button, Typography } from "antd";
+import { DownloadOutlined, SearchOutlined } from "@ant-design/icons";
 import { findEmployee } from "@services/findEmployee";
 import { findExtraHour } from "@services/findExtraHour";
 import { findExtraHourByDateRange } from "@services/findExtraHourByDateRange";
@@ -9,6 +10,7 @@ import { columns } from "@utils/tableColumns.jsx";
 import "./ReportInfo.scss";
 
 const { RangePicker } = DatePicker;
+const { Title } = Typography;
 
 export const ReportInfo = () => {
   const [employeeData, setEmployeeData] = useState([]);
@@ -207,28 +209,51 @@ export const ReportInfo = () => {
   };
 
   return (
-    <div className="ReportInfo">
-      <div className="filters-container">
-        <div className="search-container">
-          {role !== "empleado" && (
-            <Input.Search
-              placeholder="Ingrese ID del empleado"
-              onSearch={handleSearch}
-              onChange={(e) => setSearchValue(e.target.value)}
-              value={searchValue}
-            />
-          )}
+    <div className="ReportInfo report-component">
+      <div className="component-header">
+        <Title level={2}>Consulta de Horas Extras</Title>
+      </div>
+
+      <div className="actions-bar">
+        <div className="filters-container">
+          <div className="search-container">
+            {role !== "empleado" && (
+              <Input.Search
+                placeholder="Ingrese ID del empleado"
+                onSearch={handleSearch}
+                onChange={(e) => setSearchValue(e.target.value)}
+                value={searchValue}
+                prefix={<SearchOutlined />}
+              />
+            )}
+          </div>
+
+          <div className="range-picker-container">
+            {role !== "empleado" && (
+              <RangePicker onChange={(dates) => setSelectedRange(dates)} />
+            )}
+            {role !== "empleado" && (
+              <Button
+                type="primary"
+                onClick={handleSearch}
+                className="search-button"
+              >
+                Buscar
+              </Button>
+            )}
+          </div>
         </div>
-        <div className="range-picker-container">
-          {role !== "empleado" && (
-            <RangePicker onChange={(dates) => setSelectedRange(dates)} />
-          )}
-          {role !== "empleado" && (
-            <button onClick={handleSearch} style={{ marginLeft: 10 }}>
-              Buscar
-            </button>
-          )}
-        </div>
+
+        {employeeData.length > 0 && (
+          <Button
+            type="primary"
+            icon={<DownloadOutlined />}
+            onClick={handleExport}
+            className="export-button"
+          >
+            Exportar a Excel
+          </Button>
+        )}
       </div>
 
       {error && <p className="error-message">{error}</p>}
@@ -236,7 +261,7 @@ export const ReportInfo = () => {
 
       {employeeData.length > 0 && (
         <div className="extra-hours-info">
-          <h3>Registros de Horas Extras</h3>
+          <Title level={3}>Registros de Horas Extras</Title>
           <Table
             columns={columns}
             dataSource={employeeData}
@@ -246,10 +271,12 @@ export const ReportInfo = () => {
               x: 1200,
               y: 800,
             }}
+            rowClassName={(record, index) =>
+              index % 2 === 0 ? "table-row-light" : "table-row-dark"
+            }
           />
         </div>
       )}
-      <button onClick={handleExport}>Exportar a Excel</button>
     </div>
   );
 };

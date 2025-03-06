@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom"; // Import Link from React Router
+import { Link } from "react-router-dom";
 import "./ReportsPage.scss";
 import { ReportInfo } from "../components/ReportInfo/ReportInfo";
-import logoamadeus from "../../../client/src/assets/images/logoamadeus.png"; // Import logo images
+import logoamadeus from "../../../client/src/assets/images/logoamadeus.png";
 
 const Reports = () => {
   return (
@@ -11,8 +11,11 @@ const Reports = () => {
           <img className="logoamadeus" src={logoamadeus} alt="Logo Amadeus" />
         </Link>
       </header>
-      <h2 className="h2Info">Informes</h2>
-      <ReportInfo />
+
+      <div className="page-container">
+        {/* <h2 className="h2Info">Informes</h2> */}
+        <ReportInfo />
+      </div>
     </>
   );
 };

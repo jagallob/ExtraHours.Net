@@ -8,7 +8,19 @@ import {
   InputNumber,
   message,
   Spin,
+  Typography,
+  Space,
+  Badge,
 } from "antd";
+import {
+  EditOutlined,
+  DeleteOutlined,
+  CheckCircleOutlined,
+  ReloadOutlined,
+  ExclamationCircleOutlined,
+  FileSearchOutlined,
+} from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 import { findExtraHoursByManager } from "../../services/findExtraHoursByManager";
 import { updateExtraHour } from "@services/updateExtraHour";
 import { deleteExtraHour } from "../../services/deleteExtraHour";
@@ -18,6 +30,9 @@ import { useConfig } from "../../utils/useConfig";
 import "./UpdateDeleteApprove.scss";
 import dayjs from "dayjs";
 
+const { Title, Text } = Typography;
+const { confirm } = Modal;
+
 export const UpdateDeleteApprove = () => {
   const [employeeData, setEmployeeData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,6 +41,7 @@ export const UpdateDeleteApprove = () => {
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const { config } = useConfig();
   const weeklyLimit = config?.weekly_extra_hours_limit;
+  const navigate = useNavigate();
 
   // Función para calcular el total de horas extras semanales
   const calculateWeeklyExtraHours = (extraHours) => {
@@ -131,8 +147,10 @@ export const UpdateDeleteApprove = () => {
   };
 
   const handleDelete = (record) => {
-    Modal.confirm({
+    confirm({
       title: "¿Estás seguro que deseas eliminar este registro?",
+      icon: <ExclamationCircleOutlined />,
+      content: `Se eliminará el registro con ID: ${record.registry}`,
       onOk: async () => {
         try {
           await deleteExtraHour(record.registry);
@@ -222,40 +240,66 @@ export const UpdateDeleteApprove = () => {
     title: "Acciones",
     key: "actions",
     render: (text, record) => (
-      <span>
+      <Space size="small">
         <Button
-          type="link"
+          type="primary"
+          icon={<EditOutlined />}
           onClick={() => handleUpdate(record)}
-          style={{ marginRight: 8 }}
-        >
-          Editar
-        </Button>
-        <Button type="link" onClick={() => handleDelete(record)}>
-          Eliminar
-        </Button>
+          className="edit-button"
+        />
         <Button
-          type="link"
+          type="primary"
+          danger
+          icon={<DeleteOutlined />}
+          onClick={() => handleDelete(record)}
+          className="delete-button"
+        />
+        <Button
+          type="primary"
+          icon={<CheckCircleOutlined />}
           onClick={() => handleApprove(record)}
           disabled={record.approved}
-          style={{ marginRight: 8 }}
-        >
-          {record.approved ? "Aprobado" : "Aprobar"}
-        </Button>
-      </span>
+          className={record.approved ? "approved-button" : "approve-button"}
+        />
+      </Space>
     ),
   };
 
   const columns = [...staticColumns, actionColumn]; // Combina las columnas
 
   return (
-    <div className="ReportInfo">
-      <div className="search-container">
+    <div className="UpdateDeleteApprove manager-component">
+      <div className="component-header">
+        <Title level={2}>Gestión de Horas Extras</Title>
+        <Text type="secondary">
+          Panel de administración para aprobar, modificar o eliminar registros
+        </Text>
+      </div>
+
+      <div className="actions-bar">
         <Button
           type="primary"
+          icon={<ReloadOutlined />}
           onClick={handleRefresh}
-          style={{ marginBottom: 16 }}
+          className="refresh-button"
         >
           Actualizar Datos
+        </Button>
+
+        <Badge
+          count={employeeData.filter((record) => !record.approved).length}
+          offset={[0, 0]}
+        >
+          <Text>Pendientes de Aprobación</Text>
+        </Badge>
+
+        <Button
+          type="default"
+          icon={<FileSearchOutlined />}
+          onClick={() => navigate("/reports")}
+          className="reports-button"
+        >
+          Ver Reportes
         </Button>
       </div>
 
@@ -279,13 +323,20 @@ export const UpdateDeleteApprove = () => {
                   x: 900,
                   y: 500,
                 }}
+                rowClassName={(record) =>
+                  record.approved
+                    ? "table-row-approved"
+                    : record.extrasHours > weeklyLimit / 7
+                    ? "table-row-warning"
+                    : "table-row-normal"
+                }
               />
             </div>
           ) : (
             <div className="empty-data">
-              <p>
+              <Text>
                 No hay registros de horas extras para los empleados a su cargo.
-              </p>
+              </Text>
             </div>
           )}
         </>
@@ -293,45 +344,69 @@ export const UpdateDeleteApprove = () => {
 
       {isEditModalOpen && (
         <Modal
+          title="Actualizar Registro de Horas Extras"
           open={isEditModalOpen}
           onCancel={() => setEditModalOpen(false)}
           footer={null}
+          className="edit-modal"
         >
-          <div className="modal__container">
-            <header>
-              <h2>Actualizar Registro</h2>
-            </header>
+          <div className="modal-container">
             <Form
               initialValues={selectedRow}
               onFinish={handleSave}
               onValuesChange={handleFormChange}
+              layout="vertical"
             >
-              <Form.Item name="diurnal" label="Diurnas">
-                <InputNumber />
+              <Form.Item
+                name="diurnal"
+                label="Horas Diurnas"
+                rules={[{ required: true, message: "Campo requerido" }]}
+              >
+                <InputNumber min={0} precision={1} />
               </Form.Item>
-              <Form.Item name="nocturnal" label="Nocturnas">
-                <InputNumber />
+              <Form.Item
+                name="nocturnal"
+                label="Horas Nocturnas"
+                rules={[{ required: true, message: "Campo requerido" }]}
+              >
+                <InputNumber min={0} precision={1} />
               </Form.Item>
-              <Form.Item name="diurnalHoliday" label="Diurnas Festivas">
-                <InputNumber />
+              <Form.Item
+                name="diurnalHoliday"
+                label="Horas Diurnas Festivas"
+                rules={[{ required: true, message: "Campo requerido" }]}
+              >
+                <InputNumber min={0} precision={1} />
               </Form.Item>
-              <Form.Item name="nocturnalHoliday" label="Nocturnas Festivas">
-                <InputNumber />
+              <Form.Item
+                name="nocturnalHoliday"
+                label="Horas Nocturnas Festivas"
+                rules={[{ required: true, message: "Campo requerido" }]}
+              >
+                <InputNumber min={0} precision={1} />
               </Form.Item>
               <Form.Item name="extrasHours" label="Total Horas Extras">
                 <InputNumber value={selectedRow?.extrasHours} disabled />
               </Form.Item>
-              <Form.Item name="date" label="Date">
+              <Form.Item
+                name="date"
+                label="Fecha"
+                rules={[{ required: true, message: "Campo requerido" }]}
+              >
                 <Input />
               </Form.Item>
               <Form.Item name="observations" label="Observaciones">
-                <Input />
+                <Input.TextArea rows={3} />
               </Form.Item>
-              <Form.Item>
-                <Button className="button" type="primary" htmlType="submit">
-                  Guardar
+
+              <div className="form-actions">
+                <Button onClick={() => setEditModalOpen(false)}>
+                  Cancelar
                 </Button>
-              </Form.Item>
+                <Button type="primary" htmlType="submit">
+                  Guardar Cambios
+                </Button>
+              </div>
             </Form>
           </div>
         </Modal>

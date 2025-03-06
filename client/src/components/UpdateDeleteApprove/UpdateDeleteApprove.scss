@@ -1,52 +1,144 @@
-h3 {
-  color: aliceblue;
-  text-align: center;
-  font-family: Arial, Helvetica, sans-serif;
-}
+//
 
-.search-container {
-  width: 200px;
-  padding-left: 10px;
-}
+.UpdateDeleteApprove {
+  background-color: #fffdf5;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 24, 0.1);
+  padding: 24px;
+  margin: 20px;
 
-.ant-modal {
-  h2 {
-    padding: 0 10px 5px;
-    color: #000835;
-  }
-  .ant-modal-content {
-    width: 500px;
-    max-width: 120vw;
-    padding: 20px;
-    background-color: #c5d5f9
-  }
+  .component-header {
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #722ed1;
 
-  .ant-form-item {
-    background-color: rgb(14, 26, 99);
-    margin-top: 2px;
-    margin-bottom: 5px;
-    height: 45px;
-    padding: 8px;
-    border-radius: 10px;
-
-    label {
-      color: #f8f2f2;
-    }
-    .ant-input-number {
-      width: 50px;
-      height: 30px;
-      padding: 1px;
+    h2 {
+      color: #531dab;
+      font-family: Arial, Helvetica, sans-serif;
+      margin-bottom: 8px;
     }
   }
 
-  .button {
+  .actions-bar {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
+
+    .refresh-button {
+      background-color: #1890ff;
+      border-color: #1890ff;
+    }
+  }
+
+  .error-message {
+    color: #ff4d4f;
+    background-color: #fff1f0;
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ffa39e;
+    margin: 16px 0;
+  }
+
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+
+    p {
+      margin-top: 16px;
+      color: #1890ff;
+    }
+  }
+
+  .empty-data {
     text-align: center;
-    padding: 0;
-    background-color: #ebf3ff;
-    border: 2px solid #0c66e1;
-    color: #0c66e1;
+    padding: 40px 0;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+
+  .edit-button {
+    background-color: #1890ff;
+    border-color: #1890ff;
+  }
+
+  .delete-button {
+    background-color: #ff4d4f;
+    border-color: #ff4d4f;
+  }
+
+  .approve-button {
+    background-color: #52c41a;
+    border-color: #52c41a;
+  }
+
+  .approved-button {
+    background-color: #d9d9d9;
+    border-color: #d9d9d9;
+    color: #8c8c8c;
+  }
+
+  .table-row-approved {
+    background-color: #f6ffed;
+  }
+
+  .table-row-warning {
+    background-color: #fffbe6;
+  }
+
+  .table-row-normal {
+    background-color: #f5f5f5;
+  }
+}
+
+// Estilos para el modal
+.edit-modal {
+  .modal-container {
+    padding: 16px 0;
+  }
+
+  .ant-modal-content {
+    background-color: #f9f9ff;
+    border-radius: 12px;
+    padding: 24px;
+
+    .ant-modal-header {
+      background-color: transparent;
+      border-bottom: 1px solid #d9d9ff;
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+
+      .ant-modal-title {
+        color: #722ed1;
+        font-weight: bold;
+      }
+    }
+
+    .ant-form-item {
+      margin-bottom: 16px;
+
+      .ant-form-item-label label {
+        color: #333;
+        font-weight: 500;
+      }
+
+      .ant-input-number {
+        width: 100%;
+      }
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 24px;
+
+      button + button {
+        margin-left: 12px;
+      }
+    }
   }
 }
