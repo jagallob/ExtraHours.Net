@@ -30,5 +30,28 @@ namespace ExtraHours.API.Service.Implementations
 
             return (token, refreshToken);
         }
+
+        public async Task ChangePasswordAsync(int userId, string currentPassword, string newPassword)
+        {
+            // Obtener el usuario por ID
+            var user = await _userRepository.GetUserByIdAsync(userId);
+            if (user == null)
+            {
+                throw new Exception("Usuario no encontrado");
+            }
+
+            // Verificar que la contraseña actual sea correcta
+            if (!BCrypt.Net.BCrypt.Verify(currentPassword, user.passwordHash))
+            {
+                throw new UnauthorizedAccessException("Contraseña actual incorrecta");
+            }
+
+            // Crear hash de la nueva contraseña
+            string newPasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
+
+            // Actualizar la contraseña en la base de datos
+            user.passwordHash = newPasswordHash;
+            await _userRepository.UpdateUserAsync(user);
+        }
     }
 }

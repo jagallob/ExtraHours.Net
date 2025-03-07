@@ -34,5 +34,30 @@ namespace ExtraHours.API.Repositories.Implementations
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => EF.Functions.Like(u.email, email));
         }
+
+        public async Task<User> GetUserByIdAsync(int userId)
+        {
+            return await _context.users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.id == userId)
+                ?? throw new InvalidOperationException("User not found");
+        }
+
+        public async Task UpdateUserAsync(User user)
+        {
+            var existingUser = await _context.users.FindAsync(user.id);
+
+            if (existingUser == null)
+            {
+                throw new InvalidOperationException("User not found");
+            }
+
+            existingUser.passwordHash = user.passwordHash;
+
+            _context.Entry(existingUser).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

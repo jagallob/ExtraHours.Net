@@ -172,11 +172,7 @@ export const FormExtraHour = () => {
           />
         </div>
         <div>
-          <label htmlFor="endTime">
-            {" "}
-            <br />
-            Hora de fin
-          </label>
+          <label htmlFor="endTime">Hora de fin</label>
           <input
             type="time"
             id="endTime"
@@ -188,53 +184,60 @@ export const FormExtraHour = () => {
         </div>
       </div>
       <div className="form-group-horizontal">
-        <label>Diurna</label>
-        <input
-          type="number"
-          name="diurnal"
-          value={extraHours.diurnal}
-          step="0.01"
-          readOnly
-        />
-        <label>Nocturna</label>
-        <input
-          type="number"
-          name="nocturnal"
-          value={extraHours.nocturnal}
-          step="0.01"
-          readOnly
-        />
-        <label>Diurna Festiva</label>
-        <input
-          type="number"
-          name="diurnalHoliday"
-          value={extraHours.diurnalHoliday}
-          step="0.01"
-          readOnly
-        />
-        <label>Nocturna Festiva</label>
-        <input
-          type="number"
-          name="nocturnalHoliday"
-          value={extraHours.nocturnalHoliday}
-          step="0.01"
-          readOnly
-        />
-        <label>Total horas extra</label>
-        <input
-          type="number"
-          name="extrasHours"
-          value={extraHours.extrasHours}
-          step="0.01"
-          readOnly
-        />
+        <div className="hora-extra-item">
+          <label>Diurna</label>
+          <input
+            type="number"
+            name="diurnal"
+            value={extraHours.diurnal}
+            step="0.01"
+            readOnly
+          />
+        </div>
+        <div className="hora-extra-item">
+          <label>Nocturna</label>
+          <input
+            type="number"
+            name="nocturnal"
+            value={extraHours.nocturnal}
+            step="0.01"
+            readOnly
+          />
+        </div>
+        <div className="hora-extra-item">
+          <label>Diurna Festiva</label>
+          <input
+            type="number"
+            name="diurnalHoliday"
+            value={extraHours.diurnalHoliday}
+            step="0.01"
+            readOnly
+          />
+        </div>
+        <div className="hora-extra-item">
+          <label>Nocturna Festiva</label>
+          <input
+            type="number"
+            name="nocturnalHoliday"
+            value={extraHours.nocturnalHoliday}
+            step="0.01"
+            readOnly
+          />
+        </div>
+        <div className="hora-extra-item total-horas-extra">
+          <label>Total horas extra</label>
+          <input
+            type="number"
+            name="extrasHours"
+            value={extraHours.extrasHours}
+            step="0.01"
+            readOnly
+          />
+        </div>
       </div>
-      <div>
-        <label htmlFor="observations">
-          {" "}
-          <br />
-          Observaciones
-        </label>
+
+      <div className="observaciones-container">
+        <label htmlFor="observations">Observaciones</label>
         <textarea
           id="observations"
           name="observations"
@@ -242,10 +245,12 @@ export const FormExtraHour = () => {
           onChange={handleChange}
         />
       </div>
-      <button type="submit" disabled={loading}>
-        {loading ? "Enviando..." : "Agregar"}
-      </button>
-      {error && <p>Error: {error}</p>}
+      <div className="submit-container">
+        <button type="submit" disabled={loading}>
+          {loading ? "Enviando..." : "Agregar"}
+        </button>
+      </div>
+      {error && <p className="error-message">Error: {error}</p>}
     </form>
   );
 };

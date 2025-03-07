@@ -7,5 +7,7 @@ namespace ExtraHours.API.Repositories.Interfaces
         Task<User?> FindByEmailAsync(string username);
         Task<User> GetUserByEmailAsync(string email);
         Task SaveAsync(User user);
+        Task<User> GetUserByIdAsync(int userId);
+        Task UpdateUserAsync(User user);
     }
 }

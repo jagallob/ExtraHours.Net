@@ -14,7 +14,7 @@ namespace ExtraHours.API.Controller
             _jwtTokenService = jwtTokenService;
         }
 
-        [HttpPost("logout")]
+        [HttpPost]
         public IActionResult Logout([FromHeader(Name = "Authorization")] string token)
         {
             try
