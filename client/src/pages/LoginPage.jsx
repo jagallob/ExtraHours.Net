@@ -37,57 +37,65 @@ const Login = () => {
   };
 
   return (
-    <>
-      <h1 id="iniciar">Bienvenido</h1>
-      <div className="login-container">
-        <h2>Iniciar sesión</h2>
+    <div className="login-page">
+      <div className="login-card">
+        <h1 className="login-title">Bienvenido</h1>
 
-        {/* <img className="Logo" src={Logo} alt="Logo Amadeus" /> */}
-        <Form
-          name="login-form"
-          onFinish={handleLogin}
-          layout="vertical"
-          className="custom-form"
-        >
-          <Form.Item
-            label="Correo Electrónico"
-            name="email"
-            rules={[
-              {
-                // required: true,
-                // message: "Por favor ingrese su correo electrónico",
-              },
-            ]}
+        <div className="login-form-container">
+          <h2 className="iniciar-sesion">Iniciar sesión</h2>
+
+          {/* <img className="Logo" src={Logo} alt="Logo Amadeus" /> */}
+          <Form
+            name="login-form"
+            onFinish={handleLogin}
+            layout="vertical"
+            className="login-form"
           >
-            <Input placeholder="example@mail.com" />
-          </Form.Item>
+            <div className="form-field">
+              <Form.Item
+                label="Correo Electrónico"
+                name="email"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor ingrese su correo electrónico",
+                  },
+                ]}
+              >
+                <Input placeholder="example@mail.com" />
+              </Form.Item>
+            </div>
 
-          <Form.Item
-            label="Contraseña"
-            name="password"
-            rules={
-              [
-                // { required: true, message: "Por favor ingrese su contraseña" },
-              ]
-            }
-          >
-            <Input.Password placeholder="Contraseña" />
-          </Form.Item>
+            <div className="form-field">
+              <Form.Item
+                label="Contraseña"
+                name="password"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor ingrese su contraseña",
+                  },
+                ]}
+              >
+                <Input.Password placeholder="Contraseña" />
+              </Form.Item>
+            </div>
 
-          <Form.Item>
-            <Button
-              className="button"
-              type="primary"
-              htmlType="submit"
-              loading={loading}
-              block
-            >
-              Iniciar Sesión
-            </Button>
-          </Form.Item>
-        </Form>
+            <Form.Item className="login-button-container">
+              <Button
+                className="login-button"
+                type="primary"
+                htmlType="submit"
+                loading={loading}
+                block
+              >
+                Iniciar Sesión
+              </Button>
+            </Form.Item>
+          </Form>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

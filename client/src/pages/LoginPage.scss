@@ -1,84 +1,152 @@
-body {
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-image: url("../assets/images/background.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   background-color: rgb(7, 15, 58);
-  height: 130vh;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  margin: 0;
-  margin-top: 0px;
-}
-
-.Logo {
-  width: 300px; /* Ajusta el ancho */
-  height: auto; /* Mantiene la proporción */
-  display: block; /* Centra el logo si es necesario */
-  margin: 0 auto; /* Centra horizontalmente */
-  //margin-top: 10px;
-  margin-bottom: 20px;
-  position: absolute;
-  top: 10px; /* Ajusta la distancia desde arriba */
-  left: 50%; /* Centra horizontalmente */
-  transform: translateX(-50%); /* Corrige el centrado exacto */
-}
-
-#iniciar {
-  margin-top: 120px;
-  margin-bottom: -60px;
-}
-
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 48vh;
-  max-width: 400px;
-  margin: 100px auto;
   padding: 20px;
-  background-color: #3a8bff;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgb(106, 105, 105);
+}
+
+.login-card {
+  width: 400px;
+  max-width: 100%;
+  background-color: rgba(14, 26, 99, 0.9);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.5s ease;
+}
+
+.login-title {
+  color: white;
+  background-color: #0c66e1;
+  text-align: center;
+  margin: 0;
+  padding: 20px 0;
+  font-weight: 600;
+  font-size: 28px;
+}
+
+.login-form-container {
+  padding: 30px;
+  background-color: #4a98ff;
+  border-radius: 0 0 16px 16px;
 
   h2 {
-    text-align: center;
-    padding: 10px;
-    margin-bottom: 20px;
-    margin-left: -20px;
-    color: #ebf3ff;
-    font-family: Arial, Helvetica, sans-serif;
+    margin-top: -40px;
   }
+}
 
-  .ant-form-item {
+.login-logo {
+  width: 180px;
+  height: auto;
+  display: block;
+}
+
+.login-form {
+  .form-field {
     background-color: rgb(14, 26, 99);
-    margin-bottom: -5px;
-    margin-top: 30px;
-    height: 80px;
-    padding: 25px;
     border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 16px;
 
-    .ant-col.ant-form-item-label {
-      margin-top: -25px;
-      // margin-bottom: -7px;
+    .ant-form-item {
+      margin-bottom: 15px;
+    }
+
+    .ant-form-item-label > label {
+      color: white;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .ant-input-password {
+      height: -40px;
+      border-radius: 6px;
+      border: 2px solid transparent;
+
+      .ant-input {
+        height: 38px;
+        padding-left: 12px;
+        text-align: left;
+      }
+
+      .ant-input-suffix {
+        margin-right: 8px;
+      }
+
+      input.ant-input {
+        letter-spacing: 2px;
+        font-size: 16px;
+      }
+
+      &:focus,
+      &:hover {
+        border-color: #0c66e1;
+        box-shadow: 0 0 0 2px rgba(12, 102, 225, 0.2);
+      }
+    }
+
+    .ant-input-password .ant-input {
+      height: 28px;
     }
   }
 
-  .ant-form-item label {
-    color: #ebf3ff;
+  .login-button-container {
+    margin-top: 24px;
+
+    .login-button {
+      height: 48px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      background-color: #0851b8;
+      color: white;
+      border: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+
+      &:hover,
+      &:focus {
+        background-color: white;
+        color: #0c5bc9;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    width: 100%;
   }
 
-  .button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 16;
-    margin: -10px 0px 0px;
+  .login-form-container {
+    padding: 20px;
+  }
 
-    background-color: #ebf3ff;
-    border: 2px solid #0c66e1;
-    color: #0c66e1;
+  .form-field {
+    padding: 15px;
   }
 }
