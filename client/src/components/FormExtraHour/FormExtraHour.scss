@@ -170,8 +170,8 @@ form {
       display: inline-block;
       width: 180px;
       padding: 8px 16px;
-      background-color: #ffffff;
-      color: #3a8bf5;
+      background-color: #0c5bc9;
+      color: white;
       font-size: 16px;
       font-weight: 600;
       text-align: center;
@@ -182,9 +182,10 @@ form {
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
       &:hover {
-        background-color: #f0f8ff;
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        background-color: white;
+        color: #0c5bc9;
         transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
       }
 
       &:disabled {

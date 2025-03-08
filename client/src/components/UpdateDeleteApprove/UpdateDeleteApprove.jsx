@@ -11,6 +11,9 @@ import {
   Typography,
   Space,
   Badge,
+  DatePicker,
+  Row,
+  Col,
 } from "antd";
 import {
   EditOutlined,
@@ -19,19 +22,23 @@ import {
   ReloadOutlined,
   ExclamationCircleOutlined,
   FileSearchOutlined,
+  FilterOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { findExtraHoursByManager } from "../../services/findExtraHoursByManager";
+import { findAllExtraHours } from "@services/findAllExtraHours";
 import { updateExtraHour } from "@services/updateExtraHour";
 import { deleteExtraHour } from "../../services/deleteExtraHour";
 import { approveExtraHour } from "@services/approveExtraHour";
 import { columns as staticColumns } from "@utils/tableColumns";
 import { useConfig } from "../../utils/useConfig";
+import { useAuth } from "../../utils/useAuth";
 import "./UpdateDeleteApprove.scss";
 import dayjs from "dayjs";
 
 const { Title, Text } = Typography;
 const { confirm } = Modal;
+const { RangePicker } = DatePicker;
 
 export const UpdateDeleteApprove = () => {
   const [employeeData, setEmployeeData] = useState([]);
@@ -39,9 +46,12 @@ export const UpdateDeleteApprove = () => {
   const [error, setError] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const [dateRange, setDateRange] = useState(null);
   const { config } = useConfig();
+  const { userRole } = useAuth();
   const weeklyLimit = config?.weekly_extra_hours_limit;
   const navigate = useNavigate();
+  const isSuperuser = userRole === "superusuario";
 
   // Función para calcular el total de horas extras semanales
   const calculateWeeklyExtraHours = (extraHours) => {
@@ -65,30 +75,44 @@ export const UpdateDeleteApprove = () => {
     setError(null);
 
     try {
-      const data = await findExtraHoursByManager();
+      let startDateStr = null;
+      let endDateStr = null;
+
+      if (dateRange && dateRange[0] && dateRange[1]) {
+        startDateStr = dateRange[0].format("YYYY-MM-DD");
+        endDateStr = dateRange[1].format("YYYY-MM-DD");
+      }
+      let data;
+      if (isSuperuser) {
+        data = await findAllExtraHours(startDateStr, endDateStr);
+      } else {
+        data = await findExtraHoursByManager(startDateStr, endDateStr);
+      }
       setEmployeeData(data);
 
-      const employeeIds = [...new Set(data.map((item) => item.id))];
+      if (data.length > 0) {
+        const employeeIds = [...new Set(data.map((item) => item.id))];
 
-      employeeIds.forEach((id) => {
-        const employeeRecords = data.filter((item) => item.id === id);
-        const employeeName = employeeRecords[0]?.name || "Empleado";
-        const weeklyTotal = calculateWeeklyExtraHours(employeeRecords);
+        employeeIds.forEach((id) => {
+          const employeeRecords = data.filter((item) => item.id === id);
+          const employeeName = employeeRecords[0]?.name || "Empleado";
+          const weeklyTotal = calculateWeeklyExtraHours(employeeRecords);
 
-        if (weeklyTotal > weeklyLimit) {
-          message.error(
-            `⚠️ El empleado ${employeeName} ha superado el límite semanal con un total de ${weeklyTotal.toFixed(
-              2
-            )} horas extras.`
-          );
-        } else if (weeklyTotal >= weeklyLimit * 0.9) {
-          message.warning(
-            `El empleado ${employeeName} está cerca del límite semanal con un total de ${weeklyTotal.toFixed(
-              2
-            )} horas extras.`
-          );
-        }
-      });
+          if (weeklyTotal > weeklyLimit) {
+            message.error(
+              `⚠️ El empleado ${employeeName} ha superado el límite semanal con un total de ${weeklyTotal.toFixed(
+                2
+              )} horas extras.`
+            );
+          } else if (weeklyTotal >= weeklyLimit * 0.9) {
+            message.warning(
+              `El empleado ${employeeName} está cerca del límite semanal con un total de ${weeklyTotal.toFixed(
+                2
+              )} horas extras.`
+            );
+          }
+        });
+      }
     } catch (error) {
       console.error("Error al cargar datos:", error);
       setError(
@@ -97,6 +121,10 @@ export const UpdateDeleteApprove = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleDateRangeChange = (dates) => {
+    setDateRange(dates);
   };
 
   const handleApprove = async (record) => {
@@ -232,6 +260,10 @@ export const UpdateDeleteApprove = () => {
     }));
   };
 
+  const handleFilter = () => {
+    loadEmployeeData();
+  };
+
   const handleRefresh = () => {
     loadEmployeeData();
   };
@@ -265,15 +297,46 @@ export const UpdateDeleteApprove = () => {
     ),
   };
 
-  const columns = [...staticColumns, actionColumn]; // Combina las columnas
+  const columns = [...staticColumns, actionColumn];
 
   return (
     <div className="UpdateDeleteApprove manager-component">
       <div className="component-header">
-        <Title level={2}>Gestión de Horas Extras</Title>
+        <Title level={2}>
+          {" "}
+          {isSuperuser
+            ? "Gestión de Horas Extras - Todos los Empleados"
+            : "Gestión de Horas Extras"}
+        </Title>
         <Text type="secondary">
           Panel de administración para aprobar, modificar o eliminar registros
+          {isSuperuser
+            ? " de todos los empleados"
+            : " de los empleados a su cargo"}
         </Text>
+      </div>
+
+      <div className="filter-section">
+        <Row gutter={16} align="middle">
+          <Col xs={24} sm={12} md={8} lg={6}>
+            <Text strong>Filtrar por rango de fechas:</Text>
+            <RangePicker
+              style={{ width: "100%", marginTop: "8px" }}
+              value={dateRange}
+              onChange={handleDateRangeChange}
+            />
+          </Col>
+          <Col xs={24} sm={12} md={4} lg={3} style={{ marginTop: "8px" }}>
+            <Button
+              type="primary"
+              icon={<FilterOutlined />}
+              onClick={handleFilter}
+              style={{ width: "100%" }}
+            >
+              Filtrar
+            </Button>
+          </Col>
+        </Row>
       </div>
 
       <div className="actions-bar">
@@ -318,7 +381,11 @@ export const UpdateDeleteApprove = () => {
                 columns={columns}
                 dataSource={employeeData}
                 rowKey="registry"
-                pagination={false}
+                pagination={{
+                  pageSize: 10,
+                  showSizeChanger: true,
+                  pageSizeOptions: ["10", "20", "50", "100"],
+                }}
                 scroll={{
                   x: 900,
                   y: 500,
@@ -335,7 +402,9 @@ export const UpdateDeleteApprove = () => {
           ) : (
             <div className="empty-data">
               <Text>
-                No hay registros de horas extras para los empleados a su cargo.
+                {isSuperuser
+                  ? "No hay registros de horas extras en el sistema."
+                  : "No hay registros de horas extras para los empleados a su cargo."}
               </Text>
             </div>
           )}

@@ -1,22 +1,17 @@
-export const findExtraHoursByManager = async (
-  startDate = null,
-  endDate = null
-) => {
+export const findAllExtraHours = async (startDate = null, endDate = null) => {
   try {
     const token = localStorage.getItem("token");
     if (!token) {
       console.error("Token no encontrado en localStorage");
-      return [];
+      return;
     }
 
-    let url =
-      "https://localhost:7086/api/extra-hour/manager/employees-extra-hours";
+    let url = "https://localhost:7086/api/extra-hour/all-employees-extra-hours";
 
     if (startDate && endDate) {
       url += `?startDate=${startDate}&endDate=${endDate}`;
     }
 
-    // Realizar la solicitud al endpoint específico para obtener las horas extra de los empleados del manager
     const response = await fetch(url, {
       method: "GET",
       headers: {
@@ -27,14 +22,13 @@ export const findExtraHoursByManager = async (
 
     if (!response.ok) {
       throw new Error(
-        `Error al obtener horas extras de empleados: ${response.status}`
+        `Error al obtener todas las horas extras: ${response.status}`
       );
     }
 
     const data = await response.json();
 
     return data.map((record) => {
-      // Asegurarse de que el objeto tenga una estructura uniforme
       if (record.extraHour && record.employee) {
         return {
           ...record.extraHour,
@@ -45,7 +39,8 @@ export const findExtraHoursByManager = async (
       return record;
     });
   } catch (error) {
-    console.error("Error al obtener horas extras de empleados:", error);
+    console.error("Error al obtener todas las horas extras:", error);
+
     throw error;
   }
 };

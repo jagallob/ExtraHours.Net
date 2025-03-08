@@ -47,5 +47,33 @@ export const useAuth = () => {
     return null;
   };
 
-  return { auth, login, logout, getEmployeeIdFromToken };
+  const getUserRole = () => {
+    if (auth?.token) {
+      try {
+        const decodedToken = jwtDecode(auth.token);
+        return decodedToken.role || null;
+      } catch (error) {
+        console.error(
+          "Error al decodificar el token para obtener el rol:",
+          error
+        );
+      }
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const decodedToken = jwtDecode(token);
+        return decodedToken.role || null;
+      }
+    } catch (error) {
+      console.error("Error al obtener rol del localStorage:", error);
+    }
+
+    return null;
+  };
+
+  const userRole = getUserRole();
+
+  return { auth, login, logout, getEmployeeIdFromToken, userRole, getUserRole };
 };
