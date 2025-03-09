@@ -1,6 +1,6 @@
 import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import logoamadeus from "../../assets/images/logoamadeus.png";
+import Inicio from "../../assets/images/Inicio.png";
 import "./SettingsPage.scss";
 import parametroset from "../../assets/images/parametroset.png";
 import eliminarset from "../../assets/images/eliminarset.png";
@@ -19,7 +19,7 @@ const SettingsPage = () => {
       <div className={isSubPage ? "subpage-container" : "settings-container"}>
         <header className="page__header">
           <Link to="/menu">
-            <img className="logoamadeus" src={logoamadeus} alt="Logo Amadeus" />
+            <img className="Inicio" src={Inicio} alt="Logo Amadeus" />
           </Link>
         </header>
         <div className="settingsMenu">

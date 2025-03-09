@@ -1,17 +1,11 @@
 import ExtraHoursSettings from "../../components/ExtraHoursSettings/ExtraHoursSettings";
 import "./ExtraHoursSettingsPage.scss";
-// import logo from "@images/logo.png";
-// import logo2 from "@images/logo2.png";
 
 const Settings = () => {
   return (
     <>
       <header className="page__header">
-        <a href="http://localhost:5173/">
-          {/* <img className="logo1" src={logo} />
-          <img className="logo2" src={logo2} /> */}
-          {/* <h1 class="heading">Horas Extra Amadeus</h1> */}
-        </a>
+        <a href="http://localhost:5173/"></a>
       </header>
       <h2>Parámetros Horas Extra</h2>
       <div className="settings__container">
@@ -71,7 +65,6 @@ const Settings = () => {
           </ol>
         </aside>
 
-        {/* Contenedor del formulario */}
         <section className="settings__form">
           <ExtraHoursSettings />
         </section>

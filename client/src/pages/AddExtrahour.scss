@@ -1,8 +1,9 @@
 .h2addextra {
-  color: whitesmoke;
+  color: #006aff;
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
   padding: 10px;
+  margin-top: -40px;
 }
 
 .page__header {
@@ -18,8 +19,8 @@
     flex-direction: column;
     align-items: center;
 
-    .logoamadeus {
-      width: 11rem;
+    .Inicio {
+      width: 5rem;
       padding: 0;
       margin: 0;
       display: inline;

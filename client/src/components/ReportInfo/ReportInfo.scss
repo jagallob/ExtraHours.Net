@@ -1,8 +1,8 @@
 .ReportInfo {
   &.report-component {
-    background-color: #fffdf5;
+    background-color: #fffdf9;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 24, 0.1);
+    box-shadow: 0 2px 12px rgba(0, 0, 255, 0.795);
     padding: 24px;
     margin: 20px;
   }
@@ -10,10 +10,10 @@
   .component-header {
     margin-bottom: 24px;
     padding-bottom: 12px;
-    border-bottom: 2px solid #722ed1;
+    border-bottom: 2px solid #006aff;
 
     h2 {
-      color: #531dab;
+      color: #006aff;
       font-family: Arial, Helvetica, sans-serif;
       margin-bottom: 8px;
     }
@@ -35,6 +35,32 @@
     .search-button {
       background-color: #1890ff;
       border-color: #1890ff;
+
+      &:hover {
+        background-color: white;
+        color: #0c5bc9;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      }
+    }
+
+    .manage-button {
+      background-color: #1890ff;
+      border-color: #1890ff;
+      margin-left: 10px;
+
+      &:hover {
+        background-color: white;
+        color: #0c5bc9;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      }
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
     }
   }
 
@@ -72,10 +98,10 @@
   }
 
   .table-row-light {
-    background-color: #f8f8ff;
+    background-color: #d8d8fa;
   }
 
   .table-row-dark {
-    background-color: #f0f0f8;
+    background-color: #c4c4db;
   }
 }

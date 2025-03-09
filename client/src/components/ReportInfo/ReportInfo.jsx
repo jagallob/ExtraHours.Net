@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import { Input, Table, DatePicker, Button, Typography } from "antd";
-import { DownloadOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  DownloadOutlined,
+  SearchOutlined,
+  EditOutlined,
+} from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 import { findEmployee } from "@services/findEmployee";
 import { findExtraHour } from "@services/findExtraHour";
 import { findExtraHourByDateRange } from "@services/findExtraHourByDateRange";
@@ -20,6 +25,7 @@ export const ReportInfo = () => {
   const [searchValue, setSearchValue] = useState("");
   const [role, setRole] = useState(null);
   const [loggedInEmployeeId, setLoggedInEmployeeId] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const userRole = localStorage.getItem("role");
@@ -208,6 +214,10 @@ export const ReportInfo = () => {
     }
   };
 
+  const handleNavigateToManage = () => {
+    navigate("/ManagementExtraHour");
+  };
+
   return (
     <div className="ReportInfo report-component">
       <div className="component-header">
@@ -244,16 +254,29 @@ export const ReportInfo = () => {
           </div>
         </div>
 
-        {employeeData.length > 0 && (
-          <Button
-            type="primary"
-            icon={<DownloadOutlined />}
-            onClick={handleExport}
-            className="export-button"
-          >
-            Exportar a Excel
-          </Button>
-        )}
+        <div className="action-buttons">
+          {employeeData.length > 0 && (
+            <Button
+              type="primary"
+              icon={<DownloadOutlined />}
+              onClick={handleExport}
+              className="export-button"
+            >
+              Exportar a Excel
+            </Button>
+          )}
+
+          {(role === "manager" || role === "superusuario") && (
+            <Button
+              type="primary"
+              icon={<EditOutlined />}
+              onClick={handleNavigateToManage}
+              className="manage-button"
+            >
+              Gestionar Horas Extras
+            </Button>
+          )}
+        </div>
       </div>
 
       {error && <p className="error-message">{error}</p>}

@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("../assets/images/background.png");
+  background-image: url("../assets/images/BackgroundAlt.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -20,6 +20,7 @@
   overflow: hidden;
   backdrop-filter: blur(8px);
   animation: fadeIn 0.5s ease;
+  margin-top: -40px;
 }
 
 .login-title {

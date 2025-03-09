@@ -1,19 +1,17 @@
-//
-
 .UpdateDeleteApprove {
-  background-color: #fffdf5;
+  background-color: #fffdf9;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 24, 0.1);
+  box-shadow: 0 2px 12px rgba(0, 0, 255, 0.795);
   padding: 24px;
   margin: 20px;
 
   .component-header {
     margin-bottom: 24px;
     padding-bottom: 12px;
-    border-bottom: 2px solid #722ed1;
+    border-bottom: 2px solid #006aff;
 
     h2 {
-      color: #531dab;
+      color: #006aff;
       font-family: Arial, Helvetica, sans-serif;
       margin-bottom: 8px;
     }
@@ -26,8 +24,30 @@
     margin-bottom: 20px;
 
     .refresh-button {
-      background-color: #1890ff;
+      background-color: #1677ff;
       border-color: #1890ff;
+      margin: 10px;
+
+      &:hover {
+        background-color: white;
+        color: #0c5bc9;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      }
+    }
+
+    .reports-button {
+      background-color: #1677ff;
+      border-color: #1890ff;
+      margin: 10px;
+      color: white;
+
+      &:hover {
+        background-color: white;
+        color: #0c5bc9;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      }
     }
   }
 

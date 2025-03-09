@@ -42,7 +42,7 @@ const Login = () => {
         <h1 className="login-title">Bienvenido</h1>
 
         <div className="login-form-container">
-          <h2 className="iniciar-sesion">Iniciar sesión</h2>
+          <h2 className="iniciar-sesion">Inicia sesión</h2>
 
           {/* <img className="Logo" src={Logo} alt="Logo Amadeus" /> */}
           <Form
