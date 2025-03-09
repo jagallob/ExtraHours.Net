@@ -94,9 +94,6 @@ const ExtraHoursMenu = () => {
   return (
     <div>
       <div className="menu">
-        {/* <div className="container">
-          <img className="Logo" src={Logo} alt="Logo Amadeus" />
-        </div> */}
         <h1>Sistema de Gestión de Horas Extra</h1>
         <div className="grid">{renderMenuItems()}</div>
         <div className="button-container">

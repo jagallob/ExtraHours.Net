@@ -1,5 +1,5 @@
 .login-page {
-  min-height: 100vh;
+  height: 130vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,7 +20,7 @@
   overflow: hidden;
   backdrop-filter: blur(8px);
   animation: fadeIn 0.5s ease;
-  margin-top: -40px;
+  margin-top: -250px;
 }
 
 .login-title {
@@ -40,6 +40,7 @@
 
   h2 {
     margin-top: -40px;
+    margin-bottom: -10px;
   }
 }
 

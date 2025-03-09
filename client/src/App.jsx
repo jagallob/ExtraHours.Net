@@ -84,11 +84,7 @@ function App() {
             >
               <Route
                 path="ExtraHoursSettings"
-                element={
-                  <Layout>
-                    <ExtraHoursSettingsPage />
-                  </Layout>
-                }
+                element={<ExtraHoursSettingsPage />}
               />
               <Route
                 path="PersonalSettings"

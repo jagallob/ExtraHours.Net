@@ -18,7 +18,8 @@ h1 {
   text-align: center;
   font-family: sans-serif;
   margin-left: 10px;
-  margin-top: 80px;
+  margin-top: 20px;
+  padding: 10px;
 }
 
 .grid {
@@ -28,6 +29,7 @@ h1 {
   width: 40%;
   max-width: 1200px;
   margin: auto;
+  margin-top: -50px;
 }
 
 .menu-item {
@@ -41,6 +43,12 @@ h1 {
   transition: transform 0.3s ease;
   padding: 10px;
   box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
 .menu-item:hover {
@@ -53,13 +61,18 @@ h1 {
   width: 80px;
   height: 80px;
   margin-bottom: 10px;
+  max-width: 100%;
 }
 
 .menu-item p {
   color: rgb(14, 26, 99);
-  padding: 10px 0;
+  padding: 5px 0;
   margin: 0;
   font-family: sans-serif;
+  width: 100%;
+  word-wrap: break-word;
+  font-size: 16px;
+  line-height: 1.2;
 }
 
 .button-container {
@@ -72,6 +85,7 @@ h1 {
 .logout-button,
 .change-password-button {
   padding: 8px 18px;
+  justify-content: space-between;
   background-color: #ebf3ff;
   color: #050505;
   border: none;
@@ -89,8 +103,8 @@ h1 {
 
 .container {
   display: grid;
-  grid-template-columns: auto auto; // Dos columnas: una para la imagen y otra para el texto
-  gap: 1rem; // Espacio entre elementos
+  grid-template-columns: auto auto;
+  gap: 1rem;
   margin-right: 10px;
 }
 
@@ -114,4 +128,62 @@ h1 {
   background-color: #ebf3ff;
   border: 2px solid #0c66e1;
   color: #0c66e1;
+}
+
+@media screen and (max-width: 1200px) {
+  .grid {
+    width: 60%;
+  }
+
+  .button-container {
+    width: 60%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .grid {
+    width: 80%;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .button-container {
+    width: 80%;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  h1 {
+    font-size: 24px;
+    margin-bottom: 50px;
+  }
+
+  .menu-item {
+    height: 120px;
+  }
+
+  .menu-item img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 5px;
+  }
+
+  .menu-item p {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .grid {
+    width: 90%;
+  }
+
+  .button-container {
+    width: 90%;
+  }
+
+  h1 {
+    font-size: 20px;
+    margin-bottom: 30px;
+  }
 }

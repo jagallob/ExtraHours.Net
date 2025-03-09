@@ -1,12 +1,15 @@
 import { UpdateDeleteApprove } from "@components/UpdateDeleteApprove/UpdateDeleteApprove";
-import Layout from "../components/Layout/Layout";
 import "./UpdateDeleteApprovePage.scss";
 
 const ManagementExtraHour = () => {
   return (
-    <Layout>
-      <UpdateDeleteApprove />
-    </Layout>
+    <>
+      <div>
+        <header className="page__header"></header>
+        {/* <h2 className="h2addextra">Gestión de Horas Extras</h2> */}
+        <UpdateDeleteApprove />
+      </div>
+    </>
   );
 };
 

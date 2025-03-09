@@ -271,6 +271,8 @@ export const UpdateDeleteApprove = () => {
   const actionColumn = {
     title: "Acciones",
     key: "actions",
+    fixed: "right",
+    width: 150,
     render: (text, record) => (
       <Space size="small">
         <Button
@@ -387,7 +389,7 @@ export const UpdateDeleteApprove = () => {
                   pageSizeOptions: ["10", "20", "50", "100"],
                 }}
                 scroll={{
-                  x: 900,
+                  x: 1500,
                   y: 500,
                 }}
                 rowClassName={(record) =>

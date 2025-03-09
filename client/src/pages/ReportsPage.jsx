@@ -1,12 +1,15 @@
 import { ReportInfo } from "../components/ReportInfo/ReportInfo";
-import Layout from "../components/Layout/Layout";
 import "./ReportsPage.scss";
 
 const Reports = () => {
   return (
-    <Layout>
-      <ReportInfo />
-    </Layout>
+    <>
+      <div>
+        <header className="page__header"></header>
+        {/* <h2 className="h2addextra">Informes</h2> */}
+        <ReportInfo />
+      </div>
+    </>
   );
 };
 
