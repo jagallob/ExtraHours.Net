@@ -7,7 +7,7 @@ const Header = () => {
   return (
     <header className="app-header">
       <div className="logo">
-        <>Bienvenido</>
+        <>Bienvenid@</>
       </div>
 
       {auth && (

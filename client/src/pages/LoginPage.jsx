@@ -25,7 +25,7 @@ const Login = () => {
       if (decodedToken.role) {
         login({ token, role: decodedToken.role });
         navigate("/menu");
-        message.success(`Bienvenido ${decodedToken.unique_name}`);
+        message.success(`Bienvenid@ ${decodedToken.unique_name}`);
       } else {
         message.error("No se pudo determinar el rol del usuario");
       }
@@ -39,7 +39,7 @@ const Login = () => {
   return (
     <div className="login-page">
       <div className="login-card">
-        <h1 className="login-title">Bienvenido</h1>
+        <h1 className="login-title">Bienvenid@</h1>
 
         <div className="login-form-container">
           <h2 className="iniciar-sesion">Inicia sesión</h2>
