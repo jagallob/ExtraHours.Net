@@ -272,6 +272,58 @@ namespace ExtraHours.API.Controller
                 return NotFound(new { error = "Registro de horas extra no encontrado" });
 
             return Ok(new { message = "Registro eliminado exitosamente" });
-        }            
+        }
+
+        [HttpGet("all-employees-extra-hours")]
+        [Authorize(Roles = "superusuario")]
+        public async Task<IActionResult> GetAllEmployeesExtraHours([FromQuery] string startDate = null, [FromQuery] string endDate = null)
+        {
+            var result = new List<object>();
+            var allEmployees = await _employeeService.GetAllAsync();
+
+            foreach (var employee in allEmployees)
+            {
+                IEnumerable<ExtraHour> extraHours;
+
+                if (!string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate) &&
+           DateTime.TryParse(startDate, out var start) && DateTime.TryParse(endDate, out var end))
+                {
+                    extraHours = await _extraHourService.FindExtraHoursByIdAndDateRangeAsync(employee.id, start, end);
+                }
+                else
+                {
+                    extraHours = await _extraHourService.FindExtraHoursByIdAsync(employee.id);
+                }
+
+                if (extraHours != null && extraHours.Any())
+                {
+                    foreach (var extraHour in extraHours)
+                    {
+                        result.Add(new
+                        {
+                            id = employee.id,
+                            name = employee.name,
+                            position = employee.position,
+                            salary = employee.salary,
+                            manager = new { name = employee.manager?.name ?? "Sin asignar" },
+                            registry = extraHour.registry,
+                            diurnal = extraHour.diurnal,
+                            nocturnal = extraHour.nocturnal,
+                            diurnalHoliday = extraHour.diurnalHoliday,
+                            nocturnalHoliday = extraHour.nocturnalHoliday,
+                            extrasHours = extraHour.extraHours,
+                            date = extraHour.date.ToString("yyyy-MM-dd"),
+                            startTime = extraHour.startTime,
+                            endTime = extraHour.endTime,
+                            approved = extraHour.approved,
+                            observations = extraHour.observations
+                        });
+                    }
+                }
+            }
+
+            return Ok(result);
+
+        }
     }
 }
