@@ -23,6 +23,8 @@ import {
   ExclamationCircleOutlined,
   FileSearchOutlined,
   FilterOutlined,
+  CloseOutlined,
+  SaveOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { findExtraHoursByManager } from "../../services/findExtraHoursByManager";
@@ -271,7 +273,7 @@ export const UpdateDeleteApprove = () => {
   const actionColumn = {
     title: "Acciones",
     key: "actions",
-    fixed: "right",
+    // fixed: "right",
     width: 150,
     render: (text, record) => (
       <Space size="small">
@@ -415,66 +417,161 @@ export const UpdateDeleteApprove = () => {
 
       {isEditModalOpen && (
         <Modal
-          title="Actualizar Registro de Horas Extras"
+          title={
+            <div className="modal-title-container">
+              <EditOutlined className="modal-title-icon" />
+              <span>Actualizar Registro de Horas Extras</span>
+              <Badge
+                status="processing"
+                text={`Empleado: ${selectedRow?.name}`}
+              />
+            </div>
+          }
           open={isEditModalOpen}
           onCancel={() => setEditModalOpen(false)}
           footer={null}
           className="edit-modal"
+          width={600}
+          centered
+          destroyOnClose
         >
           <div className="modal-container">
             <Form
-              initialValues={selectedRow}
+              initialValues={{
+                ...selectedRow,
+                date: selectedRow?.date ? dayjs(selectedRow.date) : null,
+              }}
               onFinish={handleSave}
               onValuesChange={handleFormChange}
               layout="vertical"
             >
-              <Form.Item
-                name="diurnal"
-                label="Horas Diurnas"
-                rules={[{ required: true, message: "Campo requerido" }]}
-              >
-                <InputNumber min={0} precision={1} />
-              </Form.Item>
-              <Form.Item
-                name="nocturnal"
-                label="Horas Nocturnas"
-                rules={[{ required: true, message: "Campo requerido" }]}
-              >
-                <InputNumber min={0} precision={1} />
-              </Form.Item>
-              <Form.Item
-                name="diurnalHoliday"
-                label="Horas Diurnas Festivas"
-                rules={[{ required: true, message: "Campo requerido" }]}
-              >
-                <InputNumber min={0} precision={1} />
-              </Form.Item>
-              <Form.Item
-                name="nocturnalHoliday"
-                label="Horas Nocturnas Festivas"
-                rules={[{ required: true, message: "Campo requerido" }]}
-              >
-                <InputNumber min={0} precision={1} />
-              </Form.Item>
-              <Form.Item name="extrasHours" label="Total Horas Extras">
-                <InputNumber value={selectedRow?.extrasHours} disabled />
-              </Form.Item>
+              <div className="form-row">
+                <Form.Item
+                  name="diurnal"
+                  label="Horas Diurnas"
+                  rules={[{ required: true, message: "Campo requerido" }]}
+                  className="form-item-half"
+                >
+                  <InputNumber
+                    min={0}
+                    precision={1}
+                    addonAfter="hrs"
+                    placeholder="0.0"
+                    style={{ width: "100%" }}
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="nocturnal"
+                  label="Horas Nocturnas"
+                  rules={[{ required: true, message: "Campo requerido" }]}
+                  className="form-item-half"
+                >
+                  <InputNumber
+                    min={0}
+                    precision={1}
+                    addonAfter="hrs"
+                    placeholder="0.0"
+                    style={{ width: "100%" }}
+                  />
+                </Form.Item>
+              </div>
+
+              <div className="form-row">
+                <Form.Item
+                  name="diurnalHoliday"
+                  label="Horas Diurnas Festivas"
+                  rules={[{ required: true, message: "Campo requerido" }]}
+                  className="form-item-half"
+                >
+                  <InputNumber
+                    min={0}
+                    precision={1}
+                    addonAfter="hrs"
+                    placeholder="0.0"
+                    style={{ width: "100%" }}
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="nocturnalHoliday"
+                  label="Horas Nocturnas Festivas"
+                  rules={[{ required: true, message: "Campo requerido" }]}
+                  className="form-item-half"
+                >
+                  <InputNumber
+                    min={0}
+                    precision={1}
+                    addonAfter="hrs"
+                    placeholder="0.0"
+                    style={{ width: "100%" }}
+                  />
+                </Form.Item>
+              </div>
+
+              <div className="hours-summary">
+                <Form.Item
+                  name="extrasHours"
+                  label="Total Horas Extras"
+                  className="total-hours"
+                >
+                  <InputNumber
+                    value={selectedRow?.extrasHours}
+                    disabled
+                    style={{
+                      width: "100%",
+                      backgroundColor: "#f0f7ff",
+                    }}
+                    addonAfter="hrs"
+                    formatter={(value) => {
+                      // Comprobación para evitar el error
+                      if (
+                        value !== null &&
+                        value !== undefined &&
+                        typeof value === "number"
+                      ) {
+                        return value.toFixed(1);
+                      }
+                      return "0.0";
+                    }}
+                    parser={(value) => value.replace(/[^\d.]/g, "")}
+                  />
+                </Form.Item>
+              </div>
+
               <Form.Item
                 name="date"
                 label="Fecha"
                 rules={[{ required: true, message: "Campo requerido" }]}
               >
-                <Input />
+                <DatePicker
+                  format="YYYY-MM-DD"
+                  style={{ width: "100%" }}
+                  placeholder="Seleccionar fecha"
+                />
               </Form.Item>
+
               <Form.Item name="observations" label="Observaciones">
-                <Input.TextArea rows={3} />
+                <Input.TextArea
+                  rows={3}
+                  placeholder="Agregar observaciones sobre este registro"
+                  showCount
+                  maxLength={500}
+                />
               </Form.Item>
 
               <div className="form-actions">
-                <Button onClick={() => setEditModalOpen(false)}>
+                <Button
+                  onClick={() => setEditModalOpen(false)}
+                  icon={<CloseOutlined />}
+                  className="cancel-button"
+                >
                   Cancelar
                 </Button>
-                <Button type="primary" htmlType="submit">
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  icon={<SaveOutlined />}
+                  className="save-button"
+                >
                   Guardar Cambios
                 </Button>
               </div>
