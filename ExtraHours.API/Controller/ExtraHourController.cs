@@ -77,6 +77,8 @@ namespace ExtraHours.API.Controller
                             startTime = extraHour.startTime,
                             endTime = extraHour.endTime,
                             approved = extraHour.approved,
+                            approvedByManagerId = extraHour.ApprovedByManagerId,
+                            approvedByManagerName = extraHour.ApprovedByManager?.name ?? "No aprobado",
                             observations = extraHour.observations
                         });
                     }
@@ -119,6 +121,8 @@ namespace ExtraHours.API.Controller
                     startTime = extraHour.startTime,
                     endTime = extraHour.endTime,
                     approved = extraHour.approved,
+                    approvedByManagerId = extraHour.ApprovedByManagerId,
+                    approvedByManagerName = extraHour.ApprovedByManager?.name ?? "No aprobado",
                     observations = extraHour.observations
                 });
             }
@@ -168,6 +172,8 @@ namespace ExtraHours.API.Controller
                     startTime = extraHour.startTime,
                     endTime = extraHour.endTime,
                     approved = extraHour.approved,
+                    approvedByManagerId = extraHour.ApprovedByManagerId,
+                    approvedByManagerName = extraHour.ApprovedByManager?.name ?? "No aprobado",
                     observations = extraHour.observations
                 });
             }
@@ -229,14 +235,30 @@ namespace ExtraHours.API.Controller
         }
 
         [HttpPatch("{registry}/approve")]
+        [Authorize(Roles = "manager, superusuario")]
         public async Task<IActionResult> ApproveExtraHour(long registry)
         {
             var extraHour = await _extraHourService.FindByRegistryAsync(registry);
             if (extraHour == null)
                 return NotFound(new { error = "Registro de horas extra no encontrado" });
 
+            // Obtener ID del manager desde el token
+            var managerId = User.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
+            if (string.IsNullOrEmpty(managerId))
+            {
+                return Unauthorized(new { error = "No se pudo obtener el ID del manager logueado." });
+            }
+
+            long managerIdLong = long.Parse(managerId);
+
             extraHour.approved = true;
+            extraHour.ApprovedByManagerId = managerIdLong;
+
             await _extraHourService.UpdateExtraHourAsync(extraHour);
+
+            var updatedExtraHour = await _extraHourService.FindByRegistryAsync(registry);
+
+
             return Ok(extraHour);
         }
 
@@ -316,6 +338,8 @@ namespace ExtraHours.API.Controller
                             startTime = extraHour.startTime,
                             endTime = extraHour.endTime,
                             approved = extraHour.approved,
+                            approvedByManagerId = extraHour.ApprovedByManagerId,
+                            approvedByManagerName = extraHour.ApprovedByManager?.name ?? "No aprobado",
                             observations = extraHour.observations
                         });
                     }
