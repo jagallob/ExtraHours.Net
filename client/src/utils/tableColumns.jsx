@@ -112,4 +112,10 @@ export const columns = [
     ],
     onFilter: (value, record) => record.approved === value,
   },
+  {
+    title: "Aprobado por",
+    dataIndex: "approvedByManagerName",
+    key: "approvedByManagerName",
+    render: (text, record) => (record.approved ? text : "Pendiente"),
+  },
 ];

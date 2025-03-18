@@ -10,6 +10,9 @@ namespace ExtraHours.API.Model
         [Column("id")]
         public long id { get; set; }
 
+        [ForeignKey("id")]
+        public User? User { get; set; }
+
         [Required]
         [MaxLength(100)]
         public string name { get; set; } = string.Empty;
@@ -20,9 +23,10 @@ namespace ExtraHours.API.Model
         [Range(0, double.MaxValue, ErrorMessage = "El salario debe ser un valor positivo.")]
         public double? salary { get; set; }
 
-        [ForeignKey("manager")]
         [Column("manager_id")]
         public long? managerId { get; set; }
+
+        [ForeignKey("managerId")]
         public Manager? manager { get; set; }
 
     }

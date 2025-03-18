@@ -10,23 +10,37 @@ Este es el diagrama de entidad relación que representa el sistema de administra
 
 Relaciones principales:
 
+- User es la entidad base para MANAGER y EMPLOYEE (1:1)
 - Un gerente puede supervisar a muchos empleados (1:N)
+- Un gerente puede aprobar a muchas horas extra (1:N)
 - Un empleado puede registrar muchas horas extra (1:N)
 - La configuración de horas extra se aplica a todos los registros de horas extra (1:N)
 
 ```mermaid
 erDiagram
+    USER ||--|| MANAGER : es
+    USER ||--|| EMPLOYEE : es
     MANAGER ||--o{ EMPLOYEE : supervisa
     EMPLOYEE ||--o{ EXTRA_HOUR : registra
+    MANAGER ||--o{ EXTRA_HOUR : aprueba
     EXTRA_HOURS_CONFIG ||..o{ EXTRA_HOUR : configura
 
+    USER {
+        long id PK
+        string email
+        string name
+        string password
+        string role
+        string username
+    }
+
     MANAGER {
-        long manager_id PK
+        long manager_id PK, FK
         string manager_name
     }
 
     EMPLOYEE {
-        long id PK
+        long id PK, FK
         string name
         string position
         double salary
@@ -46,6 +60,7 @@ erDiagram
         double extraHours
         string observations
         boolean approved
+        long approved_by_manager_id FK
     }
 
     EXTRA_HOURS_CONFIG {
@@ -57,14 +72,5 @@ erDiagram
         double nocturnalHolidayMultiplier
         timespan diurnalStart
         timespan diurnalEnd
-    }
-
-    USER {
-        long id PK
-        string email
-        string name
-        string password
-        string role
-        string username
     }
 ```

@@ -27,7 +27,13 @@ namespace ExtraHours.API.Model
         [Required]
         public bool approved { get; set; } = false;
 
+        [Column("approved_by_manager_id")]
+        public long? ApprovedByManagerId { get; set; }
+
         [ForeignKey("id")]
         public Employee? employee { get; set; }
+
+        [ForeignKey("ApprovedByManagerId")]
+        public Manager? ApprovedByManager { get; set; }
     }
 }
