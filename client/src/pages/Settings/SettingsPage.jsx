@@ -1,16 +1,15 @@
 import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import "./SettingsPage.scss";
 import parametroset from "../../assets/images/parametroset.png";
-import eliminarset from "../../assets/images/eliminarset.png";
-import Regresar from "../../assets/images/Regresar.png";
 import agregarset from "../../assets/images/agregarset.png";
 
 const SettingsPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Verificar si estamos en una subpágina
   const isSubPage = location.pathname !== "/settings";
+
+  const currentSubPage = location.pathname.split("/").pop();
 
   return (
     <div>
@@ -19,10 +18,26 @@ const SettingsPage = () => {
         <div className="settingsMenu">
           <h2>Configuraciones</h2>
           {isSubPage ? (
-            <div className="mini-icons">
-              <div onClick={() => navigate("/settings")}>
-                <img className="regresar" src={Regresar} alt="Inicio" />
-                <p>Regresar</p>
+            <div className="submenu-navigation">
+              <div className="navigation-buttons">
+                <div
+                  className={`nav-button ${
+                    currentSubPage === "ExtraHoursSettings" ? "active" : ""
+                  }`}
+                  onClick={() => navigate("/settings/ExtraHoursSettings")}
+                >
+                  <img src={parametroset} alt="Engranage" />
+                  <p>Parámetros Horas Extra</p>
+                </div>
+                <div
+                  className={`nav-button ${
+                    currentSubPage === "EmployeeManagement" ? "active" : ""
+                  }`}
+                  onClick={() => navigate("/settings/EmployeeManagement")}
+                >
+                  <img src={agregarset} alt="Gestionar Empleados" />
+                  <p>Gestionar Empleados</p>
+                </div>
               </div>
             </div>
           ) : (
@@ -41,18 +56,10 @@ const SettingsPage = () => {
               <div
                 className="menu-item"
                 id="extra-hours-settings"
-                onClick={() => navigate("/settings/PersonalSettings")}
+                onClick={() => navigate("/settings/EmployeeManagement")}
               >
                 <img src={agregarset} alt="Ícono de perfil con engranage" />
-                <p>Agregar Empleado</p>
-              </div>
-              <div
-                className="menu-item"
-                id="extra-hours-settings"
-                onClick={() => navigate("/settings/UpdateDeletePersonal")}
-              >
-                <img src={eliminarset} alt="ïcono de más (+)" />
-                <p>Actualizar ó Eliminar Personal</p>
+                <p>Gestionar Empleados</p>
               </div>
             </div>
           )}
