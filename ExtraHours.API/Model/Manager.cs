@@ -7,9 +7,13 @@ namespace ExtraHours.API.Model
     [Table("managers")]
     public class Manager
     {
+
         [Key]
         [Column("manager_id")]
         public long id { get; set; }
+
+        [ForeignKey("id")]
+        public User? User { get; set; }
 
         [Required]
         [Column("manager_name")]

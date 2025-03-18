@@ -5,8 +5,8 @@ import ExtraHoursMenu from "./components/ExtraHoursMenu";
 import LoginPage from "./pages/LoginPage";
 import ReportsPage from "./pages/ReportsPage";
 import ExtraHoursSettingsPage from "./pages/Settings/ExtraHoursSettingsPage";
-import { PersonalSettings } from "./components/PersonalSettings/PersonalSettings";
-import UpdateDeletePersonal from "./components/UpdateDeletePersonal/UpdateDeletePersonal";
+import EmployeeManagement from "./components/EmployeeManagement/EmployeeManagement";
+// import UpdateDeletePersonal from "./components/UpdateDeletePersonal/UpdateDeletePersonal";
 import AddExtrahour from "./pages/AddExtrahour";
 import UpdateDeleteApprovePage from "./pages/UpdateDeleteApprovePage";
 import { AuthProvider } from "./utils/AuthProvider";
@@ -87,21 +87,13 @@ function App() {
                 element={<ExtraHoursSettingsPage />}
               />
               <Route
-                path="PersonalSettings"
-                element={
-                  <Layout>
-                    <PersonalSettings />
-                  </Layout>
-                }
+                path="EmployeeManagement"
+                element={<EmployeeManagement />}
               />
-              <Route
+              {/* <Route
                 path="UpdateDeletePersonal"
-                element={
-                  <Layout>
-                    <UpdateDeletePersonal />
-                  </Layout>
-                }
-              />
+                element={<UpdateDeletePersonal />}
+              /> */}
             </Route>
           </Routes>
         </ConfigProvider>
