@@ -3,7 +3,7 @@ import "./ExtraHoursSettingsPage.scss";
 
 const Settings = () => {
   return (
-    <>
+    <div className="settingsMenu">
       <header className="page__header">
         <a href="http://localhost:5173/"></a>
       </header>
@@ -70,7 +70,7 @@ const Settings = () => {
           <ExtraHoursSettings />
         </section>
       </div>
-    </>
+    </div>
   );
 };
 

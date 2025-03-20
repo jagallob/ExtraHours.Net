@@ -72,7 +72,6 @@ const EmployeeManagement = () => {
       setEmployees([]);
       return;
     }
-
     setLoading(true);
     try {
       const employee = await findEmployee(value);
@@ -89,12 +88,13 @@ const EmployeeManagement = () => {
   };
 
   const showEditModal = (employee) => {
+    console.log(employee);
     setSelectedEmployee(employee);
     editForm.setFieldsValue({
       name: employee.name,
       position: employee.position,
       salary: employee.salary,
-      manager_id: employee.manager?.manager_id,
+      manager_id: employee.manager?.id,
       role: employee.role,
     });
     setEditModalOpen(true);
@@ -156,7 +156,7 @@ const EmployeeManagement = () => {
     },
     {
       title: "Manager",
-      dataIndex: ["manager", "manager_name"],
+      dataIndex: ["manager", "name"],
       key: "manager_name",
     },
     {
@@ -199,115 +199,108 @@ const EmployeeManagement = () => {
               layout="vertical"
               onFinish={handleAddEmployee}
             >
-              <Form.Item
-                label="ID"
-                name="id"
-                rules={[
-                  {
-                    required: true,
-                    message: "Por favor ingrese el ID del empleado",
-                  },
-                ]}
-              >
-                <InputNumber min={1} style={{ width: "100%" }} />
-              </Form.Item>
+              <div className="form-columns">
+                <div className="form-column">
+                  <Form.Item
+                    label="ID"
+                    name="id"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por favor ingrese el ID del empleado",
+                      },
+                    ]}
+                  >
+                    <InputNumber min={1} style={{ width: "100%" }} />
+                  </Form.Item>
 
-              <Form.Item
-                label="Nombre"
-                name="name"
-                rules={[
-                  {
-                    required: true,
-                    message: "Por favor ingrese el nombre del empleado",
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
+                  <Form.Item
+                    label="Nombre"
+                    name="name"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por favor ingrese el nombre del empleado",
+                      },
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
 
-              <Form.Item
-                label="Posición"
-                name="position"
-                rules={[
-                  {
-                    required: true,
-                    message: "Por favor ingrese la posición del empleado",
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
+                  <Form.Item
+                    label="Posición"
+                    name="position"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por favor ingrese la posición del empleado",
+                      },
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
 
-              <Form.Item
-                label="Salario"
-                name="salary"
-                rules={[
-                  {
-                    required: true,
-                    message: "Por favor ingrese el salario del empleado",
-                  },
-                ]}
-              >
-                <InputNumber
-                  formatter={(value) =>
-                    `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                  }
-                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                  style={{ width: "100%" }}
-                  min={1}
-                />
-              </Form.Item>
+                  <Form.Item label="Email" name="email">
+                    <Input disabled />
+                  </Form.Item>
+                </div>
 
-              <Form.Item
-                label="Manager"
-                name="manager"
-                rules={[
-                  {
-                    required: true,
-                    message: "Por favor ingrese el manager del empleado",
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
+                <div className="form-column">
+                  <Form.Item
+                    label="Salario"
+                    name="salary"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por favor ingrese el salario del empleado",
+                      },
+                    ]}
+                  >
+                    <InputNumber
+                      formatter={(value) =>
+                        `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                      }
+                      parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                      style={{ width: "100%" }}
+                      min={1}
+                    />
+                  </Form.Item>
 
-              <Form.Item
-                label="Manager ID"
-                name="manager_id"
-                rules={[
-                  {
-                    required: true,
-                    message: "Por favor ingrese el ID del manager",
-                  },
-                ]}
-              >
-                <InputNumber min={1} style={{ width: "100%" }} />
-              </Form.Item>
+                  <Form.Item
+                    label="Manager ID"
+                    name="manager_id"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por favor ingrese el ID del manager",
+                      },
+                    ]}
+                  >
+                    <InputNumber min={1} style={{ width: "100%" }} />
+                  </Form.Item>
 
-              <Form.Item label="Email" name="email">
-                <Input disabled />
-              </Form.Item>
+                  <Form.Item
+                    label="Rol"
+                    name="role"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Por favor seleccione el rol del empleado",
+                      },
+                    ]}
+                  >
+                    <Select>
+                      <Select.Option value="manager">Manager</Select.Option>
+                      <Select.Option value="empleado">Empleado</Select.Option>
+                      <Select.Option value="superusuario">
+                        Superusuario
+                      </Select.Option>
+                    </Select>
+                  </Form.Item>
+                </div>
+              </div>
 
-              <Form.Item
-                label="Rol"
-                name="role"
-                rules={[
-                  {
-                    required: true,
-                    message: "Por favor seleccione el rol del empleado",
-                  },
-                ]}
-              >
-                <Select>
-                  <Select.Option value="manager">Manager</Select.Option>
-                  <Select.Option value="empleado">Empleado</Select.Option>
-                  <Select.Option value="superusuario">
-                    Superusuario
-                  </Select.Option>
-                </Select>
-              </Form.Item>
-
-              <Form.Item>
+              <Form.Item className="submit-button-container">
                 <Button
                   type="primary"
                   htmlType="submit"

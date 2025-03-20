@@ -8,7 +8,6 @@ const SettingsPage = () => {
   const location = useLocation();
 
   const isSubPage = location.pathname !== "/settings";
-
   const currentSubPage = location.pathname.split("/").pop();
 
   return (
@@ -16,8 +15,7 @@ const SettingsPage = () => {
       <div className={isSubPage ? "subpage-container" : "settings-container"}>
         <header className="page__header"></header>
         <div className="settingsMenu">
-          <h2>Configuraciones</h2>
-          {isSubPage ? (
+          {isSubPage && (
             <div className="submenu-navigation">
               <div className="navigation-buttons">
                 <div
@@ -35,13 +33,16 @@ const SettingsPage = () => {
                   }`}
                   onClick={() => navigate("/settings/EmployeeManagement")}
                 >
-                  <img src={agregarset} alt="Gestionar Empleados" />
+                  <img src={agregarset} alt="Signo más dentro de un círculo" />
                   <p>Gestionar Empleados</p>
                 </div>
               </div>
             </div>
-          ) : (
-            // Mostrar el menú principal si no estamos en una subpágina
+          )}
+
+          <h2>Configuraciones</h2>
+
+          {!isSubPage && (
             <div className="grid">
               <div
                 className="menu-item"

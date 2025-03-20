@@ -5,7 +5,7 @@ import ExtraHoursMenu from "./components/ExtraHoursMenu";
 import LoginPage from "./pages/LoginPage";
 import ReportsPage from "./pages/ReportsPage";
 import ExtraHoursSettingsPage from "./pages/Settings/ExtraHoursSettingsPage";
-import EmployeeManagement from "./components/EmployeeManagement/EmployeeManagement";
+import EmployeeManagementPage from "./pages/Settings/EmployeeManagementPage";
 // import UpdateDeletePersonal from "./components/UpdateDeletePersonal/UpdateDeletePersonal";
 import AddExtrahour from "./pages/AddExtrahour";
 import UpdateDeleteApprovePage from "./pages/UpdateDeleteApprovePage";
@@ -88,7 +88,7 @@ function App() {
               />
               <Route
                 path="EmployeeManagement"
-                element={<EmployeeManagement />}
+                element={<EmployeeManagementPage />}
               />
               {/* <Route
                 path="UpdateDeletePersonal"
