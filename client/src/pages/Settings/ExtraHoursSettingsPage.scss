@@ -1,79 +1,122 @@
-.page__header {
-  display: flex;
-  justify-content: space-between; /* Espacio entre el encabezado y otros elementos */
-  align-items: center;
-  padding: 1rem;
-}
-
-.settings__container {
-  display: flex;
-  flex-direction: row; /* Alineación horizontal */
-  justify-content: space-between; /* Espacio entre artículos */
-  gap: 1.5rem; /* Espacio entre los elementos */
-  padding: 1rem;
-  max-width: 1200px; /* Ancho máximo para el contenedor */
-  margin: 0 auto; /* Centrando el contenedor */
-}
-
-.settings__article {
-  flex: 1; /* Ocupa el 50% del espacio */
-  max-width: 600px; /* Ancho máximo para el artículo */
-  font-size: 0.95rem; /* Tamaño de fuente ligeramente mayor */
-  color: black; /* Color de texto más oscuro */
-  background-color: #ffffff; /* Fondo blanco para los artículos */
-  border-radius: 5px; /* Bordes redondeados */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-  padding: 1rem; /* Espaciado interno */
-}
-
-.settings__article ol {
-  margin-left: 1.5rem; /* Margen izquierdo para listas ordenadas */
-}
-
-.settings__form {
-  flex: 1; /* Ocupa el 50% del espacio */
-  max-width: 600px; /* Ancho máximo para el formulario */
-  padding: 1rem; /* Espaciado interno */
-  background-color: #f9f9f9; /* Fondo ligeramente gris para el formulario */
-  border-radius: 5px; /* Bordes redondeados */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-  color: rgb(14, 26, 99);
-
-  /* Reducir espacio vertical entre elementos del formulario */
-  div {
-    margin-bottom: 0.5rem; /* Espacio vertical reducido entre elementos */
-  }
-}
-
-/* Añadir un estilo para botones */
-.settings__form button {
-  background-color: #ebf3ff;
-  border: 2px solid #0c66e1;
-  color: #0c66e1;
-  border: none; /* Sin borde */
-  padding: 0.5rem 1rem; /* Espaciado interno del botón */
-  border-radius: 5px; /* Bordes redondeados */
-  cursor: pointer; /* Cambia el cursor al pasar el mouse */
-  transition: background-color 0.3s ease; /* Transición suave */
-}
-
-.settings__form button:hover {
-  background-color: #0056b3; /* Color del botón al pasar el mouse */
-}
-
-article {
-  color: black;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-strong {
-  color: black;
-  font-family: Arial, Helvetica, sans-serif;
-}
+$primary-color: #1890ff;
+$background-color: #fff;
+$text-color: #1f1f1f;
+$info-bg-color: #f0f7ff;
+$danger-color: #ff4d4f;
+$shadow-color: rgba(0, 0, 0, 0.1);
 
 .settingsMenu {
   min-height: calc(100vh - 60px);
   padding: 1rem;
   background-size: cover;
   background-position: center;
+
+  h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: $primary-color;
+    margin-bottom: 24px;
+    border-bottom: 2px solid $primary-color;
+    padding-bottom: 12px;
+  }
+}
+
+.page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.settings__container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  @media (min-width: 992px) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.settings__article {
+  flex: 1;
+  max-width: 100%;
+
+  background-color: $info-bg-color;
+  padding: 32px;
+  border-radius: 8px;
+  border-left: 4px solid $primary-color;
+  box-shadow: 0 2px 8px $shadow-color;
+  overflow: auto;
+  max-height: none;
+  min-height: 400px;
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: $primary-color;
+    margin-bottom: 16px;
+  }
+
+  article {
+    color: $text-color;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+
+  ol {
+    margin-left: 20px;
+    margin-bottom: 16px;
+
+    li {
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+  }
+
+  strong {
+    color: $text-color;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+  }
+
+  @media (min-width: 992px) {
+    flex: 0 0 32%;
+    max-width: 32%;
+  }
+}
+
+.settings__form {
+  flex: 2;
+  max-width: 100%;
+  padding: 1rem;
+  background-color: $background-color;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px $shadow-color;
+  color: $text-color;
+
+  div {
+    margin-bottom: 0.5rem;
+  }
+
+  button {
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: $primary-color, 10%;
+    }
+  }
+
+  @media (min-width: 992px) {
+    flex: 0 0 65%;
+    max-width: 65%;
+  }
 }

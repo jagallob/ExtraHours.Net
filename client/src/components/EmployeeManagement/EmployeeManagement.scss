@@ -5,8 +5,25 @@ $info-bg-color: #f0f7ff;
 $danger-color: #ff4d4f;
 $shadow-color: rgba(0, 0, 0, 0.1);
 
-.employee-management-page {
-  padding: 24px;
+.employee-management {
+  padding: 54px;
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: -50px;
+
+  .ant-tabs-nav {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    &::before {
+      display: none;
+    }
+
+    .ant-tabs-nav-wrap {
+      justify-content: center;
+    }
+  }
 
   h2 {
     font-size: 24px;
@@ -17,72 +34,50 @@ $shadow-color: rgba(0, 0, 0, 0.1);
     padding-bottom: 12px;
   }
 
-  .employee-management-container {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+  .add-employee-form {
+    .form-columns {
+      display: flex;
+      gap: 20px;
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
 
-    @media (min-width: 992px) {
-      flex-direction: row;
-    }
-
-    .employee-management-info {
-      flex: 0 0 100%;
-
-      @media (min-width: 992px) {
-        flex: 0 0 30%;
-        max-width: 30%;
-      }
-
-      article {
-        background-color: $info-bg-color;
-        padding: 24px;
-        border-radius: 8px;
-        border-left: 4px solid $primary-color;
-        box-shadow: 0 2px 8px $shadow-color;
-
-        h3 {
-          font-size: 18px;
-          font-weight: 600;
-          color: $primary-color;
-          margin-bottom: 16px;
-        }
-
-        h4 {
-          font-size: 16px;
-          font-weight: 500;
-          margin-top: 16px;
-          margin-bottom: 8px;
-        }
-
-        p {
-          margin-bottom: 16px;
-          line-height: 1.6;
-        }
-
-        ul {
-          margin-bottom: 16px;
-          padding-left: 20px;
-
-          li {
-            margin-bottom: 8px;
-            line-height: 1.5;
-          }
-        }
-
-        strong {
-          color: $danger-color;
-        }
+      .form-column {
+        flex: 1;
       }
     }
 
-    .employee-management-form {
-      flex: 0 0 100%;
+    .submit-button-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      padding: 20px;
+    }
 
-      @media (min-width: 992px) {
-        flex: 0 0 68%;
-        max-width: 68%;
+    background-color: $background-color;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px $shadow-color;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+
+    .ant-form-item {
+      max-width: 100%;
+
+      .ant-form-item-control-input {
+        width: 100%;
       }
     }
+  }
+
+  .manage-employees {
+    background-color: $background-color;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px $shadow-color;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
   }
 }

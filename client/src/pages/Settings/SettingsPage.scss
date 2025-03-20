@@ -42,14 +42,17 @@
 #extra-hours-settings:hover p {
   color: #4b525f;
 }
+.menu-item {
+  margin-top: 50px;
+}
 
 h2 {
   color: rgb(14, 26, 99);
   padding: 40px;
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
-  margin-top: -70px;
-  margin-bottom: 50px;
+  margin-top: -90px;
+  margin-bottom: 1.5rem;
 }
 
 p {
@@ -85,7 +88,8 @@ a:hover {
 .submenu-navigation {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 70px;
+  margin-top: -80px;
 }
 
 .navigation-buttons {
