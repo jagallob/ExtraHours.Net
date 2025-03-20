@@ -1,12 +1,20 @@
 export const updateEmployee = async (employeeId, employeeData) => {
   try {
+    const transformedData = {
+      Name: employeeData.name,
+      Position: employeeData.position,
+      Salary: employeeData.salary,
+      ManagerId: employeeData.manager_id,
+      Role: employeeData.role,
+    };
+
     const options = {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      body: JSON.stringify(employeeData),
+      body: JSON.stringify(transformedData),
     };
 
     const response = await fetch(
@@ -15,7 +23,8 @@ export const updateEmployee = async (employeeId, employeeData) => {
     );
 
     if (!response.ok) {
-      throw new Error("Error en la solicitud");
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || "Error en la solicitud");
     }
 
     const data = await response.json();
