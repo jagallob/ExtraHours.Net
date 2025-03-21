@@ -19,7 +19,7 @@ namespace ExtraHours.API.Repositories.Implementations
         {
             return await _context.employees
                 .Include(e => e.manager)
-                .Where(e => e.manager != null && e.manager.id == managerId)
+                .Where(e => e.manager_id == managerId)
                 .ToListAsync();
         }
 
@@ -65,8 +65,15 @@ namespace ExtraHours.API.Repositories.Implementations
         }
 
         public async Task<Employee> UpdateEmployeeAsync(long id, UpdateEmployeeDTO dto)
+
         {
-            var employee = await _context.employees.FindAsync(id);
+            Console.WriteLine($"Updating employee with ID: {id}");
+            Console.WriteLine($"Recived DTO: Name={dto.Name}, Position={dto.Position}, Salary={dto.Salary}, ManagerId={dto.ManagerId}");
+
+            var employee = await _context.employees
+                .Include(e => e.manager)
+                .FirstOrDefaultAsync(e => e.id == id);
+
             if (employee == null)
                 throw new KeyNotFoundException("Empleado no encontrado");
 
@@ -76,14 +83,21 @@ namespace ExtraHours.API.Repositories.Implementations
 
             if (dto.ManagerId.HasValue)
             {
+                // Verificar que el nuevo manager exista
                 var manager = await _context.managers.FindAsync(dto.ManagerId.Value);
                 if (manager == null)
                     throw new KeyNotFoundException("Manager no encontrado");
+
+                // Actualizar la relación
+                employee.manager_id = dto.ManagerId.Value;
                 employee.manager = manager;
             }
 
-            _context.employees.Update(employee);
             await _context.SaveChangesAsync();
+
+            // Recargar la entidad para obtener los datos actualizados
+            await _context.Entry(employee).ReloadAsync();
+
             return employee;
         }
     }

@@ -10,13 +10,13 @@ namespace ExtraHours.API.Model
 
         [Key]
         [Column("manager_id")]
-        public long id { get; set; }
+        public long manager_id { get; set; }
 
-        [ForeignKey("id")]
+        [ForeignKey("manager_id")]
         public User? User { get; set; }
 
         [Required]
         [Column("manager_name")]
-        public string name { get; set; } = string.Empty;
+        public string manager_name { get; set; } = string.Empty;
     }
 }
