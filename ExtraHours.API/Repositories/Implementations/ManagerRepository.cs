@@ -14,9 +14,11 @@ namespace ExtraHours.API.Repositories.Implementations
             _context = context;
         }
 
-        public async Task<Manager> GetByIdAsync(long id)
+        public async Task<Manager?> GetByIdAsync(long id)
         {
-            return await _context.managers.FindAsync(id) ?? throw new InvalidOperationException("Manager not found");
+            return await _context.managers
+       .Where(m => m.manager_id == id)
+       .FirstOrDefaultAsync();
         }
 
         public async Task<List<Manager>> GetAllAsync()
@@ -36,9 +38,9 @@ namespace ExtraHours.API.Repositories.Implementations
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(long id)
+        public async Task DeleteAsync(long manager_id)
         {
-            var manager = await _context.managers.FindAsync(id);
+            var manager = await _context.managers.FindAsync(manager_id);
             if (manager != null)
             {
                 _context.managers.Remove(manager);

@@ -7,5 +7,6 @@
         public double? Salary { get; set; }
         public long? ManagerId { get; set; }
         public string? ManagerName { get; set; }
+        public string? Role { get; set; }
     }
 }

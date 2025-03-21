@@ -11,11 +11,39 @@ namespace ExtraHours.API.Controller
     {
         private readonly IExtraHourService _extraHourService;
         private readonly IEmployeeService _employeeService;
+        private readonly IExtraHourCalculationService _calculationService;
 
-        public ExtraHourController(IExtraHourService extraHourService, IEmployeeService employeeService) 
+        public ExtraHourController(IExtraHourService extraHourService, IEmployeeService employeeService, IExtraHourCalculationService calculationService) 
         {
             _extraHourService = extraHourService;
             _employeeService = employeeService;
+            _calculationService = calculationService;
+        }
+
+        [HttpPost("calculate")]
+        public async Task<IActionResult> CalculateExtraHours([FromBody] ExtraHourCalculationRequest request)
+        {
+            if (request == null)
+                return BadRequest(new { error = "Los datos de solicitud no pueden ser nulos" });
+
+            try
+            {
+                var calculation = await _calculationService.DetermineExtraHourTypeAsync(
+                    request.Date,
+                    request.StartTime,
+                    request.EndTime);
+
+                return Ok(calculation);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al calcular horas extra: {ex.Message}");
+                return StatusCode(500, new { error = "Error interno del servidor" });
+            }
         }
 
         [HttpGet("manager/employees-extra-hours")]
@@ -66,7 +94,7 @@ namespace ExtraHours.API.Controller
                             name = employee.name,
                             position = employee.position,
                             salary = employee.salary,
-                            manager = new { name = employee.manager?.name ?? "Sin asignar" },
+                            manager = new { name = employee.manager?.manager_name ?? "Sin asignar" },
                             registry = extraHour.registry,
                             diurnal = extraHour.diurnal,
                             nocturnal = extraHour.nocturnal,
@@ -78,7 +106,7 @@ namespace ExtraHours.API.Controller
                             endTime = extraHour.endTime,
                             approved = extraHour.approved,
                             approvedByManagerId = extraHour.ApprovedByManagerId,
-                            approvedByManagerName = extraHour.ApprovedByManager?.name ?? "No aprobado",
+                            approvedByManagerName = extraHour.ApprovedByManager?.manager_name ?? "No aprobado",
                             observations = extraHour.observations
                         });
                     }
@@ -110,7 +138,7 @@ namespace ExtraHours.API.Controller
                     name = employee.name,
                     position = employee.position,
                     salary = employee.salary,
-                    manager = new { name = employee.manager?.name ?? "Sin asignar" },
+                    manager = new { name = employee.manager?.manager_name ?? "Sin asignar" },
                     registry = extraHour.registry,
                     diurnal = extraHour.diurnal,
                     nocturnal = extraHour.nocturnal,
@@ -122,7 +150,7 @@ namespace ExtraHours.API.Controller
                     endTime = extraHour.endTime,
                     approved = extraHour.approved,
                     approvedByManagerId = extraHour.ApprovedByManagerId,
-                    approvedByManagerName = extraHour.ApprovedByManager?.name ?? "No aprobado",
+                    approvedByManagerName = extraHour.ApprovedByManager?.manager_name ?? "No aprobado",
                     observations = extraHour.observations
                 });
             }
@@ -161,7 +189,7 @@ namespace ExtraHours.API.Controller
                     name = employee.name,
                     position = employee.position,
                     salary = employee.salary,
-                    manager = new { name = employee.manager?.name ?? "Sin asignar" },
+                    manager = new { name = employee.manager?.manager_name ?? "Sin asignar" },
                     registry = extraHour.registry,
                     diurnal = extraHour.diurnal,
                     nocturnal = extraHour.nocturnal,
@@ -173,7 +201,7 @@ namespace ExtraHours.API.Controller
                     endTime = extraHour.endTime,
                     approved = extraHour.approved,
                     approvedByManagerId = extraHour.ApprovedByManagerId,
-                    approvedByManagerName = extraHour.ApprovedByManager?.name ?? "No aprobado",
+                    approvedByManagerName = extraHour.ApprovedByManager?.manager_name ?? "No aprobado",
                     observations = extraHour.observations
                 });
             }
@@ -184,7 +212,6 @@ namespace ExtraHours.API.Controller
         [HttpPost]
         public async Task<IActionResult> CreateExtraHour([FromBody] ExtraHour extraHour)
         {
-
             // Obtener ID del empleado desde el token
             var userId = User.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
             if (string.IsNullOrEmpty(userId))
@@ -202,21 +229,27 @@ namespace ExtraHours.API.Controller
                 return BadRequest(new { error = "Datos de horas extra no pueden ser nulos" });
             }
 
-
-            if (extraHour == null)
-                return BadRequest(new { error = "Datos de horas extra no pueden ser nulos" });
-
             if (extraHour.startTime == TimeSpan.Zero)
                 return BadRequest(new { error = "Formato de startTime inválido" });
 
             if (extraHour.endTime == TimeSpan.Zero)
                 return BadRequest(new { error = "Formato de endTime inválido" });
 
-            Console.WriteLine($"Recibido: {System.Text.Json.JsonSerializer.Serialize(extraHour)}");
-
-
+            // Realizar el cálculo automático en el backend
             try
             {
+                var calculation = await _calculationService.DetermineExtraHourTypeAsync(
+                    extraHour.date,
+                    extraHour.startTime,
+                    extraHour.endTime);
+
+                // Actualizar los valores calculados
+                extraHour.diurnal = calculation.diurnal;
+                extraHour.nocturnal = calculation.nocturnal;
+                extraHour.diurnalHoliday = calculation.diurnalHoliday;
+                extraHour.nocturnalHoliday = calculation.nocturnalHoliday;
+                extraHour.extraHours = calculation.extraHours;
+
                 var savedExtraHour = await _extraHourService.AddExtraHourAsync(extraHour);
                 return Created("", savedExtraHour);
             }
@@ -327,7 +360,7 @@ namespace ExtraHours.API.Controller
                             name = employee.name,
                             position = employee.position,
                             salary = employee.salary,
-                            manager = new { name = employee.manager?.name ?? "Sin asignar" },
+                            manager = new { name = employee.manager?.manager_name ?? "Sin asignar" },
                             registry = extraHour.registry,
                             diurnal = extraHour.diurnal,
                             nocturnal = extraHour.nocturnal,
@@ -339,15 +372,26 @@ namespace ExtraHours.API.Controller
                             endTime = extraHour.endTime,
                             approved = extraHour.approved,
                             approvedByManagerId = extraHour.ApprovedByManagerId,
-                            approvedByManagerName = extraHour.ApprovedByManager?.name ?? "No aprobado",
+                            approvedByManagerName = extraHour.ApprovedByManager?.manager_name ?? "No aprobado",
                             observations = extraHour.observations
                         });
                     }
                 }
             }
 
+
+
             return Ok(result);
 
         }
+
+      
+    }
+
+    public class ExtraHourCalculationRequest
+    {
+        public DateTime Date { get; set; }
+        public TimeSpan StartTime { get; set; }
+        public TimeSpan EndTime { get; set; }
     }
 }
