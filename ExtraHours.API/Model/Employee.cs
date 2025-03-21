@@ -24,9 +24,9 @@ namespace ExtraHours.API.Model
         public double? salary { get; set; }
 
         [Column("manager_id")]
-        public long? managerId { get; set; }
+        public long? manager_id { get; set; }
 
-        [ForeignKey("managerId")]
+        [ForeignKey("manager_id")]
         public Manager? manager { get; set; }
 
     }

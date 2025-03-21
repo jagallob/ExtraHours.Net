@@ -31,6 +31,8 @@ builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IExtraHourService, ExtraHourService>();
 builder.Services.AddSingleton<IJWTUtils, JWTUtils>();
 builder.Services.AddScoped<IExtraHoursConfigService, ExtraHoursConfigService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IExtraHourCalculationService, ExtraHourCalculationService>();
 
 // Agregar controladores
 builder.Services.AddControllers()

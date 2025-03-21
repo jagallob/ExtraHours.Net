@@ -1,16 +1,17 @@
 ﻿using ExtraHours.API.Model;
 
-namespace ExtraHours.API.Repositories.Interfaces
+namespace ExtraHours.API.Service.Interface
 {
-    public interface IUserRepository
+    public interface IUserService
     {
-        Task<User?> FindByEmailAsync(string username);
-        Task<User> GetUserByEmailAsync(string email);
         Task<User> GetUserByIdAsync(long userId);
+        Task<User> GetUserByEmailAsync(string email);
+        Task<User?> FindByEmailAsync(string email);
         Task<List<User>> GetAllAsync();
-        Task SaveAsync(User user);
+        Task SaveUserAsync(User user);
         Task UpdateUserAsync(User user);
         Task DeleteUserAsync(long userId);
+        Task<bool> UserExistsAsync(long userId);
         Task<bool> EmailExistsAsync(string email);
     }
 }
