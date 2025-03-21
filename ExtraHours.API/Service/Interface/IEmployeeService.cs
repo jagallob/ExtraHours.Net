@@ -11,6 +11,7 @@ namespace ExtraHours.API.Service.Interface
         Task<Employee> AddEmployeeAsync(Employee employee);
         Task<Employee> UpdateEmployeeAsync(long id, UpdateEmployeeDTO dto);
         Task DeleteEmployeeAsync(long id);
+        Task<bool> EmployeeExistsAsync(long id);
 
     }
 }
