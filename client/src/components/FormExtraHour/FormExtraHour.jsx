@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { addExtraHour } from "@services/addExtraHour";
 import "./FormExtraHour.scss";
-import { determineExtraHourType } from "../../utils/determineExtraHourType";
 import { useConfig } from "../../utils/useConfig";
 import dayjs from "dayjs";
 import { useAuth } from "../../utils/useAuth";
+import { calculateExtraHour } from "../../services/calculateExtraHour";
 
 export const FormExtraHour = () => {
   const { getEmployeeIdFromToken } = useAuth();
@@ -44,25 +44,46 @@ export const FormExtraHour = () => {
     }));
   };
 
-  // useEffect para calcular horas extra automáticamente cuando se cambian los tiempos o la configuración
-  useEffect(() => {
-    if (
-      !isLoading &&
-      config &&
-      extraHours.date &&
-      extraHours.startTime &&
-      extraHours.endTime
-    ) {
-      console.log("Configuración obtenida:", config);
+  const calculateExtraHours = async () => {
+    if (!extraHours.date || !extraHours.startTime || !extraHours.endTime) {
+      return;
+    }
 
-      determineExtraHourType(
-        extraHours.date,
-        extraHours.startTime,
-        extraHours.endTime,
-        setError,
-        setExtraHours,
-        config
+    try {
+      setLoading(true);
+      const formattedStartTime = dayjs(extraHours.startTime, "HH:mm").format(
+        "HH:mm:ss"
       );
+      const formattedEndTime = dayjs(extraHours.endTime, "HH:mm").format(
+        "HH:mm:ss"
+      );
+
+      const calculationResult = await calculateExtraHour({
+        date: extraHours.date,
+        startTime: formattedStartTime,
+        endTime: formattedEndTime,
+      });
+
+      setExtraHours((prevData) => ({
+        ...prevData,
+        diurnal: calculationResult.diurnal,
+        nocturnal: calculationResult.nocturnal,
+        diurnalHoliday: calculationResult.diurnalHoliday,
+        nocturnalHoliday: calculationResult.nocturnalHoliday,
+        extrasHours: calculationResult.extraHours,
+      }));
+
+      setError(null);
+    } catch (err) {
+      setError(err.message || "Error al calcular horas extras");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (extraHours.date && extraHours.startTime && extraHours.endTime) {
+      calculateExtraHours();
     }
   }, [
     extraHours.date,
@@ -112,8 +133,6 @@ export const FormExtraHour = () => {
         observations: formData.observations,
         approved: false, // Valor predeterminado
       };
-
-      console.log("Datos enviados:", formattedData);
 
       await addExtraHour(formattedData);
       alert("Horas extras agregadas exitosamente");
