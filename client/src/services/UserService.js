@@ -61,6 +61,39 @@ export const UserService = {
       throw error;
     }
   },
+
+  changePasswordAdmin: async (id, newPassword) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("Token no encontrado, inicie sesión nuevamente");
+      }
+
+      const response = await fetch(
+        `https://localhost:7086/auth/change-password-admin`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ id, newPassword }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Respuesta completa:", errorText);
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+
+      return await response.text();
+    } catch (error) {
+      console.error("Change password admin error:", error);
+      throw error;
+    }
+  },
 };
 
 export const logout = async () => {
