@@ -23,6 +23,7 @@ import { addEmployee } from "@services/addEmployee";
 import { findEmployee } from "@services/findEmployee";
 import { updateEmployee } from "@services/updateEmployee";
 import { deleteEmployee } from "@services/deleteEmployee";
+import { UserService } from "../../services/UserService";
 import "./EmployeeManagement.scss";
 
 const { TabPane } = Tabs;
@@ -104,6 +105,14 @@ const EmployeeManagement = () => {
     setLoading(true);
     try {
       await updateEmployee(selectedEmployee.id, values);
+
+      if (values.newPassword) {
+        await UserService.changePasswordAdmin(
+          selectedEmployee.id,
+          values.newPassword
+        );
+      }
+
       message.success("Empleado actualizado correctamente");
       setEditModalOpen(false);
       handleSearch(searchValue); // Refresh data
@@ -401,6 +410,13 @@ const EmployeeManagement = () => {
               <Select.Option value="empleado">Empleado</Select.Option>
               <Select.Option value="superusuario">Superusuario</Select.Option>
             </Select>
+          </Form.Item>
+
+          <Form.Item name="newPassword" label="Nueva contraseña">
+            <Input
+              type="password"
+              placeholder="Dejar en blanco si no se va a cambiar contraseña"
+            />
           </Form.Item>
 
           <Form.Item>
