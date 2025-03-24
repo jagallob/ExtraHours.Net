@@ -43,14 +43,14 @@ namespace ExtraHours.API.Controller
         public async Task<ActionResult> CreateManager([FromBody] Manager manager)
         {
             await _managerRepository.AddAsync(manager);
-            return CreatedAtAction(nameof(GetManagerById), new { id = manager.id }, manager);
+            return CreatedAtAction(nameof(GetManagerById), new { id = manager.manager_id }, manager);
         }
 
         // Actualizar un manager
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateManager(long id, [FromBody] Manager manager)
         {
-            if (id != manager.id)
+            if (id != manager.manager_id)
                 return BadRequest(new { message = "ID mismatch" });
 
             try
