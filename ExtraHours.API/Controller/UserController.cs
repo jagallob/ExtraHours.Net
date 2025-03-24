@@ -1,5 +1,6 @@
 ﻿using ExtraHours.API.Model;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ExtraHours.API.Service.Interface;
@@ -154,6 +155,8 @@ namespace ExtraHours.API.Controllers
             {
                 await _userService.DeleteUserAsync(id);
 =======
+=======
+>>>>>>> Stashed changes
 using ExtraHours.API.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -218,11 +221,15 @@ namespace ExtraHours.API.Controller
             try
             {
                 await _userRepository.UpdateUserAsync(user);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                 return NoContent();
             }
             catch (InvalidOperationException ex)
             {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
                 return NotFound(new { error = ex.Message });
             }
@@ -230,9 +237,14 @@ namespace ExtraHours.API.Controller
     }
 }
 =======
+=======
+>>>>>>> Stashed changes
                 return NotFound(new { message = ex.Message });
             }
         }
     }
 }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
