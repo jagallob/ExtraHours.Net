@@ -1,4 +1,5 @@
 ﻿using ExtraHours.API.Model;
+<<<<<<< Updated upstream
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ExtraHours.API.Service.Interface;
@@ -152,12 +153,86 @@ namespace ExtraHours.API.Controllers
             try
             {
                 await _userService.DeleteUserAsync(id);
+=======
+using ExtraHours.API.Repositories.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+
+namespace ExtraHours.API.Controller
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class UserController : ControllerBase
+    {
+        private readonly IUserRepository _userRepository;
+
+        public UserController(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
+        // Obtener un usuario por ID
+        [HttpGet("{id}")]
+        public async Task<ActionResult<User>> GetUserById(long id)
+        {
+            try
+            {
+                var user = await _userRepository.GetUserByIdAsync(id);
+                return Ok(user);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+        }
+
+        // Obtener un usuario por email
+        [HttpGet("email/{email}")]
+        public async Task<ActionResult<User>> GetUserByEmail(string email)
+        {
+            try
+            {
+                var user = await _userRepository.GetUserByEmailAsync(email);
+                return Ok(user);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+        }
+
+        // Crear un usuario
+        [HttpPost]
+        public async Task<ActionResult> CreateUser([FromBody] User user)
+        {
+            await _userRepository.SaveAsync(user);
+            return CreatedAtAction(nameof(GetUserById), new { id = user.id }, user);
+        }
+
+        // Actualizar la contraseña de un usuario
+        [HttpPut("update-password/{id}")]
+        public async Task<ActionResult> UpdateUserPassword(long id, [FromBody] User user)
+        {
+            if (id != user.id)
+                return BadRequest(new { message = "ID mismatch" });
+
+            try
+            {
+                await _userRepository.UpdateUserAsync(user);
+>>>>>>> Stashed changes
                 return NoContent();
             }
             catch (InvalidOperationException ex)
             {
+<<<<<<< Updated upstream
                 return NotFound(new { error = ex.Message });
             }
         }
     }
 }
+=======
+                return NotFound(new { message = ex.Message });
+            }
+        }
+    }
+}
+>>>>>>> Stashed changes

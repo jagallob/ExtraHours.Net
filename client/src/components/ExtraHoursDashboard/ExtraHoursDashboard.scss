@@ -1,0 +1,33 @@
+.extra-hours-dashboard {
+  margin-top: 20px;
+
+  .ant-card {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    margin-bottom: 16px;
+  }
+
+  .ant-empty {
+    margin: 100px 0;
+  }
+
+  .recharts-wrapper {
+    margin: 0 auto;
+  }
+
+  .recharts-tooltip-item-name,
+  .recharts-tooltip-item-value {
+    color: #333;
+  }
+
+  .recharts-default-tooltip {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid #ccc !important;
+    border-radius: 4px;
+    padding: 10px !important;
+  }
+
+  .recharts-legend-item-text {
+    display: inline-block;
+    margin-left: 4px;
+  }
+}
