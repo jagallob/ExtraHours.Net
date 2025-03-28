@@ -52,3 +52,5 @@ Desktop.ini
 .cache/
 .next/
 .output/
+
+appsettings.json
