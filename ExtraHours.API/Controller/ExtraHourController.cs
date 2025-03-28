@@ -1,4 +1,5 @@
-﻿using ExtraHours.API.Model;
+﻿using System.Security.Claims;
+using ExtraHours.API.Model;
 using ExtraHours.API.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -210,24 +211,47 @@ namespace ExtraHours.API.Controller
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateExtraHour([FromBody] ExtraHour extraHour)
         {
             // Obtener ID del empleado desde el token
             var userId = User.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
+            var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
             if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized(new { error = "No se pudo obtener el ID del usuario logueado." });
             }
 
-            long employeeId = long.Parse(userId);
+            long currentUserId = long.Parse(userId);
 
-            // Asignar el ID del empleado automáticamente
-            extraHour.id = employeeId;
-
-            if (extraHour == null)
+            if (userRole?.ToLower() == "superusuario")
             {
-                return BadRequest(new { error = "Datos de horas extra no pueden ser nulos" });
+       
+                var targetEmployeeExists = await _employeeService.EmployeeExistsAsync(extraHour.id);
+                if (!targetEmployeeExists)
+                {
+                    return BadRequest(new { error = "El empleado no existe" });
+                }
             }
+            else
+            {              
+                var employee = await _employeeService.GetByIdAsync(currentUserId);
+                if (employee == null || employee.manager_id == null)
+                {
+                    return BadRequest(new { error = "El empleado no tiene un manager asignado" });
+                }
+
+
+                if (currentUserId != extraHour.id)
+                {
+                    return Forbid();
+                }
+            }
+
+            extraHour.id = extraHour.id;
+            extraHour.approved = false;
+            extraHour.ApprovedByManagerId = null;
 
             if (extraHour.startTime == TimeSpan.Zero)
                 return BadRequest(new { error = "Formato de startTime inválido" });
