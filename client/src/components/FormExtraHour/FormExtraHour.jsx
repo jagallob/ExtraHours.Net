@@ -5,9 +5,11 @@ import { useConfig } from "../../utils/useConfig";
 import dayjs from "dayjs";
 import { useAuth } from "../../utils/useAuth";
 import { calculateExtraHour } from "../../services/calculateExtraHour";
+import { EmployeeInfo } from "../EmployeeInfo/EmployeeInfo";
 
 export const FormExtraHour = () => {
-  const { getEmployeeIdFromToken } = useAuth();
+  const { getEmployeeIdFromToken, getUserRole } = useAuth();
+  const [employeeId, setEmployeeId] = useState(null);
   const [extraHours, setExtraHours] = useState({
     id: null,
     date: "",
@@ -23,18 +25,18 @@ export const FormExtraHour = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [reset, setReset] = useState(false);
   const { config, isLoading } = useConfig();
 
-  // Establecer el ID del empleado automáticamente
-  useEffect(() => {
-    const employeeId = getEmployeeIdFromToken() || localStorage.getItem("id");
-    if (employeeId && !extraHours.id) {
-      setExtraHours((prevData) => ({
-        ...prevData,
-        id: parseInt(employeeId, 10),
-      }));
-    } // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const isSuperuser = getUserRole() === "superusuario";
+
+  const handleEmployeeIdChange = (id) => {
+    setEmployeeId(parseInt(id, 10));
+    setExtraHours((prevState) => ({
+      ...prevState,
+      id: parseInt(id, 10),
+    }));
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,6 +45,17 @@ export const FormExtraHour = () => {
       [name]: value,
     }));
   };
+
+  // // Establecer el ID del empleado automáticamente
+  // useEffect(() => {
+  //   const employeeId = getEmployeeIdFromToken() || localStorage.getItem("id");
+  //   if (employeeId && !extraHours.id) {
+  //     setExtraHours((prevData) => ({
+  //       ...prevData,
+  //       id: parseInt(employeeId, 10),
+  //     }));
+  //   } // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   const calculateExtraHours = async () => {
     if (!extraHours.date || !extraHours.startTime || !extraHours.endTime) {
@@ -100,8 +113,10 @@ export const FormExtraHour = () => {
 
     let formData = { ...extraHours };
 
-    const currentEmployeeId =
-      getEmployeeIdFromToken() || localStorage.getItem("id");
+    const currentEmployeeId = isSuperuser
+      ? employeeId
+      : getEmployeeIdFromToken() || localStorage.getItem("id");
+
     if (!currentEmployeeId) {
       setError(
         "No se pudo obtener el ID del empleado. Por favor, inicia sesión de nuevo."
@@ -137,9 +152,8 @@ export const FormExtraHour = () => {
       await addExtraHour(formattedData);
       alert("Horas extras agregadas exitosamente");
 
-      const currentId = formData.id;
       setExtraHours({
-        id: currentId,
+        id: null,
         date: "",
         startTime: "",
         endTime: "",
@@ -150,6 +164,10 @@ export const FormExtraHour = () => {
         extrasHours: 0,
         observations: "",
       });
+      if (isSuperuser) {
+        setReset(true);
+        setEmployeeId(null);
+      }
     } catch (error) {
       setError(
         error.response?.data?.title ||
@@ -167,6 +185,15 @@ export const FormExtraHour = () => {
 
   return (
     <form onSubmit={handleSubmit}>
+      {isSuperuser && (
+        <div className="superuser-employee-selection">
+          <EmployeeInfo
+            onIdChange={handleEmployeeIdChange}
+            reset={reset}
+            setReset={setReset}
+          />
+        </div>
+      )}
       <div className="form-group-date-time">
         <div>
           <label htmlFor="date">Fecha</label>
