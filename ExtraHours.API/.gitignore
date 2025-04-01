@@ -1,4 +1,4 @@
-﻿## Ignorar archivos generados por Visual Studio
+## Ignorar archivos generados por Visual Studio
 *.user
 *.userosscache
 *.suo

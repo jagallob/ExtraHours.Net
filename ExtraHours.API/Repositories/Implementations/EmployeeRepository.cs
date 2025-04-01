@@ -1,4 +1,4 @@
-﻿using ExtraHours.API.Model;
+using ExtraHours.API.Model;
 using ExtraHours.API.Data;
 using Microsoft.EntityFrameworkCore;
 using ExtraHours.API.Repositories.Interfaces;

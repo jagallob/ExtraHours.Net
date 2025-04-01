@@ -1,4 +1,4 @@
-﻿using ExtraHours.API.Model;
+using ExtraHours.API.Model;
 using ExtraHours.API.Repositories.Interfaces;
 using ExtraHours.API.Service.Interface;
 using ExtraHours.API.Dto;
@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ExtraHours.API.Data;
+using System;
 
 namespace ExtraHours.API.Service.Implementations
 {
@@ -19,15 +20,21 @@ namespace ExtraHours.API.Service.Implementations
         {
             _employeeRepository = employeeRepository;
             _managerRepository = managerRepository;
-            _context = context; 
+            _context = context;
         }
 
         public async Task<bool> EmployeeExistsAsync(long id)
         {
-            // Directly check existence in the database context
-            return await _context.employees
-                .AsNoTracking()  // More efficient for existence checks
-                .AnyAsync(e => e.id == id);
+            try
+            {
+                return await _context.employees
+                    .AsNoTracking()
+                    .AnyAsync(e => e.id == id);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public async Task<List<Employee>> GetEmployeesByManagerIdAsync(long managerId)
@@ -53,20 +60,18 @@ namespace ExtraHours.API.Service.Implementations
 
         public async Task<Employee> UpdateEmployeeAsync(long id, UpdateEmployeeDTO dto)
         {
-            
             return await _employeeRepository.UpdateEmployeeAsync(id, dto);
         }
 
         public async Task DeleteEmployeeAsync(long id)
-       {
-          var employee = await _employeeRepository.GetByIdAsync(id);
-          if (employee == null)
-          {
-        throw new KeyNotFoundException("Empleado no encontrado");
-          }
+        {
+            var employee = await _employeeRepository.GetByIdAsync(id);
+            if (employee == null)
+            {
+                throw new KeyNotFoundException("Empleado no encontrado");
+            }
 
             await _employeeRepository.DeleteAsync(employee.id);
-       }
-
+        }
     }
 }

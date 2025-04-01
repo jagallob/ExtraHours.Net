@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using ExtraHours.API.Model;
 using ExtraHours.API.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
