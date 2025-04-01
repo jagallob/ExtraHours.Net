@@ -32,19 +32,6 @@ namespace ExtraHours.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "managers",
-                columns: table => new
-                {
-                    manager_id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    manager_name = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_managers", x => x.manager_id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "users",
                 columns: table => new
                 {
@@ -62,11 +49,28 @@ namespace ExtraHours.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "managers",
+                columns: table => new
+                {
+                    manager_id = table.Column<long>(type: "bigint", nullable: false),
+                    manager_name = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_managers", x => x.manager_id);
+                    table.ForeignKey(
+                        name: "FK_managers_users_manager_id",
+                        column: x => x.manager_id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "employees",
                 columns: table => new
                 {
-                    id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    id = table.Column<long>(type: "bigint", nullable: false),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     position = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     salary = table.Column<double>(type: "double precision", nullable: true),
@@ -81,6 +85,12 @@ namespace ExtraHours.API.Migrations
                         principalTable: "managers",
                         principalColumn: "manager_id",
                         onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_employees_users_id",
+                        column: x => x.id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -99,7 +109,8 @@ namespace ExtraHours.API.Migrations
                     nocturnalHoliday = table.Column<double>(type: "double precision", nullable: false),
                     extraHours = table.Column<double>(type: "double precision", nullable: false),
                     observations = table.Column<string>(type: "text", nullable: true),
-                    approved = table.Column<bool>(type: "boolean", nullable: false)
+                    approved = table.Column<bool>(type: "boolean", nullable: false),
+                    approved_by_manager_id = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -110,6 +121,11 @@ namespace ExtraHours.API.Migrations
                         principalTable: "employees",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_extra_hours_managers_approved_by_manager_id",
+                        column: x => x.approved_by_manager_id,
+                        principalTable: "managers",
+                        principalColumn: "manager_id");
                 });
 
             migrationBuilder.InsertData(
@@ -121,6 +137,11 @@ namespace ExtraHours.API.Migrations
                 name: "IX_employees_manager_id",
                 table: "employees",
                 column: "manager_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_extra_hours_approved_by_manager_id",
+                table: "extra_hours",
+                column: "approved_by_manager_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_extra_hours_id",
@@ -138,13 +159,13 @@ namespace ExtraHours.API.Migrations
                 name: "extra_hours_config");
 
             migrationBuilder.DropTable(
-                name: "users");
-
-            migrationBuilder.DropTable(
                 name: "employees");
 
             migrationBuilder.DropTable(
                 name: "managers");
+
+            migrationBuilder.DropTable(
+                name: "users");
         }
     }
 }
