@@ -24,15 +24,10 @@ namespace ExtraHours.API.Service.Implementations
 
         public async Task<bool> EmployeeExistsAsync(long id)
         {
-            try
-            {
-                var employee = await _employeeRepository.GetByIdAsync(id);
-                return employee != null;
-            }
-            catch (KeyNotFoundException)
-            {
-                return false;
-            }
+            // Directly check existence in the database context
+            return await _context.employees
+                .AsNoTracking()  // More efficient for existence checks
+                .AnyAsync(e => e.id == id);
         }
 
         public async Task<List<Employee>> GetEmployeesByManagerIdAsync(long managerId)
