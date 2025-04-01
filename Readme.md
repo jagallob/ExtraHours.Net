@@ -1,5 +1,41 @@
 # Proyecto de Gestión de Horas Extra
 
+## Tabla de Contenido
+1. [Introducción](#proyecto-de-gestión-de-horas-extra)
+2. [Estructura del Proyecto](#estructura-del-proyecto)
+3. [Requisitos Previos](#requisitos-previos)
+4. [Instalación y Configuración](#instalación-y-configuración)
+   1. [Frontend (React)](#frontend-react)
+   2. [Backend (C#)](#backend-c)
+5. [Funcionalidades Principales](#funcionalidades-principales)
+   1. [Sistema de Horas Extra](#sistema-de-horas-extra)
+   2. [Sistema de aprobación](#sistema-de-aprobación)
+   3. [Gestión y Mantenimiento de Registros](#gestión-y-mantenimiento-de-registros)
+   4. [Interfaz adaptada por roles](#interfaz-adaptada-por-roles)
+   5. [Control de Límites y Alertas](#control-de-límites-y-alertas)
+   6. [Calendario y Gestión de Días Festivos](#calendario-y-gestión-de-días-festivos)
+   7. [Cálculo avanzado de horas extra](#cálculo-avanzado-de-horas-extra)
+   8. [Reportes y análisis](#reportes-y-análisis)
+   9. [Autenticación y seguridad](#autenticación-y-seguridad)
+   10. [Gestión de Empleados](#gestión-de-empleados)
+   11. [Gestión de Managers](#gestión-de-managers)
+   12. [Panel de Configuración del Sistema](#panel-de-configuración-del-sistema)
+   13. [Menú Principal Adaptativo](#menú-principal-adaptativo)
+6. [Detalles Técnicos](#detalles-técnicos)
+   1. [Frontend](#frontend)
+   2. [Backend](#backend)
+7. [Generación de Migraciones](#generación-de-migraciones)
+8. [Despliegue](#despliegue)
+   1. [Frontend](#frontend-1)
+   2. [Backend](#backend-1)
+9. [Estructura de Directorios Recomendada](#estructura-de-directorios-recomendada)
+10. [Flujo de Trabajo](#flujo-de-trabajo)
+11. [Solución de Problemas Comunes](#solución-de-problemas-comunes)
+    1. [Errores de migración de base de datos](#errores-de-migración-de-base-de-datos)
+    2. [Problemas con el frontend](#problemas-con-el-frontend)
+    3. [Problemas con la autenticación](#problemas-con-la-autenticación)
+12. [Contribución](#contribución)
+
 Este proyecto es una aplicación para la gestión de horas extra, su objetivo es automatizar y optimizar el proceso de registro, aprobación, actualización y eliminación de horas extra. Esta herramienta permitirá a los empleados, gerentes y administradores manejar de manera eficiente las horas extra trabajadas, entregando informes y asegurando una correcta compensación, cumpliendo con las politicas laborales vigentes.
 
 Esta diseñado para ser usado por 3 roles:
@@ -364,6 +400,18 @@ Para generar nuevas migraciones después de cambios en el modelo de datos:
 dotnet ef migrations add NombreDeLaMigracion
 dotnet ef database update
 ```
+## Documentación API (Swagger)
+
+El proyecto incluye integración con Swagger para facilitar la exploración y prueba de la API:
+
+- **Entorno de staging**: Documentación disponible en `https://localhost:7086/swagger/index.html`
+
+### Características de la documentación
+
+- Exploración interactiva de todos los endpoints
+- Prueba directa de endpoints con soporte para autenticación JWT
+- Documentación detallada de parámetros, respuestas y modelos
+- Agrupación de endpoints por funcionalidad
 
 ## Despliegue
 
