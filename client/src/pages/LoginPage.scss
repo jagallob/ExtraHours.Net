@@ -1,154 +1,107 @@
-.login-page {
-  height: 130vh;
+// Variables
+$primary-color: #0c66e1;
+$background-color: rgb(7, 15, 58);
+$card-background: rgba(14, 26, 99, 0.9);
+
+// Mixins
+@mixin flex-center {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@mixin smooth-transition {
+  transition: all 0.3s ease;
+}
+
+#login-page {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+}
+
+#login-background {
+  width: calc(100% - 400px);
+  height: 100%;
   background-image: url("../assets/images/imgfondo.png");
   background-size: cover;
-  background-repeat: no-repeat;
   background-position: center;
-  background-color: rgb(7, 15, 58);
-  padding: 20px;
-}
-
-.login-card {
-  width: 400px;
-  max-width: 100%;
-  background-color: rgba(14, 26, 99, 0.9);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-  backdrop-filter: blur(8px);
-  animation: fadeIn 0.5s ease;
-  margin-top: -250px;
-}
-
-.login-title {
-  color: white;
-  background-color: #0c66e1;
-  text-align: center;
-  margin: 0;
-  padding: 20px 0;
-  font-weight: 600;
-  font-size: 28px;
-}
-
-.login-form-container {
-  padding: 30px;
-  background-color: #4a98ff;
-  border-radius: 0 0 16px 16px;
-
-  h2 {
-    margin-top: -40px;
-    margin-bottom: -10px;
+  background-repeat: no-repeat;
+      
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    // background-color: rgba(7, 15, 58, 0.5); // Fondo oscuro semi-transparente
   }
+}
+
+.login-container {
+  width: 400px; // Ancho fijo para mantener el diseño
+  height: 100%; // Que ocupe toda la altura
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #fff;
+}
+
+.login-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
 .login-logo {
-  width: 180px;
+  max-width: 100%;
   height: auto;
-  display: block;
+  margin-bottom: 1rem;
+  width: 120px;
 }
 
-.login-form {
-  .form-field {
-    background-color: rgb(14, 26, 99);
-    border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 16px;
-
-    .ant-form-item {
-      margin-bottom: 15px;
-    }
-
-    .ant-form-item-label > label {
-      color: white;
-      font-weight: 500;
-      margin-bottom: 8px;
-    }
-
-    .ant-input-password {
-      height: -40px;
-      border-radius: 6px;
-      border: 2px solid transparent;
-
-      .ant-input {
-        height: 38px;
-        padding-left: 12px;
-        text-align: left;
-      }
-
-      .ant-input-suffix {
-        margin-right: 8px;
-      }
-
-      input.ant-input {
-        letter-spacing: 2px;
-        font-size: 16px;
-      }
-
-      &:focus,
-      &:hover {
-        border-color: #0c66e1;
-        box-shadow: 0 0 0 2px rgba(12, 102, 225, 0.2);
-      }
-    }
-
-    .ant-input-password .ant-input {
-      height: 28px;
-    }
-  }
-
-  .login-button-container {
-    margin-top: 24px;
-
-    .login-button {
-      height: 48px;
-      font-size: 16px;
-      font-weight: 600;
-      border-radius: 8px;
-      background-color: #0851b8;
-      color: white;
-      border: none;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
-
-      &:hover,
-      &:focus {
-        background-color: white;
-        color: #0c5bc9;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-      }
-
-      &:active {
-        transform: translateY(0);
-      }
-    }
-  }
+.login-header h2 {
+  font-size: 1.2rem;
+  font-weight: normal;
+  color: #666;
+  margin-bottom: 0;
+  margin-top: 5px;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.login-form .ant-form-item-label {
+  padding-bottom: 4px;
 }
 
-@media (max-width: 480px) {
-  .login-card {
-    width: 100%;
-  }
+.login-form .ant-form-item-label > label {
+  font-size: 0.9rem;
+  color: #555;
+}
 
-  .login-form-container {
-    padding: 20px;
-  }
+.login-form .ant-input, 
+.login-form .ant-input-password {
+  padding: 10px 12px;
+  border-radius: 4px;
+}
 
-  .form-field {
-    padding: 15px;
+.login-form .ant-btn {
+  height: 44px;
+  font-size: 1rem;
+  margin-top: 1rem;
+  border-radius: 4px;
+}
+
+// Estilos para botones primarios
+.login-form .ant-btn-primary {
+  background-color: $primary-color;
+  border-color: $primary-color;
+  
+  &:hover, &:focus {
+    background-color: darken($primary-color, 10%);
+    border-color: darken($primary-color, 10%);
   }
 }

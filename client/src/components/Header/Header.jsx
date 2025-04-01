@@ -6,16 +6,20 @@ const Header = () => {
 
   return (
     <header className="app-header">
-      <div className="logo">
-        <>Bienvenid@</>
-      </div>
-
+       <img 
+    src="src/assets/images/imagen.png" 
+    alt="Logo" 
+    className="login-logo" 
+  />
+<div className="header-title">
       {auth && (
-        <div className="user-info">
+        <div>
           <span className="user-name">{auth.uniqueName || "Usuario"}</span>
           <span className="user-role">{auth.role && `(${auth.role})`}</span>
         </div>
+        
       )}
+      </div>
     </header>
   );
 };

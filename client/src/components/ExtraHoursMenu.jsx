@@ -62,16 +62,14 @@ const ExtraHoursMenu = () => {
         return (
           <>
             <div className="menu-item" onClick={() => navigate("/add")}>
-              <div id="imgagregar">
-                <img src={Agregar} alt="Agregar" />
-              </div>
+              <img src={Agregar} alt="Agregar" />
               <p>Registrar Horas Extra</p>
             </div>
             <div
               className="menu-item"
               onClick={() => navigate("/ManagementExtraHour")}
             >
-              <img src={Gestion} alt="Gestion de horas" />
+              <img src={Gestion} alt="Gestión de horas" />
               <p>Gestionar Registro de Horas</p>
             </div>
             <div className="menu-item" onClick={() => navigate("/reports")}>
@@ -90,7 +88,7 @@ const ExtraHoursMenu = () => {
   };
 
   return (
-    <div>
+    <div id="extrahourmenu-page">
       <div className="menu">
         <h1>Sistema de Gestión de Horas Extra</h1>
         <div className="grid">{renderMenuItems()}</div>
@@ -101,8 +99,8 @@ const ExtraHoursMenu = () => {
           <button className="change-password-button" onClick={openModal}>
             Cambiar Contraseña
           </button>
+          {isModalOpen && <ChangePasswordModal onClose={closeModal} />}
         </div>
-        {isModalOpen && <ChangePasswordModal onClose={closeModal} />}
       </div>
     </div>
   );
