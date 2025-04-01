@@ -12,15 +12,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ExtraHours.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250318031719_AddUserRelationsAndApprovedByManager")]
-    partial class AddUserRelationsAndApprovedByManager
+    [Migration("20250328030128_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.2")
+                .HasAnnotation("ProductVersion", "9.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -31,7 +31,7 @@ namespace ExtraHours.API.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("id");
 
-                    b.Property<long?>("managerId")
+                    b.Property<long?>("manager_id")
                         .HasColumnType("bigint")
                         .HasColumnName("manager_id");
 
@@ -49,7 +49,7 @@ namespace ExtraHours.API.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("managerId");
+                    b.HasIndex("manager_id");
 
                     b.ToTable("employees");
                 });
@@ -165,16 +165,16 @@ namespace ExtraHours.API.Migrations
 
             modelBuilder.Entity("ExtraHours.API.Model.Manager", b =>
                 {
-                    b.Property<long>("id")
+                    b.Property<long>("manager_id")
                         .HasColumnType("bigint")
                         .HasColumnName("manager_id");
 
-                    b.Property<string>("name")
+                    b.Property<string>("manager_name")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("manager_name");
 
-                    b.HasKey("id");
+                    b.HasKey("manager_id");
 
                     b.ToTable("managers");
                 });
@@ -221,14 +221,14 @@ namespace ExtraHours.API.Migrations
             modelBuilder.Entity("ExtraHours.API.Model.Employee", b =>
                 {
                     b.HasOne("ExtraHours.API.Model.User", "User")
-                        .WithMany()
-                        .HasForeignKey("id")
+                        .WithOne()
+                        .HasForeignKey("ExtraHours.API.Model.Employee", "id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ExtraHours.API.Model.Manager", "manager")
                         .WithMany()
-                        .HasForeignKey("managerId")
+                        .HasForeignKey("manager_id")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("User");
@@ -256,8 +256,8 @@ namespace ExtraHours.API.Migrations
             modelBuilder.Entity("ExtraHours.API.Model.Manager", b =>
                 {
                     b.HasOne("ExtraHours.API.Model.User", "User")
-                        .WithMany()
-                        .HasForeignKey("id")
+                        .WithOne()
+                        .HasForeignKey("ExtraHours.API.Model.Manager", "manager_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

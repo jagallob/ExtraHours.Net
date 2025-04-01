@@ -9,6 +9,7 @@ using ExtraHours.API.Repositories.Implementations;
 using ExtraHours.API.Repositories.Interfaces;
 using ExtraHours.API.Service.Implementations;
 using ExtraHours.API.Service.Interface;
+using ExtraHours.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -85,6 +86,9 @@ builder.Services.AddCors(options =>
               .AllowCredentials();
     });
 });
+
+//Configurar EmailService
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 // Configurar Swagger
 builder.Services.AddEndpointsApiExplorer();

@@ -34,6 +34,7 @@ appsettings.Development.json
 appsettings.Local.json
 secrets.json
 *.env
+appsettings.json
 .env.*
 
 ## Ignorar archivos de pruebas
