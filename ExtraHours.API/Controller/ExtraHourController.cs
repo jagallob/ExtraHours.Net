@@ -211,78 +211,86 @@ namespace ExtraHours.API.Controller
         }
 
         [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> CreateExtraHour([FromBody] ExtraHour extraHour)
-        {
-            // Obtener ID del empleado desde el token
-            var userId = User.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
-            var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
-
-            if (string.IsNullOrEmpty(userId))
-            {
-                return Unauthorized(new { error = "No se pudo obtener el ID del usuario logueado." });
-            }
-
-            long currentUserId = long.Parse(userId);
-
-            if (userRole?.ToLower() == "superusuario")
-            {
-       
-                var targetEmployeeExists = await _employeeService.EmployeeExistsAsync(extraHour.id);
-                if (!targetEmployeeExists)
-                {
-                    return BadRequest(new { error = "El empleado no existe" });
-                }
-            }
-            else
-            {              
-                var employee = await _employeeService.GetByIdAsync(currentUserId);
-                if (employee == null || employee.manager_id == null)
-                {
-                    return BadRequest(new { error = "El empleado no tiene un manager asignado" });
-                }
-
-
-                if (currentUserId != extraHour.id)
-                {
-                    return Forbid();
-                }
-            }
-
-            extraHour.id = extraHour.id;
-            extraHour.approved = false;
-            extraHour.ApprovedByManagerId = null;
-
-            if (extraHour.startTime == TimeSpan.Zero)
-                return BadRequest(new { error = "Formato de startTime inválido" });
-
-            if (extraHour.endTime == TimeSpan.Zero)
-                return BadRequest(new { error = "Formato de endTime inválido" });
-
-            // Realizar el cálculo automático en el backend
-            try
-            {
-                var calculation = await _calculationService.DetermineExtraHourTypeAsync(
-                    extraHour.date,
-                    extraHour.startTime,
-                    extraHour.endTime);
-
-                // Actualizar los valores calculados
-                extraHour.diurnal = calculation.diurnal;
-                extraHour.nocturnal = calculation.nocturnal;
-                extraHour.diurnalHoliday = calculation.diurnalHoliday;
-                extraHour.nocturnalHoliday = calculation.nocturnalHoliday;
-                extraHour.extraHours = calculation.extraHours;
-
-                var savedExtraHour = await _extraHourService.AddExtraHourAsync(extraHour);
-                return Created("", savedExtraHour);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al guardar horas extra: {ex.Message}");
-                return StatusCode(500, new { error = "Error interno del servidor" });
-            }
-        }
+    public async Task<IActionResult> CreateExtraHour([FromBody] ExtraHour extraHour, [FromServices] IEmailService emailService)
+    {
+     // Obtener ID del empleado desde el token
+     var userId = User.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
+     if (string.IsNullOrEmpty(userId))
+     {
+         return Unauthorized(new { error = "No se pudo obtener el ID del usuario logueado." });
+     }
+ 
+     long employeeId = long.Parse(userId);
+ 
+     // Asignar el ID del empleado automáticamente
+     extraHour.id = employeeId;
+ 
+     if (extraHour == null)
+     {
+         return BadRequest(new { error = "Datos de horas extra no pueden ser nulos" });
+ 
+ 
+     }
+ 
+     if (extraHour.startTime == TimeSpan.Zero)
+         return BadRequest(new { error = "Formato de startTime inválido" });
+ 
+     if (extraHour.endTime == TimeSpan.Zero)
+         return BadRequest(new { error = "Formato de endTime inválido" });
+ 
+     try
+     {
+         var savedExtraHour = await _extraHourService.AddExtraHourAsync(extraHour);
+ 
+         var employee = await _employeeService.GetByIdAsync(employeeId);
+         Console.WriteLine($"Empleado: {employee?.name ?? "No encontrado"}");
+         Console.WriteLine($"Manager: {employee?.manager?.manager_name ?? "No asignado"}");
+         Console.WriteLine($"Manager ID: {employee?.manager?.manager_id ?? 0}");
+         Console.WriteLine($"Manager User: {(employee?.manager?.User != null ? "Existe" : "No existe")}");
+         Console.WriteLine($"Manager Email: {employee?.manager?.User?.email ?? "No disponible"}");
+ 
+         var managerEmail = employee?.manager?.User?.email;
+ 
+         if (!string.IsNullOrEmpty(managerEmail))
+         {
+             var emailSubject = $"Nuevo Registro de Horas Extra - {employee.name}";
+             var emailBody = $@"
+<html>
+<body>
+<h2>Registro de Horas Extra</h2>
+<p><strong>Empleado:</strong> {employee.name}</p>
+<p><strong>Fecha:</strong> {extraHour.date:yyyy-MM-dd}</p>
+<p><strong>Hora de Inicio:</strong> {extraHour.startTime}</p>
+<p><strong>Hora de Fin:</strong> {extraHour.endTime}</p>
+<p><strong>Total Horas Extra:</strong> {extraHour.extraHours}</p>
+<p><strong>Observaciones:</strong> {extraHour.observations}</p>
+<br/>
+<p>Por favor, revise y apruebe las horas extra registradas.</p>
+</body>
+</html>";
+ 
+             
+                 try
+                 {
+                 Console.WriteLine($"Intentando enviar correo a: {managerEmail}");
+ 
+                 await emailService.SendEmailAsync(managerEmail, emailSubject, emailBody);
+                 Console.WriteLine("Correo enviado exitosamente.");
+             }
+                 catch (Exception ex)
+                 {
+                     Console.WriteLine($"Error enviando correo: {ex.Message}");
+                 }
+             }
+ 
+         return Created("", savedExtraHour);
+     }
+     catch (Exception ex)
+     {
+         Console.WriteLine($"Error al guardar horas extra: {ex.Message}");
+         return StatusCode(500, new { error = "Error interno del servidor" });
+     }
+}
 
         [HttpGet]
         public async Task<IActionResult> GetAllExtraHours()
