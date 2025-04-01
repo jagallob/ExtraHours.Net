@@ -1,4 +1,5 @@
-﻿using ExtraHours.API.Model;
+﻿using System.Security.Claims;
+using ExtraHours.API.Model;
 using ExtraHours.API.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -290,6 +291,7 @@ namespace ExtraHours.API.Controller
          return StatusCode(500, new { error = "Error interno del servidor" });
      }
 }
+
         [HttpGet]
         public async Task<IActionResult> GetAllExtraHours()
         {
