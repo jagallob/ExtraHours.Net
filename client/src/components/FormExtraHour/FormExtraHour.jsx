@@ -25,6 +25,7 @@ export const FormExtraHour = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [reset, setReset] = useState(false);
   const { config, isLoading } = useConfig();
 
   const isSuperuser = getUserRole() === "superusuario";
@@ -305,8 +306,8 @@ export const FormExtraHour = () => {
         </button>
       </div>
       
-      {error && <p className="error-message">{error}</p>}
-      {success && <p className="success-message">Horas extras agregadas exitosamente</p>}
+      {/* {error && <p className="error-message">{error}</p>}
+      {success && <p className="success-message">Horas extras agregadas exitosamente</p>} */}
     </form>
   );
 };

@@ -1,6 +1,6 @@
 /* Variables para colores y espaciado */
-$primary-color: #2563eb;
-$primary-light: #3b82f6; 
+$primary-color: #005EB8;
+$primary-light: #00A9E0; 
 $primary-dark: #1d4ed8;
 $background-color: #f8fafc;
 $text-color: #1e293b;
@@ -60,7 +60,7 @@ form {
     }
   }
   
- /* Asumiendo que este es tu archivo FormExtraHour.scss */
+
 
 .form-group-horizontal {
   display: flex;
@@ -74,7 +74,7 @@ form {
   
   .hora-extra-item {
     flex: 1;
-    min-width: 0; /* Esto permite que los elementos se encojan si es necesario */
+    min-width: 0; 
     
     input {
       width: 100%;

@@ -1,5 +1,5 @@
 // Variables
-$primary-color: #0c66e1;
+$primary-color: #005EB8;
 $background-color: rgb(7, 15, 58);
 $card-background: rgba(14, 26, 99, 0.9);
 
@@ -36,13 +36,13 @@ $card-background: rgba(14, 26, 99, 0.9);
     left: 0;
     width: 100%;
     height: 100%;
-    // background-color: rgba(7, 15, 58, 0.5); // Fondo oscuro semi-transparente
+    
   }
 }
 
 .login-container {
-  width: 400px; // Ancho fijo para mantener el diseño
-  height: 100%; // Que ocupe toda la altura
+  width: 400px; 
+  height: 100%; 
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -95,7 +95,7 @@ $card-background: rgba(14, 26, 99, 0.9);
   border-radius: 4px;
 }
 
-// Estilos para botones primarios
+
 .login-form .ant-btn-primary {
   background-color: $primary-color;
   border-color: $primary-color;
