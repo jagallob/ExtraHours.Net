@@ -435,9 +435,9 @@ export const UpdateDeleteApprove = () => {
           centered
           destroyOnClose
         >
-          <div className="modal-container">
-            <Form
-              initialValues={{
+          <div className="extra-hours-modal">
+          <Form className="extra-hours-form"
+               initialValues={{
                 ...selectedRow,
                 date: selectedRow?.date ? dayjs(selectedRow.date) : null,
               }}
