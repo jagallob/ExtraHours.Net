@@ -25,7 +25,6 @@ export const FormExtraHour = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [reset, setReset] = useState(false);
   const { config, isLoading } = useConfig();
 
   const isSuperuser = getUserRole() === "superusuario";
@@ -44,6 +43,11 @@ export const FormExtraHour = () => {
       ...prevData,
       [name]: value,
     }));
+    
+    // Limpiar mensajes de éxito cuando el usuario cambia algo
+    if (success) {
+      setSuccess(false);
+    }
   };
 
   // // Establecer el ID del empleado automáticamente
@@ -110,6 +114,7 @@ export const FormExtraHour = () => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setSuccess(false);
 
     let formData = { ...extraHours };
 
@@ -150,7 +155,7 @@ export const FormExtraHour = () => {
       };
 
       await addExtraHour(formattedData);
-      alert("Horas extras agregadas exitosamente");
+      setSuccess(true);
 
       setExtraHours({
         id: null,
@@ -180,7 +185,7 @@ export const FormExtraHour = () => {
   };
 
   if (isLoading) {
-    return <div>Loading extra hours configuration...</div>;
+    return <div className="loading-container">Cargando configuración de horas extras...</div>;
   }
 
   return (
@@ -229,6 +234,7 @@ export const FormExtraHour = () => {
           />
         </div>
       </div>
+      
       <div className="form-group-horizontal">
         <div className="hora-extra-item">
           <label>Diurna</label>
@@ -289,14 +295,18 @@ export const FormExtraHour = () => {
           name="observations"
           value={extraHours.observations}
           onChange={handleChange}
+          placeholder="Ingrese cualquier información adicional relevante"
         />
       </div>
+      
       <div className="submit-container">
         <button type="submit" disabled={loading}>
-          {loading ? "Enviando..." : "Agregar"}
+          {loading ? "Enviando..." : "Registrar horas extra"}
         </button>
       </div>
-      {error && <p className="error-message">Error: {error}</p>}
+      
+      {error && <p className="error-message">{error}</p>}
+      {success && <p className="success-message">Horas extras agregadas exitosamente</p>}
     </form>
   );
 };
