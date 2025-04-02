@@ -1,160 +1,194 @@
-/* Variables para colores y espaciado */
-$primary-color: #005EB8;
-$primary-light: #00A9E0; 
-$primary-dark: #1d4ed8;
-$background-color: #f8fafc;
-$text-color: #1e293b;
-$hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-$border-radius: 12px;
-$input-radius: 8px;
-$transition-speed: 0.3s;
-
 form {
-  max-width: 800px;
+  max-width: 900px;
   width: 100%;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: white;
-  border-radius: $border-radius;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  color: $text-color;
-  border: 1px solid #e2e8f0;
-  
+  margin: 5px auto;
+  padding: 8px;
+  background-color: #3a8bf5;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  color: #ffffff;
+  font-family: "Segoe UI", Arial, sans-serif;
+  margin-top: -30px;
+
   .form-group-date-time {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid #e2e8f0;
-    gap: 1rem;
-    
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 6px;
+    padding-bottom: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    gap: 6px;
+
     div {
-      flex: 1;
+      flex: 0 1 auto;
       min-width: 200px;
-      
+      margin: 0 10px 6px 0;
+      text-align: center;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
       label {
         display: block;
-        font-weight: 500;
-        font-size: 0.875rem;
-        color: $text-color;
-        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #ffffff;
+        margin-bottom: 4px;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        text-align: center;
       }
-      
+
       input {
-        width: 100%;
-        padding: 0.75rem;
-        border: 1px solid #e2e8f0;
-        border-radius: $input-radius;
-        font-size: 0.95rem;
-        background-color: white;
-        transition: all $transition-speed ease;
-        
+        padding: 6px 10px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        width: 60%;
+        background-color: rgba(255, 255, 255, 0.9);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: all 0.2s ease;
+
         &:focus {
           outline: none;
-          border-color: $primary-light;
-          box-shadow: 0 0 0 3px rgba($primary-light, 0.15);
+          background-color: #ffffff;
+          box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
         }
       }
     }
   }
-  
 
-
-.form-group-horizontal {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: nowrap;
-  width: 100%;
-  margin: 15px 0;
-  
-  .hora-extra-item {
-    flex: 1;
-    min-width: 0; 
-    
-    input {
-      width: 100%;
-    }
-    
-    &.total-horas-extra {
-      font-weight: bold;
-    }
-  }
-}
-
-/* Para asegurar que el formulario sea responsivo */
-@media (max-width: 768px) {
   .form-group-horizontal {
-    flex-wrap: wrap;
-    
-    .hora-extra-item {
-      flex-basis: 48%; /* En pantallas más pequeñas, mostrar 2 por fila */
-    }
-  }
-}
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    row-gap: 3px;
+    column-gap: 8px;
+    padding: 6px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    align-items: center;
+    margin-bottom: 0;
 
-@media (max-width: 480px) {
-  .form-group-horizontal {
     .hora-extra-item {
-      flex-basis: 100%; /* En pantallas muy pequeñas, apilar verticalmente */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0px;
+
+      label {
+        font-weight: 600;
+        font-size: 13px;
+        color: #ffffff;
+        margin-bottom: 2px;
+        text-align: center;
+        min-height: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      input[type="number"] {
+        width: 85%;
+        padding: 6px 10px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        text-align: center;
+        font-weight: 600;
+        background-color: rgba(255, 255, 255, 0.9);
+
+        &:read-only {
+          background-color: rgba(255, 255, 255, 0.7);
+          cursor: not-allowed;
+        }
+
+        &:focus {
+          outline: none;
+          box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+        }
+      }
+    }
+
+    .total-horas-extra {
+      grid-column: 2 / 4;
+      justify-self: center;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-top: 4px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
-}
-  
+
   .observaciones-container {
-    margin-bottom: 1.5rem;
-    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 0;
+    margin-top: 4px;
+
     label {
       display: block;
-      font-weight: 500;
-      font-size: 0.875rem;
-      margin-bottom: 0.5rem;
+      font-weight: 600;
+      font-size: 14px;
+      color: #ffffff;
+      margin-bottom: 4px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
     }
-    
+
     textarea {
-      width: 100%;
-      min-height: 80px;
-      padding: 0.75rem;
-      border: 1px solid #e2e8f0;
-      border-radius: $input-radius;
-      font-size: 0.95rem;
-      background-color: white;
+      width: 90%;
+      min-height: 30px;
+      padding: 8px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      background-color: rgba(255, 255, 255, 0.9);
       resize: vertical;
-      font-family: inherit;
-      
+      font-family: "Segoe UI", Arial, sans-serif;
+      text-align: center;
+
       &:focus {
         outline: none;
-        border-color: $primary-light;
-        box-shadow: 0 0 0 3px rgba($primary-light, 0.15);
+        background-color: #ffffff;
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
       }
     }
   }
-  
+
   .submit-container {
     text-align: center;
-    
+    margin-top: 8px;
+
     button[type="submit"] {
-      padding: 0.75rem 2rem;
-      background-color: $primary-color;
+      display: inline-block;
+      width: 180px;
+      padding: 8px 16px;
+      background-color: #0c5bc9;
       color: white;
-      font-size: 0.95rem;
-      font-weight: 500;
+      font-size: 16px;
+      font-weight: 600;
+      text-align: center;
       border: none;
       border-radius: 30px;
       cursor: pointer;
-      transition: all $transition-speed ease;
-      box-shadow: 0 2px 10px rgba($primary-dark, 0.2);
-      
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
       &:hover {
-        background-color: $primary-dark;
+        background-color: white;
+        color: #0c5bc9;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba($primary-dark, 0.3);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
       }
-      
+
       &:disabled {
         opacity: 0.7;
         cursor: not-allowed;
@@ -162,48 +196,32 @@ form {
       }
     }
   }
-  
+
   .error-message {
-    background-color: #fee2e2;
-    color: #b91c1c;
-    padding: 0.75rem;
-    border-radius: $input-radius;
-    margin-top: 1rem;
-    font-size: 0.9rem;
+    background-color: rgba(255, 0, 0, 0.2);
+    color: #ffffff;
+    padding: 8px;
+    border-radius: 8px;
+    margin-top: 8px;
+    font-size: 14px;
     text-align: center;
-    border: 1px solid #fecaca;
   }
-  
+
   @media (max-width: 768px) {
-    padding: 1.5rem;
-    
+    padding: 12px;
+
     .form-group-date-time {
-      flex-direction: column;
-      
-      div {
-        width: 100%;
-      }
-    }
-    
-    .form-group-horizontal {
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
-      
-      .total-horas-extra {
-        grid-column: span 2;
-      }
-    }
-  }
-  
-  @media (max-width: 480px) {
-    padding: 1rem;
-    
-    .form-group-horizontal {
       grid-template-columns: 1fr;
-      
-      .total-horas-extra {
-        grid-column: 1;
-      }
+      gap: 12px;
+    }
+
+    .form-group-horizontal {
+      grid-template-columns: repeat(2fr, 1fr);
+      gap: 12px;
+    }
+
+    button[type="submit"] {
+      width: 100%;
     }
   }
 }
