@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Typography } from "antd";
 import PropTypes from "prop-types";
+import "./PowerBIDasboard.scss";
 
 const { Title, Text } = Typography;
 
