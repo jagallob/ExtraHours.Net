@@ -4,6 +4,7 @@ import { Form, Input, Button, message } from "antd";
 import { useAuth } from "../utils/useAuth";
 import { UserService } from "../services/UserService";
 import "./LoginPage.scss";
+// import Logo from "../../../client/src/assets/images/Logo.png";
 import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
@@ -36,61 +37,63 @@ const Login = () => {
   };
 
   return (
-    <div id="login-page">
-      <div id="login-background"></div>
-      <div className="login-container">
-        <Form
-          name="login-form"
-          onFinish={handleLogin}
-          layout="vertical"
-          className="login-form"
-        >
-         <div className="login-header">
-  <img 
-    src="/src/assets/images/amadeus.png"
-    alt="Logo" 
-    className="login-logo" 
-  />
-  <h2>Inicia sesión</h2>
-</div>
-          
-          <Form.Item
-            label="Correo Electrónico"
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: "Por favor ingrese su correo electrónico",
-              },
-            ]}
+    <div className="login-page">
+      <div className="login-card">
+        <h1 className="login-title">Bienvenid@</h1>
+
+        <div className="login-form-container">
+          <h2 className="iniciar-sesion">Inicia sesión</h2>
+
+          {/* <img className="Logo" src={Logo} alt="Logo Amadeus" /> */}
+          <Form
+            name="login-form"
+            onFinish={handleLogin}
+            layout="vertical"
+            className="login-form"
           >
-            <Input placeholder="example@mail.com" />
-          </Form.Item>
-          
-          <Form.Item
-            label="Contraseña"
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: "Por favor ingrese su contraseña",
-              },
-            ]}
-          >
-            <Input.Password placeholder="Contraseña" />
-          </Form.Item>
-          
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              loading={loading}
-              block
-            >
-              Iniciar Sesión
-            </Button>
-          </Form.Item>
-        </Form>
+            <div className="form-field">
+              <Form.Item
+                label="Correo Electrónico"
+                name="email"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor ingrese su correo electrónico",
+                  },
+                ]}
+              >
+                <Input placeholder="example@mail.com" />
+              </Form.Item>
+            </div>
+
+            <div className="form-field">
+              <Form.Item
+                label="Contraseña"
+                name="password"
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor ingrese su contraseña",
+                  },
+                ]}
+              >
+                <Input.Password placeholder="Contraseña" />
+              </Form.Item>
+            </div>
+
+            <Form.Item className="login-button-container">
+              <Button
+                className="login-button"
+                type="primary"
+                htmlType="submit"
+                loading={loading}
+                block
+              >
+                Iniciar Sesión
+              </Button>
+            </Form.Item>
+          </Form>
+        </div>
       </div>
     </div>
   );
