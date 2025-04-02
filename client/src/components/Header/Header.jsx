@@ -41,9 +41,9 @@ const Header = () => {
     <header className="app-header">
       {/* Logo que lleva al menú */}
       <img
-        src="src/assets/images/imagen.png"
+        src="src/assets/images/logoamadeus.png"
         alt="Logo"
-        className="login-logo"
+        className="login"
         onClick={() => navigate("/menu")}
         style={{ cursor: "pointer" }}
       />

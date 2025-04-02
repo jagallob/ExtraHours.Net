@@ -2,16 +2,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
-  background-color: #3a8bff;
+ background-color: #005EB8;
   border-bottom: px solid #e2e8f0;
   font-family: sans-serif;
   color: rgb(251, 253, 253);
 
-  img{
-    width: 50px;
-    height: 50px;
+  .login{
+    width: 90px; 
+    height: 35px; 
     margin-right: 10px;
+    object-fit: contain;
   }
 
   .logo {

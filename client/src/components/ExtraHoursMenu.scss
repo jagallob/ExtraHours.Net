@@ -1,12 +1,13 @@
 /* Variables para colores y espaciado */
 $primary-color: #2563eb;
-$primary-light: #3b82f6; 
+$primary-light: #3b82f6;
 $primary-dark: #1d4ed8;
 $background-color: #f8fafc;
 $text-color: #1e293b;
 $hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 $border-radius: 12px;
 $transition-speed: 0.3s;
+$hover-background: #f0f7ff; /* Color suave para el hover */
 
 #extrahourmenu-page {
   display: flex;
@@ -53,11 +54,15 @@ $transition-speed: 0.3s;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform $transition-speed, box-shadow $transition-speed, background-color $transition-speed;
+  background-color: white; /* Color base */
+  border: 1px solid transparent; /* Borde transparente inicial */
   
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    background-color: $hover-background; /* Cambio a color suave al pasar el mouse */
+    border-color: $primary-light; /* Borde con color primario al hacer hover */
   }
   
   img {
@@ -65,15 +70,25 @@ $transition-speed: 0.3s;
     height: 60px;
     margin-bottom: 15px;
     object-fit: contain;
+    transition: transform $transition-speed; /* Animación suave para la imagen */
+  }
+  
+  &:hover img {
+    transform: scale(1.1); /* La imagen se agranda ligeramente al hacer hover */
   }
   
   p {
     text-align: center;
-    font-weight: 600; 
+    font-weight: 600;
     margin: 0;
-    color: $text-color; 
-    font-size: 1rem; 
-    line-height: 1.3; 
+    color: $text-color;
+    font-size: 1rem;
+    line-height: 1.3;
+    transition: color $transition-speed; /* Transición para el color del texto */
+  }
+  
+  &:hover p {
+    color: $primary-color; /* El texto cambia al color primario al hacer hover */
   }
 }
 
@@ -89,7 +104,15 @@ $transition-speed: 0.3s;
     border-radius: 5px;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color $transition-speed, transform $transition-speed;
+    
+    &:hover {
+      transform: translateY(-2px); /* Pequeño efecto de elevación */
+    }
+    
+    &:active {
+      transform: translateY(0); /* Vuelve a la posición original al hacer clic */
+    }
   }
   
   .logout-button {
