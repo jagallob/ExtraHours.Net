@@ -34,7 +34,10 @@ const ExtraHoursMenu = () => {
               <img src={Informes} alt="Informes" />
               <p>Informes</p>
             </div>
-            <div className="menu-item" onClick={() => navigate("/ManagementExtraHour")}>
+            <div
+              className="menu-item"
+              onClick={() => navigate("/ManagementExtraHour")}
+            >
               <img src={Gestion} alt="Gestionar Horas Extra" />
               <p>Gestionar Horas Extra</p>
             </div>
@@ -48,7 +51,10 @@ const ExtraHoursMenu = () => {
               <img src={Agregar} alt="Agregar" />
               <p>Registrar Horas Extra</p>
             </div>
-            <div className="menu-item" onClick={() => navigate("/ManagementExtraHour")}>
+            <div
+              className="menu-item"
+              onClick={() => navigate("/ManagementExtraHour")}
+            >
               <img src={Gestion} alt="Gestión de horas" />
               <p>Gestionar Registro de Horas</p>
             </div>
