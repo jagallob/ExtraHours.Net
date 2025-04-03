@@ -17,6 +17,7 @@
 		"date-holidays": "^3.23.12",
 		"exceljs": "^4.4.0",
 		"jwt-decode": "^4.0.0",
+		"lucide-react": "^0.487.0",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
 		"react-router-dom": "^6.26.0",
@@ -34,4 +35,3 @@
 		"vite": "^6.2.3"
 	}
 }
-
