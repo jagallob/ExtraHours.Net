@@ -1,5 +1,43 @@
 # Proyecto de Gestión de Horas Extra
 
+## Tabla de Contenidos
+
+1. [Introducción](#proyecto-de-gestion-de-horas-extra)
+2. [Estructura del Proyecto](#estructura-del-proyecto)
+3. [Requisitos Previos](#requisitos-previos)
+4. [Instalación y Configuración](#instalacion-y-configuracion)
+   - [Frontend (React)](#frontend-react)
+   - [Backend (C#)](#backend-c)
+5. [Funcionalidades Principales](#funcionalidades-principales)
+   - [Sistema de Horas Extra](#sistema-de-horas-extra)
+   - [Cálculo automático categorizado](#calculo-automatico-categorizado)
+   - [Sistema de aprobación](#sistema-de-aprobacion)
+   - [Gestión y Mantenimiento de Registros](#gestion-y-mantenimiento-de-registros)
+   - [Interfaz adaptada por roles](#interfaz-adaptada-por-roles)
+   - [Control de Límites y Alertas](#control-de-limites-y-alertas)
+   - [Calendario y Gestión de Días Festivos](#calendario-y-gestion-de-dias-festivos)
+   - [Cálculo avanzado de horas extra](#calculo-avanzado-de-horas-extra)
+   - [Reportes y análisis](#reportes-y-analisis)
+   - [Autenticación y seguridad](#autenticacion-y-seguridad)
+   - [Gestión de Empleados](#gestion-de-empleados)
+   - [Gestión de Managers](#gestion-de-managers)
+   - [Panel de Configuración del Sistema](#panel-de-configuracion-del-sistema)
+   - [Menú Principal Adaptativo](#menu-principal-adaptativo)
+6. [Detalles Técnicos](#detalles-tecnicos)
+   - [Frontend](#frontend)
+   - [Backend](#backend)
+7. [Generación de Migraciones](#generacion-de-migraciones)
+8. [Despliegue](#despliegue)
+   - [Frontend](#frontend-1)
+   - [Backend](#backend-1)
+9. [Estructura de Directorios Recomendada](#estructura-de-directorios-recomendada)
+10. [Flujo de Trabajo](#flujo-de-trabajo)
+11. [Solución de Problemas Comunes](#solucion-de-problemas-comunes)
+    - [Errores de migración de base de datos](#errores-de-migracion-de-base-de-datos)
+    - [Problemas con el frontend](#problemas-con-el-frontend)
+    - [Problemas con la autenticación](#problemas-con-la-autenticacion)
+12. [Contribución](#contribucion)
+
 Este proyecto es una aplicación para la gestión de horas extra, su objetivo es automatizar y optimizar el proceso de registro, aprobación, actualización y eliminación de horas extra. Esta herramienta permitirá a los empleados, gerentes y administradores manejar de manera eficiente las horas extra trabajadas, entregando informes y asegurando una correcta compensación, cumpliendo con las politicas laborales vigentes.
 
 Esta diseñado para ser usado por 3 roles:
@@ -531,6 +569,7 @@ proyecto-horas-extra/
      - Distribuye las horas en las categorías correspondientes (diurna, nocturna, diurna festiva, nocturna festiva)
      - Maneja correctamente las transiciones entre periodos diurnos y nocturnos
      - Calcula con precisión hora por hora incluso cuando el registro cruza diferentes categorías
+   
    - Se agregan observaciones si es necesario
    - Se envía el formulario
 
