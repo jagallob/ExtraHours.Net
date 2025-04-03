@@ -1,21 +1,21 @@
 .ReportInfo {
   &.report-component {
-    background-color: #fffdf9;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 255, 0.795);
-    padding: 24px;
-    margin: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 16px 0;
 
     .component-header {
-      margin-bottom: 24px;
-      padding-bottom: 12px;
-      border-bottom: 2px solid #006aff;
-      padding: 20px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e0e0e0;
 
       h2 {
-        color: #006aff;
+        color: #333;
         font-family: Arial, Helvetica, sans-serif;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
+        font-weight: 500;
       }
     }
 
@@ -23,97 +23,67 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 12px;
 
       .filters-container {
         display: flex;
-        justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
-        gap: 16px;
+        gap: 12px;
 
         .search-container {
-          min-width: 250px;
-          padding: 20px;
+          min-width: 240px;
         }
 
         .range-picker-container {
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 8px;
         }
       }
 
       .approval-filter {
-        margin: 12px 0;
+        margin: 8px 0;
       }
 
       .action-buttons {
         display: flex;
-        gap: 10px;
+        gap: 8px;
         flex-wrap: wrap;
         margin-left: auto;
       }
 
-      .export-button {
-        background-color: #1890ff;
-        border-color: #1890ff;
-
-        &:hover {
-          background-color: white;
-          color: #0c5bc9;
-          transform: translateY(-2px);
-          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-        }
-      }
-
-      .search-button {
-        background-color: #1890ff;
-        border-color: #1890ff;
-
-        &:hover {
-          background-color: white;
-          color: #0c5bc9;
-          transform: translateY(-2px);
-          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-        }
-      }
-
+      .export-button,
+      .search-button,
       .manage-button {
-        background-color: #1890ff;
-        border-color: #1890ff;
-        margin-left: 10px;
-
         &:hover {
-          background-color: white;
-          color: #0c5bc9;
-          transform: translateY(-2px);
-          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+          transform: translateY(-1px);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
       }
     }
 
     .error-message {
-      color: #ff4d4f;
-      background-color: #fff1f0;
+      color: #f44336;
+      background-color: #fff;
       padding: 8px 12px;
       border-radius: 4px;
-      border: 1px solid #ffa39e;
-      margin: 16px 0;
+      border: 1px solid #ffcdd2;
+      margin: 12px 0;
     }
 
     .extra-hours-info {
-      margin-top: 20px;
+      margin-top: 16px;
 
       .ant-table-wrapper {
         .ant-table {
           .ant-table-thead > tr > th {
             text-align: center;
-            background-color: #f0f5ff;
-            color: #1890ff;
-            font-weight: 600;
+            background-color: #fafafa;
+            color: #555;
+            font-weight: 500;
             white-space: nowrap;
           }
 
@@ -123,105 +93,67 @@
           }
 
           .table-row-approved {
-            background-color: rgba(43, 255, 1, 0.418);
+            background-color: #fff;
+            border-left: 3px solid rgba(82, 196, 26, 0.8);
           }
 
           .table-row-pending {
-            background-color: rgba(250, 219, 20, 0.1);
-          }
-
-          .ant-tag {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
+            background-color: #fff;
+            border-left: 3px solid rgba(250, 219, 20, 0.8);
           }
 
           .ant-table-tbody > tr.ant-table-row:hover > td {
-            background-color: #e6f7ff;
+            background-color: #fafafa;
           }
 
           .ant-table-summary {
-            background-color: #f5f5f5;
+            background-color: #fff;
 
             .ant-table-cell {
-              padding: 12px 8px;
+              padding: 10px 8px;
               text-align: center;
-              border-top: 2px solid #e8e8e8;
-              font-weight: 600;
-            }
-
-            .ant-table-cell[colSpan] {
-              text-align: center;
-              padding-right: 16px;
+              border-top: 1px solid #f0f0f0;
+              font-weight: 500;
             }
           }
 
           .ant-table-cell {
-            border-right: 1px solid #f0f0f0;
+            border-right: none;
             padding: 8px;
             box-sizing: border-box;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
           }
-
-          .ant-table {
-            table {
-              table-layout: fixed;
-              width: 100%;
-              border-collapse: separate;
-              border-spacing: 0;
-            }
-          }
-
-          .ant-table-column-has-sorters {
-            white-space: nowrap;
-          }
-
-          .ant-table {
-            .ant-table-thead > tr > th,
-            .ant-table-tbody > tr > td {
-              text-align: center;
-            }
-          }
         }
 
         h3 {
-          margin-bottom: 16px;
-          color: #262626;
-
-          .ant-typography {
-            font-weight: normal;
-          }
+          margin-bottom: 12px;
+          color: #333;
         }
       }
 
       .no-results {
-        margin: 40px 0;
+        margin: 30px 0;
         text-align: center;
-        padding: 32px;
-        background-color: #f5f5f5;
-        border-radius: 8px;
+        padding: 24px;
+        background-color: #fff;
+        border: 1px solid #f0f0f0;
+        border-radius: 6px;
       }
 
       .table-row-light {
-        background-color: #d8d8fa;
+        background-color: #fff;
       }
 
       .table-row-dark {
-        background-color: #c4c4db;
+        background-color: #fafafa;
       }
 
       .ant-table-container {
         overflow-x: auto;
       }
 
-      .ant-table-content {
-        overflow: visible;
-      }
-
-      // Mejoras para responsive
       @media (max-width: 768px) {
         .actions-bar {
           flex-direction: column;
@@ -230,7 +162,7 @@
           .action-buttons {
             margin-left: 0;
             width: 100%;
-            justify-content: space-between;
+            justify-content: flex-end;
           }
         }
       }
