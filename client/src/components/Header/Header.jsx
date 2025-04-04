@@ -1,17 +1,14 @@
 import { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../utils/useAuth";
 import "./Header.scss";
 import ChangePasswordModal from "../ChangePasswordModal/ChangePasswordModal";
-import Inicio from "../../assets/images/Inicio.png"; 
-import LogoutIcon from "../../assets/images/logout_4034229.png"; 
-import ChangePasswordIcon from "../../assets/images/password-reset_18954456.png"; 
-
+import LogoutIcon from "../../assets/images/logout_4034229.png";
+import ChangePasswordIcon from "../../assets/images/password-reset_18954456.png";
 
 const Header = () => {
   const { auth, logout } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation(); // <-- Obtenemos la ruta actual
   const [showDropdown, setShowDropdown] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -48,9 +45,6 @@ const Header = () => {
         style={{ cursor: "pointer" }}
       />
 
-     
-      
-
       <div className="header-title">
         {auth && (
           <div className="user-info">
@@ -62,17 +56,19 @@ const Header = () => {
             {showDropdown && (
               <div className="button-container">
                 <img
-                     src={LogoutIcon}
-                     alt="Cerrar Sesión"
-                     className="icon-button"
-                     onClick={handleLogout}
-                 />
+                  src={LogoutIcon}
+                  alt="Cerrar Sesión"
+                  className="icon-button"
+                  onClick={handleLogout}
+                  title="Cerrar sesión"
+                />
                 <img
-                     src={ChangePasswordIcon}
-                     alt="Cambiar Contraseña"
-                     className="icon-button"
-                     onClick={openModal}
-                 />
+                  src={ChangePasswordIcon}
+                  alt="Cambiar Contraseña"
+                  className="icon-button"
+                  onClick={openModal}
+                  title="Cambiar contraseña"
+                />
               </div>
             )}
             {isModalOpen && <ChangePasswordModal onClose={closeModal} />}
