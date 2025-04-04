@@ -9,7 +9,7 @@
    - [Backend (C#)](#backend-c)
 5. [Funcionalidades Principales](#funcionalidades-principales)
    - [Sistema de Horas Extra](#sistema-de-horas-extra)
-   - [Cálculo automático categorizado](#2.cálculo-automático-categorizado)
+   - [Cálculo automático categorizado](#cálculo-automático-categorizado)
    - [Sistema de aprobación](#sistema-de-aprobación)
    - [Gestión y Mantenimiento de Registros](#gestión-y-mantenimiento-de-registros)
    - [Interfaz adaptada por roles](#interfaz-adaptada-por-roles)
