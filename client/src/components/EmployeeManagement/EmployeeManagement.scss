@@ -37,6 +37,8 @@ $shadow-color: rgba(0, 0, 0, 0.1);
   .add-employee-form {
     .form-columns {
       display: flex;
+      border: 1px solid #e8e8e8;
+      box-shadow: #333 0px 0px 10px 0px;
       gap: 20px;
       width: 90%;
       max-width: 1200px;
@@ -79,5 +81,6 @@ $shadow-color: rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
+    box-shadow: #333 0px 0px 10px 0px;
   }
 }
