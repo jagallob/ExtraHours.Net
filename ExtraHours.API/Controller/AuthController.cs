@@ -73,6 +73,32 @@ namespace ExtraHours.API.Controllers
         }
 
 
+        [HttpPut("change-password-admin")]
+        [Authorize(Roles = "superusuario")] 
+        public async Task<IActionResult> ChangePasswordAdmin([FromBody] ChangePasswordAdminRequest request)
+        {
+            try
+            {
+                // Verificar que el ID del usuario sea válido
+                if (request.id <= 0)
+                {
+                    return BadRequest(new { message = "ID de usuario inválido" });
+                }
+
+                await _authService.ChangePasswordAdminAsync(request.id, request.NewPassword);
+
+                return Ok("Contraseña actualizada correctamente");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
     }
 }
 
