@@ -92,9 +92,8 @@ const ExtraHoursSettings = () => {
             </Form.Item>
           </div>
         </div>
-
         {/* Multiplicadores regulares */}
-        <div className="input-group regular-multipliers-group">
+        {/* <div className="input-group regular-multipliers-group">
           <h4>Multiplicadores Regulares</h4>
           <div className="input-container">
             <Form.Item
@@ -113,9 +112,8 @@ const ExtraHoursSettings = () => {
               <InputNumber min={1} step={0.1} />
             </Form.Item>
           </div>
-        </div>
-
-        {/* Multiplicadores festivos */}
+        </div> */}
+        {/* Multiplicadores festivos
         <div className="input-group holiday-multipliers-group">
           <h4>Multiplicadores en Días Festivos</h4>
           <div className="input-container">
@@ -135,8 +133,7 @@ const ExtraHoursSettings = () => {
               <InputNumber min={1} step={0.1} />
             </Form.Item>
           </div>
-        </div>
-
+        </div> */}
         {/* Horarios */}
         <div className="input-group schedule-group">
           <h4>Definición de Jornada Laboral</h4>
@@ -158,7 +155,6 @@ const ExtraHoursSettings = () => {
             </Form.Item>
           </div>
         </div>
-
         <Form.Item className="submit-button">
           <Button
             type="primary"

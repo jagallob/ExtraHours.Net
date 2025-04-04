@@ -8,7 +8,7 @@ $shadow-color: rgba(0, 0, 0, 0.1);
 .employee-management-page {
   .employee-management-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     gap: 20px;
 
     @media (min-width: 992px) {
@@ -18,7 +18,7 @@ $shadow-color: rgba(0, 0, 0, 0.1);
 
     .employee-management-info {
       flex: 1;
-      max-width: 35%;
+      max-width: 100%;
 
       article {
         background-color: $info-bg-color;
@@ -28,7 +28,7 @@ $shadow-color: rgba(0, 0, 0, 0.1);
         box-shadow: 0 2px 8px $shadow-color;
         overflow: auto;
         max-height: none;
-        min-height: 400px;
+        min-height: 300px;
 
         h3 {
           font-size: 18px;
@@ -74,7 +74,7 @@ $shadow-color: rgba(0, 0, 0, 0.1);
 
     .employee-management-form {
       flex: 2;
-      max-width: 60%;
+      max-width: 100%;
 
       @media (min-width: 992px) {
         flex: 0 0 65%;
