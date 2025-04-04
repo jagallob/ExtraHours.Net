@@ -59,10 +59,7 @@ export const EmployeeInfo = ({ onIdChange, reset, setReset }) => {
             <div className="description">{employee.position}</div>
           </div>
           <div className="description-item">
-            <div className="title">
-              <br />
-              Manager
-            </div>
+            <div className="title">Manager</div>
             <div className="description">
               {employee.manager?.name ?? "Sin manager asignado"}
             </div>
