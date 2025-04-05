@@ -39,7 +39,7 @@
 
 # Proyecto de Gestión de Horas Extra
 
-Este proyecto es una aplicación para la gestión de horas extra, su objetivo es automatizar y optimizar el proceso de registro, aprobación, actualización y eliminación de horas extra. Esta herramienta permitirá a los empleados, gerentes y administradores manejar de manera eficiente las horas extra trabajadas, entregando informes y asegurando una correcta compensación, cumpliendo con las politicas laborales vigentes.
+Este proyecto es una aplicación para la gestión de horas extra, su objetivo es automatizar y optimizar el proceso de registro, aprobación, actualización y eliminación de horas extra. Esta herramienta permitirá a los empleados, gerentes y administradores manejar de manera eficiente las horas extra trabajadas, entregando informes y asegurando una correcta compensación, cumpliendo con las políticas laborales vigentes.
 
 Esta diseñado para ser usado por 3 roles:
 
