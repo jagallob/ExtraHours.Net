@@ -212,7 +212,7 @@ namespace ExtraHours.API.Controller
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateExtraHour([FromBody] ExtraHour extraHour)
+        public async Task<IActionResult> CreateExtraHour([FromBody] ExtraHour extraHour, IEmailService emailService)
         {
             // Obtener ID del empleado desde el token
             var userId = User.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
@@ -224,40 +224,48 @@ namespace ExtraHours.API.Controller
             }
 
             long currentUserId = long.Parse(userId);
+            long employeeId;
 
             if (userRole?.ToLower() == "superusuario")
             {
-       
+
                 var targetEmployeeExists = await _employeeService.EmployeeExistsAsync(extraHour.id);
                 if (!targetEmployeeExists)
                 {
                     return BadRequest(new { error = "El empleado no existe" });
                 }
+                employeeId = extraHour.id;
             }
             else
-            {              
+            {
+                employeeId = currentUserId;
                 var employee = await _employeeService.GetByIdAsync(currentUserId);
                 if (employee == null || employee.manager_id == null)
                 {
                     return BadRequest(new { error = "El empleado no tiene un manager asignado" });
                 }
 
-
-                if (currentUserId != extraHour.id)
+                if (extraHour.id > 0 && currentUserId != extraHour.id)
                 {
                     return Forbid();
                 }
+
+                extraHour.id = employeeId;
             }
 
-            extraHour.id = extraHour.id;
-            extraHour.approved = false;
-            extraHour.ApprovedByManagerId = null;
+            if (extraHour == null)
+            {
+                return BadRequest(new { error = "Datos de horas extra no pueden ser nulos" });
+            }
 
             if (extraHour.startTime == TimeSpan.Zero)
                 return BadRequest(new { error = "Formato de startTime inválido" });
 
             if (extraHour.endTime == TimeSpan.Zero)
                 return BadRequest(new { error = "Formato de endTime inválido" });
+
+            extraHour.approved = false;
+            extraHour.ApprovedByManagerId = null;
 
             // Realizar el cálculo automático en el backend
             try
@@ -275,6 +283,49 @@ namespace ExtraHours.API.Controller
                 extraHour.extraHours = calculation.extraHours;
 
                 var savedExtraHour = await _extraHourService.AddExtraHourAsync(extraHour);
+
+                var employee = await _employeeService.GetByIdAsync(employeeId);
+
+                // Enviar correo al manager si existe
+                if (employee?.manager_id != null)
+                {
+                    var managerEmail = employee?.manager?.User?.email;
+
+                    if (!string.IsNullOrEmpty(managerEmail))
+                    {
+                        var emailSubject = $"Nuevo Registro de Horas Extra - {employee.name}";
+                        var emailBody = $@"
+                <html>
+                <body>
+                    <h2>Registro de Horas Extra</h2>
+                    <p><strong>Empleado:</strong> {employee.name}</p>
+                    <p><strong>Fecha:</strong> {extraHour.date:yyyy-MM-dd}</p>
+                    <p><strong>Hora de Inicio:</strong> {extraHour.startTime}</p>
+                    <p><strong>Hora de Fin:</strong> {extraHour.endTime}</p>
+                    <p><strong>Total Horas Extra:</strong> {extraHour.extraHours}</p>
+                    <p><strong>Horas Diurnas:</strong> {extraHour.diurnal}</p>
+                    <p><strong>Horas Nocturnas:</strong> {extraHour.nocturnal}</p>
+                    <p><strong>Horas Diurnas Festivas:</strong> {extraHour.diurnalHoliday}</p>
+                    <p><strong>Horas Nocturnas Festivas:</strong> {extraHour.nocturnalHoliday}</p>
+                    <p><strong>Observaciones:</strong> {extraHour.observations}</p>
+                    <br/>
+                    <p>Por favor, revise y apruebe las horas extra registradas.</p>
+                </body>
+                </html>";
+
+                        try
+                        {
+                            await emailService.SendEmailAsync(managerEmail, emailSubject, emailBody);
+                            Console.WriteLine($"Correo enviado exitosamente a: {managerEmail}");
+                        }
+                        catch (Exception ex)
+                        {
+                            // Registrar el error pero no fallar la operación principal
+                            Console.WriteLine($"Error enviando correo: {ex.Message}");
+                        }
+                    }
+                }
+
                 return Created("", savedExtraHour);
             }
             catch (Exception ex)
@@ -402,8 +453,6 @@ namespace ExtraHours.API.Controller
                     }
                 }
             }
-
-
 
             return Ok(result);
 

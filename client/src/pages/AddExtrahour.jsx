@@ -6,7 +6,7 @@ const AddExtrahour = () => {
     <>
       <div>
         <header className="page__header"></header>
-        <h2 className="h2addextra">Agregar Horas Extra</h2>
+        {/* <h2 className="h2addextra">Agregar Horas Extra</h2> */}
         <FormExtraHour />
       </div>
     </>

@@ -94,14 +94,14 @@ const ExtraHoursMenu = () => {
       <div className="menu">
         <h1>Sistema de Gestión de Horas Extra</h1>
         <div className="grid">{renderMenuItems()}</div>
-        <div className="button-container">
+        {/* <div className="button-container">
           <button className="logout-button" onClick={handleLogout}>
             Cerrar Sesión
           </button>
           <button className="change-password-button" onClick={openModal}>
             Cambiar Contraseña
           </button>
-        </div>
+        </div> */}
         {isModalOpen && <ChangePasswordModal onClose={closeModal} />}
       </div>
     </div>

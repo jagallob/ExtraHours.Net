@@ -2,11 +2,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
-  background-color: #3a8bff;
+ background-color: #005EB8;
   border-bottom: px solid #e2e8f0;
   font-family: sans-serif;
   color: rgb(251, 253, 253);
+
+  .login{
+    width: 90px; 
+    height: 35px; 
+    margin-right: 10px;
+    object-fit: contain;
+  }
 
   .logo {
     font-weight: bold;
@@ -22,6 +28,19 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    position: relative;
+  }
+
+  .user-name-container {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  
 
     .user-name {
       font-weight: 600;
@@ -32,4 +51,44 @@
       font-size: 0.9rem;
     }
   }
-}
+
+  .user-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 180px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+  }
+  
+  .dropdown-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px 15px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    
+    &:hover {
+      background-color: #f5f5f5;
+    }
+    
+    &:not(:last-child) {
+      border-bottom: 1px solid #eee;
+    }
+  }
+  .icon-button {
+    width: 32px; // Ajusta el tamaño del icono
+    height: 32px;
+    cursor: pointer;
+    margin: 5px;
+    transition: transform 0.2s ease-in-out;
+  
+    &:hover {
+      transform: scale(1.1); 
+    }
+  }

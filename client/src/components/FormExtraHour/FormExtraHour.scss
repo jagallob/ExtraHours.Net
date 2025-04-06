@@ -1,227 +1,534 @@
-form {
+/* Variables para colores y espaciado */
+$primary-color: #005eb8;
+$primary-light: #00a9e0;
+$primary-dark: #1d4ed8;
+$secondary-color: #10b981;
+$secondary-dark: #047857;
+$background-color: #f8fafc;
+$card-background: #ffffff;
+$text-color: #1e293b;
+$label-color: #4b5563;
+$field-border: #e2e8f0;
+$focus-border: #00a9e0;
+$field-background: #ffffff;
+$error-color: #ef4444;
+$error-background: #d85252;
+$success-color: #10b981;
+$success-background: #d1fae5;
+$hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+  0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$border-radius: 12px;
+$input-radius: 8px;
+$button-radius: 30px;
+$transition-speed: 0.3s;
+
+// Importar el módulo de color de Sass
+@use "sass:color";
+
+/* Estilos de animación para loading spinners */
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba($primary-light, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba($primary-light, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba($primary-light, 0);
+  }
+}
+
+/* Estilos generales y contenedor principal */
+.form-container {
   max-width: 900px;
   width: 100%;
-  margin: 5px auto;
-  padding: 8px;
-  background-color: #3a8bf5;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  color: #ffffff;
-  font-family: "Segoe UI", Arial, sans-serif;
-  margin-top: -30px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  color: $text-color;
+  animation: fadeIn 0.5s ease-in-out;
+}
 
+.form-title {
+  color: $primary-dark;
+  font-size: 1.75rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  margin-top: -40px;
+}
+
+.section-title {
+  color: $primary-dark;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 1.5rem 0 1rem;
+  margin-top: -80px;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid $field-border;
+}
+
+/* Estilos del formulario */
+form {
+  background-color: $card-background;
+  border-radius: $border-radius;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+  position: relative;
+
+  .required {
+    color: $error-color;
+    margin-left: 2px;
+  }
+
+  .field-icon {
+    margin-right: 6px;
+    vertical-align: middle;
+    color: $primary-color;
+  }
+
+  .info-icon {
+    margin-left: 6px;
+    vertical-align: middle;
+    color: $primary-light;
+    cursor: help;
+  }
+
+  /* Estilos para tooltips */
+  .tooltip-container {
+    display: inline-block;
+    position: relative;
+
+    .tooltip-content {
+      visibility: hidden;
+      position: absolute;
+      z-index: 10;
+      width: 220px;
+      background-color: $text-color;
+      color: white;
+      text-align: center;
+      border-radius: 6px;
+      padding: 8px;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 0.8rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      pointer-events: none;
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: $text-color transparent transparent transparent;
+      }
+    }
+
+    &:hover .tooltip-content {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+
+  /* Estilos para campos fecha y hora */
   .form-group-date-time {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 6px;
-    padding-bottom: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    gap: 6px;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    gap: 60px;
 
-    div {
-      flex: 0 1 auto;
+    .form-field {
+      flex: 1;
       min-width: 200px;
-      margin: 0 10px 6px 0;
-      text-align: center;
-
-      &:last-child {
-        margin-right: 0;
-      }
 
       label {
         display: block;
-        font-weight: 600;
-        color: #ffffff;
-        margin-bottom: 4px;
-        font-size: 14px;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-        text-align: center;
+        font-weight: 500;
+        font-size: 0.875rem;
+        color: $label-color;
+        margin-bottom: 0.5rem;
       }
 
       input {
-        padding: 6px 10px;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        width: 60%;
-        background-color: rgba(255, 255, 255, 0.9);
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-        transition: all 0.2s ease;
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid $field-border;
+        border-radius: $input-radius;
+        font-size: 0.95rem;
+        background-color: $field-background;
+        transition: all $transition-speed ease;
+
+        &:hover {
+          border-color: $primary-light;
+        }
 
         &:focus {
           outline: none;
-          background-color: #ffffff;
-          box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+          border-color: $focus-border;
+          box-shadow: 0 0 0 3px rgba($primary-light, 0.15);
         }
       }
     }
   }
 
+  /* Indicador de cálculo en progreso */
+  .calculation-status {
+    height: 30px;
+    margin-bottom: 0.5rem;
+
+    .calculating-indicator {
+      display: flex;
+      align-items: center;
+      color: $primary-color;
+      font-size: 0.875rem;
+      animation: fadeIn 0.2s ease-in-out;
+
+      .loading-spinner-small {
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba($primary-color, 0.2);
+        border-top-color: $primary-color;
+        border-radius: 50%;
+        margin-right: 8px;
+        animation: rotate 1s linear infinite;
+      }
+    }
+  }
+
+  /* Estilos para los campos de horas calculadas */
   .form-group-horizontal {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    row-gap: 3px;
-    column-gap: 8px;
-    padding: 6px;
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    align-items: center;
-    margin-bottom: 0;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 60px;
+    width: 100%;
+    margin: 1rem 0 1.5rem;
 
     .hora-extra-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 0px;
+      position: relative;
 
       label {
-        font-weight: 600;
-        font-size: 13px;
-        color: #ffffff;
-        margin-bottom: 2px;
-        text-align: center;
-        min-height: 15px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: block;
+        font-weight: 500;
+        font-size: 0.875rem;
+        color: $label-color;
+        margin-bottom: 0.5rem;
       }
 
-      input[type="number"] {
-        width: 85%;
-        padding: 6px 10px;
-        border: none;
-        border-radius: 6px;
-        font-size: 14px;
-        text-align: center;
-        font-weight: 600;
-        background-color: rgba(255, 255, 255, 0.9);
+      input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid $field-border;
+        border-radius: $input-radius;
+        font-size: 0.95rem;
+        background-color: rgba($field-background, 0.8);
+        transition: all $transition-speed ease;
+      }
 
-        &:read-only {
-          background-color: rgba(255, 255, 255, 0.7);
-          cursor: not-allowed;
-        }
+      .calculated-field {
+        background-color: #f8fafc;
+        font-weight: 500;
+        color: $text-color;
 
-        &:focus {
-          outline: none;
-          box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+        &.total-field {
+          background-color: rgba($primary-light, 0.1);
+          font-weight: 700;
+          color: $primary-dark;
         }
       }
-    }
 
-    .total-horas-extra {
-      grid-column: 2 / 4;
-      justify-self: center;
-      text-align: center;
-      font-size: 16px;
-      font-weight: 700;
-      color: #ffffff;
-      margin-top: 4px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      &.total-horas-extra {
+        grid-column: 1 / -1;
+        max-width: 250px;
+        margin-left: auto;
+        margin-top: -40px;
+
+        label {
+          font-weight: 600;
+          color: $primary-dark;
+        }
+      }
     }
   }
 
+  /* Estilos para el campo de observaciones */
   .observaciones-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 0;
-    margin-top: 4px;
+    margin-bottom: 2rem;
+    margin-top: -10px;
 
     label {
       display: block;
-      font-weight: 600;
-      font-size: 14px;
-      color: #ffffff;
-      margin-bottom: 4px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
+      font-weight: 500;
+      font-size: 0.875rem;
+      color: $label-color;
+      margin-bottom: 0.5rem;
     }
 
     textarea {
-      width: 90%;
-      min-height: 30px;
-      padding: 8px;
-      border: none;
-      border-radius: 8px;
-      font-size: 14px;
-      background-color: rgba(255, 255, 255, 0.9);
+      width: 100%;
+      min-height: 60px;
+      padding: 0.75rem;
+      border: 1px solid $field-border;
+      border-radius: $input-radius;
+      font-size: 0.95rem;
+      background-color: $field-background;
       resize: vertical;
-      font-family: "Segoe UI", Arial, sans-serif;
-      text-align: center;
+      font-family: inherit;
+      transition: all $transition-speed ease;
+
+      &:hover {
+        border-color: $primary-light;
+      }
 
       &:focus {
         outline: none;
-        background-color: #ffffff;
-        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        border-color: $focus-border;
+        box-shadow: 0 0 0 3px rgba($primary-light, 0.15);
       }
     }
   }
 
+  /* Estilos para el botón de envío */
   .submit-container {
     text-align: center;
-    margin-top: 8px;
+    margin-top: 1.5rem;
 
     button[type="submit"] {
-      display: inline-block;
-      width: 180px;
-      padding: 8px 16px;
-      background-color: #0c5bc9;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 2.5rem;
+      background-color: $primary-color;
       color: white;
-      font-size: 16px;
-      font-weight: 600;
-      text-align: center;
+      font-size: 1rem;
+      font-weight: 500;
       border: none;
-      border-radius: 30px;
+      border-radius: $button-radius;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: all $transition-speed ease;
+      box-shadow: 0 2px 8px rgba($primary-dark, 0.2);
+      min-width: 180px;
 
       &:hover {
-        background-color: white;
-        color: #0c5bc9;
+        background-color: $primary-dark;
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 4px 12px rgba($primary-dark, 0.3);
+      }
+
+      &:active {
+        transform: translateY(0);
       }
 
       &:disabled {
         opacity: 0.7;
         cursor: not-allowed;
         transform: none;
+        box-shadow: none;
+      }
+
+      &.loading {
+        background-color: color.adjust($primary-color, $lightness: -5%);
+      }
+
+      .loading-spinner-button {
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-top-color: white;
+        border-radius: 50%;
+        margin-right: 8px;
+        animation: rotate 1s linear infinite;
       }
     }
   }
 
+  /* Estilos para mensajes de error */
   .error-message {
-    background-color: rgba(255, 0, 0, 0.2);
-    color: #ffffff;
-    padding: 8px;
-    border-radius: 8px;
-    margin-top: 8px;
-    font-size: 14px;
+    background-color: $error-background;
+    color: $error-color;
+    padding: 0.75rem;
+    border-radius: $input-radius;
+    margin-top: 1rem;
+    font-size: 0.9rem;
     text-align: center;
+    border: 1px solid rgba($error-color, 0.2);
+    animation: slideIn 0.3s ease;
+
+    p {
+      margin: 0;
+    }
   }
 
-  @media (max-width: 768px) {
-    padding: 12px;
+  /* Estilos específicos para usuarios superusuario */
+  .superuser-employee-selection {
+    background-color: rgba($primary-light, 0.05);
+    border: 1px solid rgba($primary-light, 0.2);
+    border-radius: $border-radius;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+
+    h2 {
+      color: $primary-dark;
+      font-size: 1.1rem;
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+/* Estilos para notificaciones */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 1rem 2rem 1rem 1rem;
+  border-radius: $border-radius;
+  box-shadow: $hover-shadow;
+  animation: slideIn 0.3s ease;
+  z-index: 1000;
+  max-width: 300px;
+
+  &-success {
+    background-color: $secondary-color;
+    border-left: 4px solid $success-color;
+    color: $text-color;
+  }
+
+  &-error {
+    background-color: $error-background;
+    border-left: 4px solid $error-color;
+    color: color.adjust($error-color, $lightness: -20%);
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    opacity: 0.6;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+/* Indicador de carga general */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba($primary-color, 0.2);
+    border-top-color: $primary-color;
+    border-radius: 50%;
+    animation: rotate 1s linear infinite;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: $primary-color;
+    font-size: 1rem;
+  }
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+  form {
+    padding: 1.5rem;
 
     .form-group-date-time {
-      grid-template-columns: 1fr;
-      gap: 12px;
+      flex-direction: column;
+      gap: 15px;
+
+      .form-field {
+        width: 100%;
+      }
     }
 
     .form-group-horizontal {
-      grid-template-columns: repeat(2fr, 1fr);
-      gap: 12px;
+      grid-template-columns: repeat(2, 1fr);
+
+      .hora-extra-item.total-horas-extra {
+        grid-column: span 2;
+        max-width: 100%;
+      }
     }
 
-    button[type="submit"] {
+    .submit-container button[type="submit"] {
       width: 100%;
     }
+  }
+}
+
+@media (max-width: 480px) {
+  .form-container {
+    padding: 0 0.5rem;
+  }
+
+  form {
+    padding: 1rem;
+
+    .form-group-horizontal {
+      grid-template-columns: 1fr;
+
+      .hora-extra-item.total-horas-extra {
+        grid-column: 1;
+      }
+    }
+  }
+
+  .notification {
+    left: 20px;
+    right: 20px;
+    max-width: calc(100% - 40px);
   }
 }
