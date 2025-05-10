@@ -1,9 +1,9 @@
-import axios from "axios";
+import { API_CONFIG } from "../environments/api.config";
 
 export const UserService = {
   login: async (email, password) => {
     try {
-      const response = await fetch("https://localhost:7086/auth/login", {
+      const response = await fetch(`${API_CONFIG.BASE_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -29,21 +29,13 @@ export const UserService = {
 
   changePassword: async (currentPassword, newPassword) => {
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        throw new Error("Token no encontrado, inicie sesión nuevamente");
-      }
-
-      console.log("Token presente:", !!token);
-
       const response = await fetch(
-        `https://localhost:7086/auth/change-password`,
+        `${API_CONFIG.BASE_URL}/auth/change-password`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify({ currentPassword, newPassword }),
         }
@@ -64,19 +56,13 @@ export const UserService = {
 
   changePasswordAdmin: async (id, newPassword) => {
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        throw new Error("Token no encontrado, inicie sesión nuevamente");
-      }
-
       const response = await fetch(
-        `https://localhost:7086/auth/change-password-admin`,
+        `${API_CONFIG.BASE_URL}/auth/change-password-admin`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify({ id, newPassword }),
         }
@@ -98,18 +84,18 @@ export const UserService = {
 
 export const logout = async () => {
   try {
-    const token = localStorage.getItem("token");
-    const response = await axios.post(
-      "https://localhost:7086/api/logout",
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    localStorage.removeItem("token"); // Eliminar token del almacenamiento local
-    return response.data;
+    const response = await fetch(`${API_CONFIG.BASE_URL}/auth/logout`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("id");
+    localStorage.removeItem("role");
+
+    return response.ok;
   } catch (error) {
     console.error("Logout error:", error);
     throw error;

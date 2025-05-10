@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { addExtraHour } from "@services/addExtraHour";
+import { addExtraHour } from "@services/extraHourService";
 import "./FormExtraHour.scss";
 import { useConfig } from "../../utils/useConfig";
 import dayjs from "dayjs";
 import { useAuth } from "../../utils/useAuth";
-import { calculateExtraHour } from "../../services/calculateExtraHour";
+import { calculateExtraHour } from "../../services/extraHourService";
 import { EmployeeInfo } from "../EmployeeInfo/EmployeeInfo";
 import { CalendarIcon, ClockIcon, InfoIcon } from "lucide-react";
 import PropTypes from "prop-types";
