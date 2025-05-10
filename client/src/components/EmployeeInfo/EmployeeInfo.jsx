@@ -2,7 +2,7 @@ import { Input } from "antd";
 import { useState, useEffect } from "react";
 import "./EmployeeInfo.scss";
 const { Search } = Input;
-import { findEmployee } from "@services/findEmployee";
+import { findEmployee } from "@services/employeeService";
 import PropTypes from "prop-types";
 
 export const EmployeeInfo = ({ onIdChange, reset, setReset }) => {

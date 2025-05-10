@@ -19,10 +19,10 @@ import {
   SearchOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import { addEmployee } from "@services/addEmployee";
-import { findEmployee } from "@services/findEmployee";
-import { updateEmployee } from "@services/updateEmployee";
-import { deleteEmployee } from "@services/deleteEmployee";
+import { addEmployee } from "@services/employeeService";
+import { findEmployee } from "@services/employeeService";
+import { updateEmployee } from "@services/employeeService";
+import { deleteEmployee } from "@services/employeeService";
 import { UserService } from "../../services/UserService";
 import "./EmployeeManagement.scss";
 

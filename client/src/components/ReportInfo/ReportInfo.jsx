@@ -18,10 +18,10 @@ import {
   TableOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { findEmployee } from "@services/findEmployee";
-import { findExtraHour } from "@services/findExtraHour";
-import { findExtraHourByDateRange } from "@services/findExtraHourByDateRange";
-import { findManagerEmployeesExtraHours } from "@services/findManagerEmployeesExtraHours";
+import { findEmployee } from "@services/employeeService";
+import { findExtraHour } from "@services/extraHourService";
+import { findExtraHourByDateRange } from "@services/extraHourService";
+import { findManagerEmployeesExtraHours } from "@services/extraHourService";
 import { columns } from "@utils/tableColumns.jsx";
 import { generateXLSReport } from "@utils/generateXLSReport.js";
 // import PowerBIDashboard from "./PowerBIDashboard";
