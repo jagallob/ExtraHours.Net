@@ -1,4 +1,3 @@
-
 ## Tabla de Contenidos
 
 1. [Introducción](#proyecto-de-gestión-de-horas-extra)
@@ -36,6 +35,7 @@
     - [Problemas con el frontend](#problemas-con-el-frontend)
     - [Problemas con la autenticación](#problemas-con-la-autenticación)
 12. [Contribución](#contribución)
+13. [Implementación y Ejecución de Tests Automáticos](#implementación-y-ejecución-de-tests-automáticos)
 
 # Proyecto de Gestión de Horas Extra
 
@@ -677,3 +677,38 @@ Para contribuir al proyecto:
 2. Realiza tus cambios y haz commit (`git commit -m 'Añadir nueva funcionalidad'`)
 3. Envía tu rama (`git push origin feature/nueva-funcionalidad`)
 4. Abre un Pull Request
+
+## Implementación y Ejecución de Tests Automáticos
+
+Para asegurar la calidad del código y la correcta funcionalidad de los módulos, el proyecto incluye tests automáticos para la API.
+
+### Pasos para implementar y ejecutar los tests
+
+1. Asegúrate de tener el SDK de .NET instalado (versión 6.0 o superior).
+2. Navega a la raíz del proyecto donde se encuentra la solución (`ExtraHours.sln`).
+3. Si agregas nuevos tests, hazlo dentro del proyecto `ExtraHours.API.Tests`.
+4. Para ejecutar todos los tests, utiliza el siguiente comando:
+
+   ```bash
+   dotnet test
+   ```
+
+   Esto ejecutará todos los tests y mostrará los resultados en la terminal.
+
+5. Si realizas cambios en los tests, crea una nueva rama para tu trabajo:
+
+   ```bash
+   git checkout -b feature/tests-implementation
+   ```
+
+6. Haz commit y push de tus cambios:
+
+   ```bash
+   git add .
+   git commit -m "Implementación y actualización de tests"
+   git push -u origin feature/tests-implementation
+   ```
+
+7. Abre un Pull Request para revisión y merge.
+
+---
