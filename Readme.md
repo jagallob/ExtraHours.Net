@@ -698,7 +698,7 @@ Para asegurar la calidad del código y la correcta funcionalidad de los módulos
 5. Si realizas cambios en los tests, crea una nueva rama para tu trabajo:
 
    ```bash
-   git checkout -b feature/tests-implementation
+   git checkout -b feature/tests-"filename"
    ```
 
 6. Haz commit y push de tus cambios:
@@ -706,7 +706,7 @@ Para asegurar la calidad del código y la correcta funcionalidad de los módulos
    ```bash
    git add .
    git commit -m "Implementación y actualización de tests"
-   git push -u origin feature/tests-implementation
+   git push -u origin feature/tests-"filename"
    ```
 
 7. Abre un Pull Request para revisión y merge.
