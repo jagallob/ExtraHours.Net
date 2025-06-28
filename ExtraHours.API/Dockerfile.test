@@ -1,0 +1,9 @@
+# Dockerfile para ejecutar tests del backend .NET
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS test
+WORKDIR /src
+COPY . .
+WORKDIR /src/ExtraHours.API.Tests
+# Restaurar dependencias
+RUN dotnet restore
+# Ejecutar tests
+CMD ["dotnet", "test", "ExtraHours.API.Tests.csproj", "--logger:trx"]
