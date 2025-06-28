@@ -1,0 +1,60 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db-backup/backup.sql:/docker-entrypoint-initdb.d/backup.sql
+
+  backend:
+    build:
+      context: .
+      dockerfile: ExtraHours.API/Dockerfile
+    ports:
+      - "7086:80"
+    env_file:
+      - .env
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_URLS: "http://+:80"
+      ConnectionStrings__DefaultConnection: "Host=${DB_HOST};Port=${DB_PORT};Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}"
+    volumes:
+      - ./ExtraHours.API/appsettings.json:/app/appsettings.json:ro
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80"
+    environment:
+      VITE_API_BASE_URL: "http://backend:80"
+    depends_on:
+      - backend
+
+  test-backend:
+    build:
+      context: .
+      dockerfile: ExtraHours.API/Dockerfile.test
+    depends_on:
+      - db
+    env_file:
+      - .env
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__DefaultConnection: "Host=${DB_HOST};Port=${DB_PORT};Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}"
+    volumes:
+      - ./ExtraHours.API/appsettings.json:/app/appsettings.json:ro
+      - ./ExtraHours.API.Tests:/src/ExtraHours.API.Tests
+
+volumes:
+  pgdata:
