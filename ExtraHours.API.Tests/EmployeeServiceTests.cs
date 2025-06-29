@@ -82,7 +82,7 @@ namespace ExtraHours.API.Tests
         [Fact]
         public async Task GetByIdAsync_Throws_WhenNotFound()
         {
-            _employeeRepository.GetByIdAsync(1).Returns((Employee)null);
+            _employeeRepository.GetByIdAsync(1).Returns((Employee?)null);
             await Assert.ThrowsAsync<KeyNotFoundException>(() => _employeeService.GetByIdAsync(1));
         }
 
@@ -141,7 +141,7 @@ namespace ExtraHours.API.Tests
         [Fact]
         public async Task DeleteEmployeeAsync_Throws_WhenNotFound()
         {
-            _employeeRepository.GetByIdAsync(1).Returns((Employee)null);
+            _employeeRepository.GetByIdAsync(1).Returns((Employee?)null);
             await Assert.ThrowsAsync<KeyNotFoundException>(() => _employeeService.DeleteEmployeeAsync(1));
         }
     }
